@@ -4,8 +4,6 @@ import confetti from 'canvas-confetti'
 import { formatCOP } from '../utils/formatCOP'
 
 const WHATSAPP_NUMBER = '573150642289'
-const WHATSAPP_MSG = encodeURIComponent('Hola, acabo de hacer un pedido en Mijarepas')
-const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MSG}`
 
 export default function SuccessScreen({ pedido, onReset }) {
   const confettiFired = useRef(false)
@@ -33,7 +31,11 @@ export default function SuccessScreen({ pedido, onReset }) {
     }, 200)
   }, [])
 
-  const tipoLabel = pedido.tipo === 'domicilio' ? '🛵 Domicilio' : '🪑 Para la Mesa'
+  // Build a personalised WhatsApp message including the customer's name
+  const whatsappMsg = encodeURIComponent(
+    `Hola, acabo de hacer un pedido en Mijarepas. Mi nombre es ${pedido.nombre} y mi número es ${pedido.telefono}.`
+  )
+  const whatsappURL = `https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMsg}`
 
   return (
     <motion.div
@@ -72,10 +74,16 @@ export default function SuccessScreen({ pedido, onReset }) {
           transition={{ delay: 0.35 }}
         >
           <h1 className="font-fredoka" style={{ color: 'white', fontSize: '2.2rem', marginBottom: '6px' }}>
-            ¡Pedido enviado!
+            ¡Gracias por tu pedido! 🎉
           </h1>
-          <p className="font-nunito" style={{ color: 'rgba(255,245,228,0.9)', fontSize: '1rem' }}>
-            Gracias, <strong>{pedido.nombre}</strong> 🎉
+          <p className="font-nunito" style={{ color: 'rgba(255,245,228,0.9)', fontSize: '0.95rem', lineHeight: 1.5 }}>
+            Recibimos tu pedido con éxito, <strong>{pedido.nombre}</strong>.
+            {pedido.telefono && (
+              <>
+                {' '}Nos pondremos en contacto contigo al{' '}
+                <strong>{pedido.telefono}</strong> para coordinar la entrega.
+              </>
+            )}
           </p>
         </motion.div>
 
@@ -90,20 +98,15 @@ export default function SuccessScreen({ pedido, onReset }) {
             boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
           }}
         >
-          {/* Type badge */}
+          {/* Domicilio badge */}
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: '6px',
             background: 'var(--crema)', borderRadius: '50px',
             padding: '6px 14px', marginBottom: '16px',
           }}>
             <span className="font-nunito" style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--cafe-medio)' }}>
-              {tipoLabel}
+              🛵 Domicilio
             </span>
-            {pedido.mesa && (
-              <span className="font-nunito" style={{ fontSize: '0.85rem', color: 'var(--cafe-medio)' }}>
-                — Mesa {pedido.mesa}
-              </span>
-            )}
           </div>
 
           {pedido.direccion && (
@@ -140,16 +143,35 @@ export default function SuccessScreen({ pedido, onReset }) {
             ))}
           </div>
 
-          {/* Total */}
-          <div style={{
-            borderTop: '2px solid var(--crema-oscuro)',
-            marginTop: '8px', paddingTop: '12px',
-            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-          }}>
-            <span className="font-nunito" style={{ fontWeight: 800, color: 'var(--cafe-medio)' }}>Total</span>
-            <span className="font-fredoka" style={{ fontSize: '1.5rem', color: 'var(--rojo-mijarepas)' }}>
-              {formatCOP(pedido.total)}
-            </span>
+          {/* Cost breakdown */}
+          <div style={{ borderTop: '1px solid var(--crema-oscuro)', marginTop: '8px', paddingTop: '10px' }}>
+            {/* Subtotal row */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+              <span className="font-nunito" style={{ fontSize: '0.8rem', color: 'var(--cafe-medio)' }}>Subtotal</span>
+              <span className="font-nunito" style={{ fontSize: '0.8rem', color: 'var(--cafe-oscuro)', fontWeight: 700 }}>
+                {formatCOP(pedido.subtotal ?? pedido.total)}
+              </span>
+            </div>
+            {/* Domicilio row */}
+            {pedido.costoDomicilio != null && (
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                <span className="font-nunito" style={{ fontSize: '0.8rem', color: 'var(--cafe-medio)' }}>🛵 Domicilio</span>
+                <span className="font-nunito" style={{ fontSize: '0.8rem', color: 'var(--cafe-oscuro)', fontWeight: 700 }}>
+                  {formatCOP(pedido.costoDomicilio)}
+                </span>
+              </div>
+            )}
+            {/* Total row */}
+            <div style={{
+              borderTop: '2px solid var(--crema-oscuro)',
+              marginTop: '6px', paddingTop: '10px',
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+            }}>
+              <span className="font-nunito" style={{ fontWeight: 800, color: 'var(--cafe-medio)' }}>Total</span>
+              <span className="font-fredoka" style={{ fontSize: '1.5rem', color: 'var(--rojo-mijarepas)' }}>
+                {formatCOP(pedido.total)}
+              </span>
+            </div>
           </div>
 
           {/* Payment notice */}
@@ -190,13 +212,13 @@ export default function SuccessScreen({ pedido, onReset }) {
               lineHeight: 1.4,
             }}
           >
-            ⏱️ Tu pedido estará listo en aproximadamente <strong>25–35 minutos</strong>
+            ⏱️ Tu domicilio llegará en aproximadamente <strong>40 minutos</strong>
           </p>
         </motion.div>
 
         {/* ── WhatsApp confirmation button ── */}
         <motion.a
-          href={WHATSAPP_URL}
+          href={whatsappURL}
           target="_blank"
           rel="noopener noreferrer"
           initial={{ opacity: 0, y: 16 }}

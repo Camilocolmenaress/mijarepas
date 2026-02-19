@@ -1,28 +1,30 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import toast from 'react-hot-toast'
 import useCartStore from '../store/useCartStore'
 import { formatCOP } from '../utils/formatCOP'
 import { detectarUbicacion } from '../utils/geolocation'
 
+const COSTO_DOMICILIO = 3000
+
 export default function CheckoutPage() {
   const navigate = useNavigate()
   const { items, clearCart, setLastOrder } = useCartStore()
-  const total = items.reduce((a, i) => a + i.precio * i.qty, 0)
+  const subtotal = items.reduce((a, i) => a + i.precio * i.qty, 0)
+  const total = subtotal + COSTO_DOMICILIO
 
   const [nombre, setNombre] = useState(
     () => localStorage.getItem('mijarepas_nombre') || ''
   )
   const [telefono, setTelefono] = useState('')
-  const [tipoPedido, setTipoPedido] = useState(
-    () => sessionStorage.getItem('mijarepas_tipo_pedido') || 'mesa'
-  )
   const [direccion, setDireccion] = useState('')
-  const [mesa, setMesa] = useState('')
   const [loadingGeo, setLoadingGeo] = useState(false)
   const [nombreError, setNombreError] = useState(false)
+  const [telefonoError, setTelefonoError] = useState(false)
+
   const nombreRef = useRef(null)
+  const telefonoRef = useRef(null)
 
   // Guard: if cart is empty navigate to menu
   useEffect(() => {
@@ -30,11 +32,6 @@ export default function CheckoutPage() {
       navigate('/menu', { replace: true })
     }
   }, [items, navigate])
-
-  // Persist tipo pedido in session
-  useEffect(() => {
-    sessionStorage.setItem('mijarepas_tipo_pedido', tipoPedido)
-  }, [tipoPedido])
 
   const handleGeolocate = async () => {
     setLoadingGeo(true)
@@ -53,13 +50,29 @@ export default function CheckoutPage() {
     }
   }
 
+  const shake = (ref) => {
+    ref.current?.classList.add('shake')
+    setTimeout(() => ref.current?.classList.remove('shake'), 500)
+  }
+
   const handleSubmit = () => {
+    // Validate nombre
     if (!nombre.trim()) {
       setNombreError(true)
       nombreRef.current?.focus()
-      nombreRef.current?.classList.add('shake')
-      setTimeout(() => nombreRef.current?.classList.remove('shake'), 500)
+      shake(nombreRef)
       toast.error('¡Escribe tu nombre para continuar!', {
+        style: { fontFamily: "'Nunito', sans-serif", fontWeight: 700, borderRadius: '12px' },
+      })
+      return
+    }
+
+    // Validate telefono
+    if (!telefono.trim()) {
+      setTelefonoError(true)
+      telefonoRef.current?.focus()
+      shake(telefonoRef)
+      toast.error('El teléfono es obligatorio para coordinar tu domicilio', {
         style: { fontFamily: "'Nunito', sans-serif", fontWeight: 700, borderRadius: '12px' },
       })
       return
@@ -69,10 +82,10 @@ export default function CheckoutPage() {
 
     const pedido = {
       nombre: nombre.trim(),
-      telefono: tipoPedido === 'domicilio' ? telefono : '',
-      tipo: tipoPedido,
-      mesa: tipoPedido === 'mesa' ? mesa : '',
-      direccion: tipoPedido === 'domicilio' ? direccion : '',
+      telefono: telefono.trim(),
+      tipo: 'domicilio',
+      mesa: '',
+      direccion,
       items: items.map(i => ({
         nombre: i.nombre,
         qty: i.qty,
@@ -80,6 +93,8 @@ export default function CheckoutPage() {
         nota: i.nota,
         subtotal: i.precio * i.qty,
       })),
+      subtotal,
+      costoDomicilio: COSTO_DOMICILIO,
       total,
     }
 
@@ -121,11 +136,12 @@ export default function CheckoutPage() {
           ←
         </button>
         <h2 className="font-fredoka" style={{ fontSize: '1.4rem', color: 'var(--cafe-oscuro)' }}>
-          Datos del pedido
+          Datos del domicilio
         </h2>
       </div>
 
       <div style={{ padding: '16px 16px 0' }}>
+
         {/* Nombre */}
         <div style={{ marginBottom: '14px' }}>
           <label className="font-nunito" style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--cafe-medio)', display: 'block', marginBottom: '5px' }}>
@@ -149,159 +165,119 @@ export default function CheckoutPage() {
           />
         </div>
 
-        {/* Tipo de pedido */}
+        {/* Teléfono */}
         <div style={{ marginBottom: '14px' }}>
-          <label className="font-nunito" style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--cafe-medio)', display: 'block', marginBottom: '8px' }}>
-            Tipo de pedido
+          <label className="font-nunito" style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--cafe-medio)', display: 'block', marginBottom: '5px' }}>
+            Teléfono *
           </label>
-          <div style={{ display: 'flex', gap: '8px' }}>
-            {[
-              { id: 'mesa', label: '🪑 Para la Mesa' },
-              { id: 'domicilio', label: '🛵 Domicilio' },
-            ].map(t => (
-              <button
-                key={t.id}
-                onClick={() => setTipoPedido(t.id)}
-                className="font-nunito"
-                style={{
-                  flex: 1, padding: '10px',
-                  borderRadius: '12px',
-                  border: `2px solid ${tipoPedido === t.id ? 'var(--rojo-mijarepas)' : 'var(--crema-oscuro)'}`,
-                  background: tipoPedido === t.id ? 'rgba(200,51,74,0.08)' : 'var(--blanco)',
-                  color: tipoPedido === t.id ? 'var(--rojo-mijarepas)' : 'var(--cafe-medio)',
-                  fontWeight: 700, fontSize: '0.85rem',
-                  cursor: 'pointer', transition: 'all 0.2s',
-                  minHeight: '44px',
-                }}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
+          <input
+            ref={telefonoRef}
+            type="tel"
+            value={telefono}
+            onChange={e => { setTelefono(e.target.value); setTelefonoError(false) }}
+            placeholder="Tu número de celular"
+            className="font-nunito"
+            style={{
+              width: '100%', borderRadius: '12px',
+              border: `1.5px solid ${telefonoError ? '#C8334A' : 'var(--crema-oscuro)'}`,
+              padding: '12px 14px', fontSize: '0.9rem',
+              color: 'var(--cafe-oscuro)', background: 'var(--blanco)',
+              outline: 'none', boxSizing: 'border-box',
+              fontFamily: "'Nunito', sans-serif",
+            }}
+          />
         </div>
 
-        {/* Mesa (solo si para la mesa) */}
-        <AnimatePresence>
-          {tipoPedido === 'mesa' && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              style={{ overflow: 'hidden', marginBottom: '14px' }}
+        {/* Dirección con geolocalización */}
+        <div style={{ marginBottom: '14px' }}>
+          <label className="font-nunito" style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--cafe-medio)', display: 'block', marginBottom: '5px' }}>
+            Dirección de entrega
+          </label>
+          <div style={{ position: 'relative' }}>
+            <input
+              type="text"
+              value={loadingGeo ? '' : direccion}
+              onChange={e => setDireccion(e.target.value)}
+              placeholder="Calle, barrio, ciudad..."
+              className="font-nunito"
+              style={{
+                width: '100%', borderRadius: '12px',
+                border: '1.5px solid var(--crema-oscuro)',
+                padding: '12px 48px 12px 14px', fontSize: '0.9rem',
+                color: 'var(--cafe-oscuro)',
+                background: loadingGeo ? 'var(--crema)' : 'var(--blanco)',
+                outline: 'none', boxSizing: 'border-box',
+                fontFamily: "'Nunito', sans-serif",
+              }}
+            />
+            <button
+              onClick={handleGeolocate}
+              disabled={loadingGeo}
+              aria-label="Usar mi ubicación"
+              style={{
+                position: 'absolute', right: '10px', top: '50%',
+                transform: 'translateY(-50%)',
+                background: 'none', border: 'none',
+                fontSize: loadingGeo ? '0.8rem' : '1.2rem',
+                cursor: loadingGeo ? 'default' : 'pointer',
+                padding: '4px',
+                color: loadingGeo ? 'var(--cafe-medio)' : 'var(--rojo-mijarepas)',
+              }}
             >
-              <label className="font-nunito" style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--cafe-medio)', display: 'block', marginBottom: '5px' }}>
-                Número de mesa (opcional)
-              </label>
-              <input
-                type="number"
-                value={mesa}
-                onChange={e => setMesa(e.target.value)}
-                placeholder="Ej: 5"
-                min="1"
-                className="font-nunito"
-                style={{
-                  width: '100px', borderRadius: '12px',
-                  border: '1.5px solid var(--crema-oscuro)',
-                  padding: '12px 14px', fontSize: '0.9rem',
-                  color: 'var(--cafe-oscuro)', background: 'var(--blanco)',
-                  outline: 'none', boxSizing: 'border-box',
-                  fontFamily: "'Nunito', sans-serif",
-                }}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+              {loadingGeo ? '⏳' : '📍'}
+            </button>
+          </div>
 
-        {/* Domicilio fields */}
-        <AnimatePresence>
-          {tipoPedido === 'domicilio' && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              style={{ overflow: 'hidden' }}
+          {/* Geo hint — only visible while address is still empty */}
+          {direccion === '' && !loadingGeo && (
+            <p
+              className="font-nunito"
+              style={{
+                fontSize: '0.72rem',
+                color: 'var(--cafe-medio)',
+                margin: '6px 2px 0',
+                lineHeight: 1.4,
+              }}
             >
-              {/* Teléfono */}
-              <div style={{ marginBottom: '12px' }}>
-                <label className="font-nunito" style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--cafe-medio)', display: 'block', marginBottom: '5px' }}>
-                  Teléfono
-                </label>
-                <input
-                  type="tel"
-                  value={telefono}
-                  onChange={e => setTelefono(e.target.value)}
-                  placeholder="Tu número de celular"
-                  className="font-nunito"
-                  style={{
-                    width: '100%', borderRadius: '12px',
-                    border: '1.5px solid var(--crema-oscuro)',
-                    padding: '12px 14px', fontSize: '0.9rem',
-                    color: 'var(--cafe-oscuro)', background: 'var(--blanco)',
-                    outline: 'none', boxSizing: 'border-box',
-                    fontFamily: "'Nunito', sans-serif",
-                  }}
-                />
-              </div>
-
-              {/* Dirección con geolocalización */}
-              <div style={{ marginBottom: '14px' }}>
-                <label className="font-nunito" style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--cafe-medio)', display: 'block', marginBottom: '5px' }}>
-                  Dirección de entrega
-                </label>
-                <div style={{ position: 'relative' }}>
-                  <input
-                    type="text"
-                    value={loadingGeo ? '' : direccion}
-                    onChange={e => setDireccion(e.target.value)}
-                    placeholder="Calle, barrio, ciudad..."
-                    className="font-nunito"
-                    style={{
-                      width: '100%', borderRadius: '12px',
-                      border: '1.5px solid var(--crema-oscuro)',
-                      padding: '12px 48px 12px 14px', fontSize: '0.9rem',
-                      color: 'var(--cafe-oscuro)',
-                      background: loadingGeo ? 'var(--crema)' : 'var(--blanco)',
-                      outline: 'none', boxSizing: 'border-box',
-                      fontFamily: "'Nunito', sans-serif",
-                    }}
-                  />
-                  <button
-                    onClick={handleGeolocate}
-                    disabled={loadingGeo}
-                    aria-label="Usar mi ubicación"
-                    style={{
-                      position: 'absolute', right: '10px', top: '50%',
-                      transform: 'translateY(-50%)',
-                      background: 'none', border: 'none',
-                      fontSize: loadingGeo ? '0.8rem' : '1.2rem',
-                      cursor: loadingGeo ? 'default' : 'pointer',
-                      padding: '4px',
-                      color: loadingGeo ? 'var(--cafe-medio)' : 'var(--rojo-mijarepas)',
-                    }}
-                  >
-                    {loadingGeo ? '⏳' : '📍'}
-                  </button>
-                </div>
-              </div>
-            </motion.div>
+              📍 Toca el ícono de ubicación para detectar tu dirección automáticamente
+            </p>
           )}
-        </AnimatePresence>
+        </div>
 
         {/* Total & Submit */}
         <div style={{
           borderTop: '1px solid var(--crema-oscuro)',
           paddingTop: '16px', marginTop: '4px',
         }}>
-          <div style={{
-            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-            marginBottom: '16px',
-          }}>
-            <span className="font-nunito" style={{ color: 'var(--cafe-medio)', fontWeight: 700, fontSize: '0.9rem' }}>
-              Total
-            </span>
-            <span className="font-fredoka" style={{ color: 'var(--cafe-oscuro)', fontSize: '1.6rem' }}>
-              {formatCOP(total)}
-            </span>
+          {/* Cost breakdown */}
+          <div style={{ marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span className="font-nunito" style={{ color: 'var(--cafe-medio)', fontSize: '0.85rem' }}>
+                Subtotal
+              </span>
+              <span className="font-nunito" style={{ color: 'var(--cafe-oscuro)', fontSize: '0.85rem', fontWeight: 700 }}>
+                {formatCOP(subtotal)}
+              </span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span className="font-nunito" style={{ color: 'var(--cafe-medio)', fontSize: '0.85rem' }}>
+                🛵 Domicilio
+              </span>
+              <span className="font-nunito" style={{ color: 'var(--cafe-oscuro)', fontSize: '0.85rem', fontWeight: 700 }}>
+                {formatCOP(COSTO_DOMICILIO)}
+              </span>
+            </div>
+            <div style={{
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+              borderTop: '1.5px solid var(--crema-oscuro)', paddingTop: '8px', marginTop: '2px',
+            }}>
+              <span className="font-nunito" style={{ color: 'var(--cafe-medio)', fontWeight: 800, fontSize: '0.9rem' }}>
+                Total
+              </span>
+              <span className="font-fredoka" style={{ color: 'var(--cafe-oscuro)', fontSize: '1.6rem' }}>
+                {formatCOP(total)}
+              </span>
+            </div>
           </div>
 
           <motion.button
