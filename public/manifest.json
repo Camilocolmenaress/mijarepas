@@ -1,0 +1,18 @@
+{
+  "name": "Mijarepas — Arepas Ocañeras",
+  "short_name": "Mijarepas",
+  "description": "Pide tus arepas ocañeras favoritas",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#C8334A",
+  "theme_color": "#C8334A",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
