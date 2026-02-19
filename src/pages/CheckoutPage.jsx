@@ -10,7 +10,7 @@ const COSTO_DOMICILIO = 3000
 
 export default function CheckoutPage() {
   const navigate = useNavigate()
-  const { items, clearCart, setLastOrder } = useCartStore()
+  const { items, setLastOrder } = useCartStore()
   const subtotal = items.reduce((a, i) => a + i.precio * i.qty, 0)
   const total = subtotal + COSTO_DOMICILIO
 
@@ -98,9 +98,8 @@ export default function CheckoutPage() {
       total,
     }
 
-    // Store order BEFORE clearing the cart
+    // Save order — carrito se limpia solo cuando el usuario presiona "Hacer otro pedido"
     setLastOrder(pedido)
-    clearCart()
     // replace: true so Back from /confirmacion skips /checkout
     navigate('/confirmacion', { replace: true })
   }
