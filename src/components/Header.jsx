@@ -46,7 +46,7 @@ export default function Header() {
             style={{ flexShrink: 0, cursor: 'pointer', lineHeight: 0 }}
           >
             <img
-              src="/images/logo.jpeg"
+              src="/images/logo.jpg"
               alt="Mijarepas"
               style={{
                 height: '44px',
