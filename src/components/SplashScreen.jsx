@@ -27,7 +27,8 @@ export default function SplashScreen({ onStart }) {
             src="/images/logo.jpg"
             alt="Mijarepas"
             style={{
-              width: '260px',
+              width: '320px',
+              maxWidth: '85%',
               height: 'auto',
               objectFit: 'contain',
               display: 'block',
