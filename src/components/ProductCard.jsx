@@ -83,7 +83,19 @@ export default function ProductCard({ producto }) {
           position: 'relative', overflow: 'hidden', flexShrink: 0,
         }}
       >
-        {producto.emoji}
+        {producto.img ? (
+          <img
+            src={producto.img}
+            alt={producto.nombre}
+            style={{
+              width: '100%', height: '100%',
+              objectFit: 'cover', objectPosition: 'center',
+              display: 'block',
+            }}
+          />
+        ) : (
+          producto.emoji
+        )}
       </div>
 
       {/* Contenido */}

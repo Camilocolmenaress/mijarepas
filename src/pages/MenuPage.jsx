@@ -2,7 +2,6 @@ import { useSearchParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import useCartStore from '../store/useCartStore'
 import { formatCOP } from '../utils/formatCOP'
-import BannerCarousel from '../components/BannerCarousel'
 import CategoryTabs from '../components/CategoryTabs'
 import ProductGrid from '../components/ProductGrid'
 
@@ -34,10 +33,45 @@ export default function MenuPage() {
         transition={{ duration: 0.18 }}
         style={{ paddingBottom: totalItems > 0 ? '80px' : '0' }}
       >
-        {!searchQuery && <BannerCarousel />}
+        {/* ── Cambio 2: Hero banner — solo cuando NO hay búsqueda ── */}
+        {!searchQuery && (
+          <div style={{ width: '100%', lineHeight: 0 }}>
+            <img
+              src="/images/hero-banner.jpeg"
+              alt="Mijarepas — El sabor de Ocaña"
+              style={{
+                width: '100%',
+                height: 'clamp(180px, 35vw, 260px)',
+                objectFit: 'cover',
+                objectPosition: 'center',
+                display: 'block',
+              }}
+            />
+          </div>
+        )}
+
+        {/* Tabs de categorías */}
         {!searchQuery && (
           <CategoryTabs activeCategory={activeCategory} onSelect={handleCategorySelect} />
         )}
+
+        {/* Cambio 3: Separador farallones — entre categorías y grid, solo sin búsqueda */}
+        {!searchQuery && (
+          <div style={{ width: '100%', lineHeight: 0 }}>
+            <img
+              src="/images/farallones.jpeg"
+              alt="Farallones de Ocaña"
+              style={{
+                width: '100%',
+                height: 'clamp(140px, 25vw, 200px)',
+                objectFit: 'cover',
+                objectPosition: 'center',
+                display: 'block',
+              }}
+            />
+          </div>
+        )}
+
         <ProductGrid activeCategory={activeCategory} searchQuery={searchQuery} />
       </motion.div>
 
@@ -57,14 +91,13 @@ export default function MenuPage() {
             <div style={{ maxWidth: '640px', margin: '0 auto', padding: '0 12px' }}>
               <div
                 style={{
-                  background: 'var(--cafe)',          /* #42261a */
+                  background: 'var(--cafe)',
                   borderRadius: '18px', padding: '12px 16px',
                   display: 'flex', alignItems: 'center',
                   justifyContent: 'space-between', gap: '12px',
                   boxShadow: '0 -2px 20px rgba(66,38,26,0.25), 0 8px 24px rgba(66,38,26,0.3)',
                 }}
               >
-                {/* Izquierda: cantidad + precio */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
                   <span className="font-nunito" style={{ color: 'rgba(255,241,210,0.7)', fontSize: '0.72rem', fontWeight: 700, lineHeight: 1 }}>
                     {totalItems} {totalItems === 1 ? 'producto' : 'productos'}
@@ -73,14 +106,12 @@ export default function MenuPage() {
                     {formatCOP(totalPrice)}
                   </span>
                 </div>
-
-                {/* Derecha: Ver pedido */}
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   onClick={() => navigate('/carrito')}
                   className="font-fredoka"
                   style={{
-                    background: 'var(--primario)',   /* #eb1e55 */
+                    background: 'var(--primario)',
                     color: 'white', border: 'none',
                     borderRadius: '50px', padding: '10px 22px',
                     fontSize: '1rem', cursor: 'pointer',

@@ -23,7 +23,7 @@ export const productos = [
   { id: 'ac8', cat: 'clasicas',     nombre: 'Pollo + Chorizo + Aguacate + Queso', desc: 'Combinación completa: pollo, chorizo, aguacate y queso',                                                                                          precio: 23000, emoji: '🫓🌟' },
 
   // AREPAS ESPECIALES
-  { id: 'ae1', cat: 'especiales',   nombre: 'Ocañerisima',                     desc: 'Carne, pollo, chorizo BBQ, tocineta, maduro, maíz desgranado, salchicha ranchera, queso mozarella, queso costeño y salsas (tartara y piña)',          precio: 30000, emoji: '🌟',    badge: 'Especial' },
+  { id: 'ae1', cat: 'especiales',   nombre: 'Ocañerisima',                     desc: 'Carne, pollo, chorizo BBQ, tocineta, maduro, maíz desgranado, salchicha ranchera, queso mozarella, queso costeño y salsas (tartara y piña)',          precio: 30000, emoji: '🌟',    badge: 'Especial', img: '/images/pinar-del-rio.png' },
   { id: 'ae2', cat: 'especiales',   nombre: 'Mega Especial',                   desc: 'Pollo en cuadritos, camarones, palmitos, champiñones, maíz desgranado, cebolla y pimentón salteados, queso mozarella fundido, queso costeño y salsas', precio: 33500, emoji: '👑',    badge: 'Especial' },
   { id: 'ae3', cat: 'especiales',   nombre: 'Caribeña',                        desc: 'Camarones al ajillo, pollo en cuadritos, champiñones, cebolla ocañera, salsa de la casa, queso mozarella y costeño',                                  precio: 30000, emoji: '🌊' },
   { id: 'ae4', cat: 'especiales',   nombre: 'Marinera',                        desc: 'Lomitos de atún en aceite de oliva, palmitos al ajillo, champiñones, maíz desgranado, cebolla, tomate, queso mozarella y costeño',                    precio: 30000, emoji: '🐟' },

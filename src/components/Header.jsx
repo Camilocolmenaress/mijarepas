@@ -30,28 +30,32 @@ export default function Header() {
     <header
       style={{
         position: 'sticky', top: 0, zIndex: 100,
-        background: 'var(--cafe)',        /* #42261a — café chocolate */
+        background: 'var(--cafe)',
         boxShadow: '0 2px 16px rgba(0,0,0,0.28)',
-        padding: '10px 16px 8px',
+        padding: '8px 16px',
       }}
     >
       <div style={{ maxWidth: '640px', margin: '0 auto' }}>
 
-        {/* ── Fila: logo + buscador + carrito ── */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '5px' }}>
+        {/* ── Fila única: logo imagen + buscador + carrito ── */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
 
-          {/* Logo */}
+          {/* Logo oficial — imagen */}
           <div
             onClick={() => navigate('/menu')}
-            style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: '7px', cursor: 'pointer' }}
+            style={{ flexShrink: 0, cursor: 'pointer', lineHeight: 0 }}
           >
-            <span style={{ fontSize: '1.5rem', lineHeight: 1 }}>🫓</span>
-            <span
-              className="font-fredoka"
-              style={{ fontSize: '1.2rem', color: 'var(--secundario)', lineHeight: 1 }}
-            >
-              Mijarepas
-            </span>
+            <img
+              src="/images/logo.jpg"
+              alt="Mijarepas"
+              style={{
+                height: '48px',          /* móvil */
+                width: 'auto',
+                objectFit: 'contain',
+                display: 'block',
+                borderRadius: '8px',
+              }}
+            />
           </div>
 
           {/* Buscador */}
@@ -130,18 +134,6 @@ export default function Header() {
             </AnimatePresence>
           </button>
         </div>
-
-        {/* ── Eslogan debajo ── */}
-        <p
-          className="font-nunito"
-          style={{
-            color: 'var(--crema)', fontSize: '0.67rem',
-            letterSpacing: '0.13em', textTransform: 'uppercase',
-            opacity: 0.72, textAlign: 'center', lineHeight: 1,
-          }}
-        >
-          El Sabor de Ocaña · Que Siempre Amaña
-        </p>
 
       </div>
     </header>
