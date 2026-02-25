@@ -1,8 +1,7 @@
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useEffect } from 'react'
 
 export default function PromoPopup({ onClose }) {
-  // Close on Escape key
   useEffect(() => {
     const handler = (e) => { if (e.key === 'Escape') onClose() }
     window.addEventListener('keydown', handler)
@@ -16,9 +15,8 @@ export default function PromoPopup({ onClose }) {
       exit={{ opacity: 0 }}
       style={{
         position: 'fixed', inset: 0, zIndex: 999,
-        background: 'rgba(44,26,14,0.6)',
-        backdropFilter: 'blur(6px)',
-        WebkitBackdropFilter: 'blur(6px)',
+        background: 'rgba(66,38,26,0.65)',
+        backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         padding: '24px',
       }}
@@ -34,23 +32,20 @@ export default function PromoPopup({ onClose }) {
         aria-modal="true"
         aria-label="Promoción del día"
         style={{
-          background: 'var(--blanco)',
-          borderRadius: '24px',
-          padding: '0',
-          maxWidth: '360px',
-          width: '100%',
+          background: '#ffffff',
+          borderRadius: '24px', padding: '0',
+          maxWidth: '360px', width: '100%',
           overflow: 'hidden',
-          boxShadow: '0 20px 60px rgba(44,26,14,0.35)',
+          boxShadow: '0 20px 60px rgba(66,38,26,0.35)',
           position: 'relative',
         }}
       >
-        {/* Header gradient */}
+        {/* Header — degradado fucsia */}
         <div
           style={{
-            background: 'linear-gradient(135deg, #C8334A 0%, #8B1A2E 100%)',
+            background: 'linear-gradient(135deg, var(--primario) 0%, #a01040 100%)',
             padding: '32px 24px 24px',
-            textAlign: 'center',
-            position: 'relative',
+            textAlign: 'center', position: 'relative',
           }}
         >
           <button
@@ -64,48 +59,34 @@ export default function PromoPopup({ onClose }) {
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               lineHeight: 1,
             }}
-          >
-            ✕
-          </button>
+          >✕</button>
 
           <div style={{ fontSize: '3.5rem', marginBottom: '8px' }}>🫓🔥</div>
 
+          {/* Badge dorado */}
           <div
             style={{
               display: 'inline-block',
-              background: 'var(--dorado-mijarepas)',
-              color: 'var(--cafe-oscuro)',
-              borderRadius: '50px',
-              padding: '4px 14px',
-              fontSize: '0.75rem',
-              fontWeight: 800,
-              marginBottom: '12px',
+              background: 'var(--secundario)', color: 'var(--cafe)',
+              borderRadius: '50px', padding: '4px 14px',
+              fontSize: '0.75rem', fontWeight: 800, marginBottom: '12px',
             }}
             className="font-nunito"
           >
             ¡PROMO DEL DÍA!
           </div>
 
-          <h2
-            className="font-fredoka"
-            style={{ color: 'white', fontSize: '1.6rem', lineHeight: 1.2, margin: 0 }}
-          >
+          <h2 className="font-fredoka" style={{ color: 'white', fontSize: '1.6rem', lineHeight: 1.2, margin: 0 }}>
             Arepa Ocañerisima
           </h2>
-          <p
-            className="font-fredoka"
-            style={{ color: 'var(--dorado-mijarepas)', fontSize: '1.1rem', marginTop: '4px' }}
-          >
+          <p className="font-fredoka" style={{ color: 'var(--secundario)', fontSize: '1.1rem', marginTop: '4px' }}>
             + Granizada Gratis
           </p>
         </div>
 
-        {/* Body */}
+        {/* Cuerpo */}
         <div style={{ padding: '20px 24px 24px', textAlign: 'center' }}>
-          <p
-            className="font-nunito"
-            style={{ color: 'var(--cafe-medio)', fontSize: '0.9rem', lineHeight: 1.5, marginBottom: '20px' }}
-          >
+          <p className="font-nunito" style={{ color: 'var(--cafe-medio)', fontSize: '0.9rem', lineHeight: 1.5, marginBottom: '20px' }}>
             Pide la Ocañerisima hoy y te llevamos una granizada de naranja gratis.
             ¡Solo por tiempo limitado! 🎉
           </p>
@@ -115,15 +96,10 @@ export default function PromoPopup({ onClose }) {
             onClick={onClose}
             className="font-fredoka"
             style={{
-              width: '100%',
-              background: 'var(--rojo-mijarepas)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '50px',
-              padding: '16px',
-              fontSize: '1.1rem',
-              cursor: 'pointer',
-              boxShadow: '0 4px 16px rgba(200,51,74,0.4)',
+              width: '100%', background: 'var(--primario)',
+              color: 'white', border: 'none', borderRadius: '12px',
+              padding: '16px', fontSize: '1.1rem', cursor: 'pointer',
+              boxShadow: '0 4px 16px rgba(235,30,85,0.4)',
               minHeight: '52px',
             }}
           >

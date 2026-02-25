@@ -80,7 +80,7 @@ export default function ConfirmacionPage() {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35 }}
       style={{
-        background: '#C8334A',
+        background: 'var(--primario)',
         minHeight: '100dvh',
         overflowY: 'auto',
         display: 'flex',
@@ -289,7 +289,7 @@ export default function ConfirmacionPage() {
               <span className="font-nunito" style={{ fontWeight: 800, color: 'var(--cafe-medio)', fontSize: '0.9rem' }}>
                 Total
               </span>
-              <span className="font-fredoka" style={{ fontSize: '1.55rem', color: '#C8334A' }}>
+              <span className="font-fredoka" style={{ fontSize: '1.55rem', color: 'var(--primario)' }}>
                 {formatCOP(pedido.total)}
               </span>
             </div>

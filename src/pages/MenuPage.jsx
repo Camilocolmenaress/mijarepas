@@ -32,26 +32,16 @@ export default function MenuPage() {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.18 }}
-        /* Extra bottom padding so content isn't hidden behind sticky bar */
         style={{ paddingBottom: totalItems > 0 ? '80px' : '0' }}
       >
-        {/* Banners and category tabs hidden during search */}
         {!searchQuery && <BannerCarousel />}
-
         {!searchQuery && (
-          <CategoryTabs
-            activeCategory={activeCategory}
-            onSelect={handleCategorySelect}
-          />
+          <CategoryTabs activeCategory={activeCategory} onSelect={handleCategorySelect} />
         )}
-
-        <ProductGrid
-          activeCategory={activeCategory}
-          searchQuery={searchQuery}
-        />
+        <ProductGrid activeCategory={activeCategory} searchQuery={searchQuery} />
       </motion.div>
 
-      {/* ── Sticky bottom cart bar (mobile) ── */}
+      {/* ── Barra inferior sticky (móvil) ── */}
       <AnimatePresence>
         {totalItems > 0 && (
           <motion.div
@@ -60,73 +50,42 @@ export default function MenuPage() {
             exit={{ y: 100, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 320, damping: 28 }}
             style={{
-              position: 'fixed',
-              bottom: 0, left: 0, right: 0,
-              zIndex: 200,
-              /* Only visible on mobile — hide on wide screens via inline media workaround */
+              position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 200,
               paddingBottom: 'max(12px, env(safe-area-inset-bottom))',
             }}
           >
-            <div
-              style={{
-                maxWidth: '640px',
-                margin: '0 auto',
-                padding: '0 12px 0',
-              }}
-            >
+            <div style={{ maxWidth: '640px', margin: '0 auto', padding: '0 12px' }}>
               <div
                 style={{
-                  background: 'var(--cafe-oscuro)',
-                  borderRadius: '18px',
-                  padding: '12px 16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: '12px',
-                  boxShadow: '0 -2px 20px rgba(44,26,14,0.25), 0 8px 24px rgba(44,26,14,0.3)',
+                  background: 'var(--cafe)',          /* #42261a */
+                  borderRadius: '18px', padding: '12px 16px',
+                  display: 'flex', alignItems: 'center',
+                  justifyContent: 'space-between', gap: '12px',
+                  boxShadow: '0 -2px 20px rgba(66,38,26,0.25), 0 8px 24px rgba(66,38,26,0.3)',
                 }}
               >
-                {/* Left: item count + subtotal */}
+                {/* Izquierda: cantidad + precio */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
-                  <span
-                    className="font-nunito"
-                    style={{
-                      color: 'rgba(255,245,228,0.7)',
-                      fontSize: '0.72rem',
-                      fontWeight: 700,
-                      lineHeight: 1,
-                    }}
-                  >
+                  <span className="font-nunito" style={{ color: 'rgba(255,241,210,0.7)', fontSize: '0.72rem', fontWeight: 700, lineHeight: 1 }}>
                     {totalItems} {totalItems === 1 ? 'producto' : 'productos'}
                   </span>
-                  <span
-                    className="font-fredoka"
-                    style={{
-                      color: 'var(--dorado-mijarepas)',
-                      fontSize: '1.2rem',
-                      lineHeight: 1.1,
-                    }}
-                  >
+                  <span className="font-fredoka" style={{ color: 'var(--secundario)', fontSize: '1.2rem', lineHeight: 1.1 }}>
                     {formatCOP(totalPrice)}
                   </span>
                 </div>
 
-                {/* Right: Ver pedido button */}
+                {/* Derecha: Ver pedido */}
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   onClick={() => navigate('/carrito')}
                   className="font-fredoka"
                   style={{
-                    background: 'var(--rojo-mijarepas)',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '50px',
-                    padding: '10px 22px',
-                    fontSize: '1rem',
-                    cursor: 'pointer',
-                    minHeight: '44px',
-                    flexShrink: 0,
-                    boxShadow: '0 3px 12px rgba(200,51,74,0.45)',
+                    background: 'var(--primario)',   /* #eb1e55 */
+                    color: 'white', border: 'none',
+                    borderRadius: '50px', padding: '10px 22px',
+                    fontSize: '1rem', cursor: 'pointer',
+                    minHeight: '44px', flexShrink: 0,
+                    boxShadow: '0 3px 12px rgba(235,30,85,0.45)',
                     whiteSpace: 'nowrap',
                   }}
                 >

@@ -14,9 +14,7 @@ export default function CheckoutPage() {
   const subtotal = items.reduce((a, i) => a + i.precio * i.qty, 0)
   const total = subtotal + COSTO_DOMICILIO
 
-  const [nombre, setNombre] = useState(
-    () => localStorage.getItem('mijarepas_nombre') || ''
-  )
+  const [nombre, setNombre] = useState(() => localStorage.getItem('mijarepas_nombre') || '')
   const [telefono, setTelefono] = useState('')
   const [direccion, setDireccion] = useState('')
   const [loadingGeo, setLoadingGeo] = useState(false)
@@ -26,11 +24,8 @@ export default function CheckoutPage() {
   const nombreRef = useRef(null)
   const telefonoRef = useRef(null)
 
-  // Guard: if cart is empty navigate to menu
   useEffect(() => {
-    if (items.length === 0) {
-      navigate('/menu', { replace: true })
-    }
+    if (items.length === 0) navigate('/menu', { replace: true })
   }, [items, navigate])
 
   const handleGeolocate = async () => {
@@ -56,7 +51,6 @@ export default function CheckoutPage() {
   }
 
   const handleSubmit = () => {
-    // Validate nombre
     if (!nombre.trim()) {
       setNombreError(true)
       nombreRef.current?.focus()
@@ -66,8 +60,6 @@ export default function CheckoutPage() {
       })
       return
     }
-
-    // Validate telefono
     if (!telefono.trim()) {
       setTelefonoError(true)
       telefonoRef.current?.focus()
@@ -87,22 +79,27 @@ export default function CheckoutPage() {
       mesa: '',
       direccion,
       items: items.map(i => ({
-        nombre: i.nombre,
-        qty: i.qty,
-        precio: i.precio,
-        nota: i.nota,
-        subtotal: i.precio * i.qty,
+        nombre: i.nombre, qty: i.qty, precio: i.precio,
+        nota: i.nota, subtotal: i.precio * i.qty,
       })),
       subtotal,
       costoDomicilio: COSTO_DOMICILIO,
       total,
     }
 
-    // Save order — carrito se limpia solo cuando el usuario presiona "Hacer otro pedido"
     setLastOrder(pedido)
-    // replace: true so Back from /confirmacion skips /checkout
     navigate('/confirmacion', { replace: true })
   }
+
+  /* ── Input style helper ── */
+  const inputStyle = (hasError) => ({
+    width: '100%', borderRadius: '12px',
+    border: `1.5px solid ${hasError ? 'var(--primario)' : 'var(--crema-oscuro)'}`,
+    padding: '12px 14px', fontSize: '0.9rem',
+    color: 'var(--cafe)', background: '#ffffff',
+    outline: 'none', boxSizing: 'border-box',
+    fontFamily: "'Nunito', sans-serif",
+  })
 
   return (
     <motion.div
@@ -113,10 +110,10 @@ export default function CheckoutPage() {
       style={{
         maxWidth: '640px', margin: '0 auto',
         paddingBottom: 'max(32px, env(safe-area-inset-bottom))',
-        minHeight: 'calc(100dvh - 68px)',
+        minHeight: 'calc(100dvh - 76px)',
       }}
     >
-      {/* Page header with back button */}
+      {/* Encabezado */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: '12px',
         padding: '16px 16px 8px',
@@ -131,10 +128,8 @@ export default function CheckoutPage() {
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: '1rem', color: 'var(--cafe-medio)',
           }}
-        >
-          ←
-        </button>
-        <h2 className="font-fredoka" style={{ fontSize: '1.4rem', color: 'var(--cafe-oscuro)' }}>
+        >←</button>
+        <h2 className="font-fredoka" style={{ fontSize: '1.4rem', color: 'var(--cafe)' }}>
           Datos del domicilio
         </h2>
       </div>
@@ -153,14 +148,7 @@ export default function CheckoutPage() {
             onChange={e => { setNombre(e.target.value); setNombreError(false) }}
             placeholder="¿Cómo te llamas?"
             className="font-nunito"
-            style={{
-              width: '100%', borderRadius: '12px',
-              border: `1.5px solid ${nombreError ? '#C8334A' : 'var(--crema-oscuro)'}`,
-              padding: '12px 14px', fontSize: '0.9rem',
-              color: 'var(--cafe-oscuro)', background: 'var(--blanco)',
-              outline: 'none', boxSizing: 'border-box',
-              fontFamily: "'Nunito', sans-serif",
-            }}
+            style={inputStyle(nombreError)}
           />
         </div>
 
@@ -176,18 +164,11 @@ export default function CheckoutPage() {
             onChange={e => { setTelefono(e.target.value); setTelefonoError(false) }}
             placeholder="Tu número de celular"
             className="font-nunito"
-            style={{
-              width: '100%', borderRadius: '12px',
-              border: `1.5px solid ${telefonoError ? '#C8334A' : 'var(--crema-oscuro)'}`,
-              padding: '12px 14px', fontSize: '0.9rem',
-              color: 'var(--cafe-oscuro)', background: 'var(--blanco)',
-              outline: 'none', boxSizing: 'border-box',
-              fontFamily: "'Nunito', sans-serif",
-            }}
+            style={inputStyle(telefonoError)}
           />
         </div>
 
-        {/* Dirección con geolocalización */}
+        {/* Dirección */}
         <div style={{ marginBottom: '14px' }}>
           <label className="font-nunito" style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--cafe-medio)', display: 'block', marginBottom: '5px' }}>
             Dirección de entrega
@@ -200,13 +181,9 @@ export default function CheckoutPage() {
               placeholder="Calle, barrio, ciudad..."
               className="font-nunito"
               style={{
-                width: '100%', borderRadius: '12px',
-                border: '1.5px solid var(--crema-oscuro)',
-                padding: '12px 48px 12px 14px', fontSize: '0.9rem',
-                color: 'var(--cafe-oscuro)',
-                background: loadingGeo ? 'var(--crema)' : 'var(--blanco)',
-                outline: 'none', boxSizing: 'border-box',
-                fontFamily: "'Nunito', sans-serif",
+                ...inputStyle(false),
+                padding: '12px 48px 12px 14px',
+                background: loadingGeo ? 'var(--crema)' : '#ffffff',
               }}
             />
             <button
@@ -220,85 +197,57 @@ export default function CheckoutPage() {
                 fontSize: loadingGeo ? '0.8rem' : '1.2rem',
                 cursor: loadingGeo ? 'default' : 'pointer',
                 padding: '4px',
-                color: loadingGeo ? 'var(--cafe-medio)' : 'var(--rojo-mijarepas)',
+                color: loadingGeo ? 'var(--cafe-medio)' : 'var(--primario)',
               }}
             >
               {loadingGeo ? '⏳' : '📍'}
             </button>
           </div>
-
-          {/* Geo hint — only visible while address is still empty */}
+          {/* Hint — solo cuando el campo está vacío */}
           {direccion === '' && !loadingGeo && (
-            <p
-              className="font-nunito"
-              style={{
-                fontSize: '0.72rem',
-                color: 'var(--cafe-medio)',
-                margin: '6px 2px 0',
-                lineHeight: 1.4,
-              }}
-            >
+            <p className="font-nunito" style={{ fontSize: '0.72rem', color: 'var(--cafe-medio)', margin: '6px 2px 0', lineHeight: 1.4 }}>
               📍 Toca el ícono de ubicación para detectar tu dirección automáticamente
             </p>
           )}
         </div>
 
-        {/* Total & Submit */}
-        <div style={{
-          borderTop: '1px solid var(--crema-oscuro)',
-          paddingTop: '16px', marginTop: '4px',
-        }}>
-          {/* Cost breakdown */}
+        {/* Resumen de costos */}
+        <div style={{ borderTop: '1px solid var(--crema-oscuro)', paddingTop: '16px', marginTop: '4px' }}>
           <div style={{ marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span className="font-nunito" style={{ color: 'var(--cafe-medio)', fontSize: '0.85rem' }}>
-                Subtotal
-              </span>
-              <span className="font-nunito" style={{ color: 'var(--cafe-oscuro)', fontSize: '0.85rem', fontWeight: 700 }}>
-                {formatCOP(subtotal)}
-              </span>
+              <span className="font-nunito" style={{ color: 'var(--cafe-medio)', fontSize: '0.85rem' }}>Subtotal</span>
+              <span className="font-nunito" style={{ color: 'var(--cafe)', fontSize: '0.85rem', fontWeight: 700 }}>{formatCOP(subtotal)}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span className="font-nunito" style={{ color: 'var(--cafe-medio)', fontSize: '0.85rem' }}>
-                🛵 Domicilio
-              </span>
-              <span className="font-nunito" style={{ color: 'var(--cafe-oscuro)', fontSize: '0.85rem', fontWeight: 700 }}>
-                {formatCOP(COSTO_DOMICILIO)}
-              </span>
+              <span className="font-nunito" style={{ color: 'var(--cafe-medio)', fontSize: '0.85rem' }}>🛵 Domicilio</span>
+              <span className="font-nunito" style={{ color: 'var(--cafe)', fontSize: '0.85rem', fontWeight: 700 }}>{formatCOP(COSTO_DOMICILIO)}</span>
             </div>
             <div style={{
               display: 'flex', justifyContent: 'space-between', alignItems: 'center',
               borderTop: '1.5px solid var(--crema-oscuro)', paddingTop: '8px', marginTop: '2px',
             }}>
-              <span className="font-nunito" style={{ color: 'var(--cafe-medio)', fontWeight: 800, fontSize: '0.9rem' }}>
-                Total
-              </span>
-              <span className="font-fredoka" style={{ color: 'var(--cafe-oscuro)', fontSize: '1.6rem' }}>
-                {formatCOP(total)}
-              </span>
+              <span className="font-nunito" style={{ color: 'var(--cafe-medio)', fontWeight: 800, fontSize: '0.9rem' }}>Total</span>
+              <span className="font-fredoka" style={{ color: 'var(--cafe)', fontSize: '1.6rem' }}>{formatCOP(total)}</span>
             </div>
           </div>
 
+          {/* CTA — fucsia, border-radius 12px */}
           <motion.button
             whileTap={{ scale: 0.97 }}
             onClick={handleSubmit}
             className="font-fredoka"
             style={{
-              width: '100%', background: 'var(--rojo-mijarepas)',
-              color: 'white', border: 'none', borderRadius: '50px',
-              padding: '16px', fontSize: '1.15rem',
-              cursor: 'pointer',
-              boxShadow: '0 4px 20px rgba(200,51,74,0.4)',
+              width: '100%', background: 'var(--primario)',
+              color: 'white', border: 'none', borderRadius: '12px',
+              padding: '16px', fontSize: '1.15rem', cursor: 'pointer',
+              boxShadow: '0 4px 20px rgba(235,30,85,0.4)',
               minHeight: '54px',
             }}
           >
             ¡Hacer Pedido! 🎉
           </motion.button>
 
-          <p className="font-nunito" style={{
-            textAlign: 'center', color: 'var(--cafe-medio)',
-            fontSize: '0.75rem', marginTop: '10px',
-          }}>
+          <p className="font-nunito" style={{ textAlign: 'center', color: 'var(--cafe-medio)', fontSize: '0.75rem', marginTop: '10px' }}>
             💰 Pago al recibir
           </p>
         </div>
