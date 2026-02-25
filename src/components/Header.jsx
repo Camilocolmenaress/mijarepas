@@ -46,14 +46,13 @@ export default function Header() {
             style={{ flexShrink: 0, cursor: 'pointer', lineHeight: 0 }}
           >
             <img
-              src="/images/logo.jpg"
+              src="/images/logo.jpeg"
               alt="Mijarepas"
               style={{
-                height: '48px',          /* móvil */
+                height: '44px',
                 width: 'auto',
                 objectFit: 'contain',
                 display: 'block',
-                borderRadius: '8px',
               }}
             />
           </div>
