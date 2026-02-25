@@ -24,11 +24,11 @@ export default function SplashScreen({ onStart }) {
           transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.1 }}
         >
           <img
-            src="/images/logo.jpg"
+            src="/images/logo-transparente.png"
             alt="Mijarepas"
             style={{
-              width: '320px',
-              maxWidth: '85%',
+              width: '85%',
+              maxWidth: '380px',
               height: 'auto',
               objectFit: 'contain',
               display: 'block',
