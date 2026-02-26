@@ -2,27 +2,16 @@ import { useSearchParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import useCartStore from '../store/useCartStore'
 import { formatCOP } from '../utils/formatCOP'
-import CategoryTabs from '../components/CategoryTabs'
-import ProductGrid from '../components/ProductGrid'
+import CartaMenu from '../components/CartaMenu'
 
 export default function MenuPage() {
   const navigate = useNavigate()
-  const [searchParams, setSearchParams] = useSearchParams()
-  const activeCategory = searchParams.get('cat') || 'clasicas'
+  const [searchParams] = useSearchParams()
   const searchQuery = searchParams.get('search') || ''
 
   const { items } = useCartStore()
   const totalItems = items.reduce((a, i) => a + i.qty, 0)
   const totalPrice = items.reduce((a, i) => a + i.precio * i.qty, 0)
-
-  const handleCategorySelect = (catId) => {
-    setSearchParams(prev => {
-      prev.set('cat', catId)
-      prev.delete('search')
-      return prev
-    })
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
 
   return (
     <>
@@ -33,7 +22,7 @@ export default function MenuPage() {
         transition={{ duration: 0.18 }}
         style={{ paddingBottom: totalItems > 0 ? '80px' : '0' }}
       >
-        {/* ── Cambio 2: Hero banner — solo cuando NO hay búsqueda ── */}
+        {/* Hero banner — solo cuando NO hay búsqueda */}
         {!searchQuery && (
           <div style={{ width: '100%', lineHeight: 0 }}>
             <img
@@ -50,29 +39,8 @@ export default function MenuPage() {
           </div>
         )}
 
-        {/* Tabs de categorías */}
-        {!searchQuery && (
-          <CategoryTabs activeCategory={activeCategory} onSelect={handleCategorySelect} />
-        )}
-
-        {/* Cambio 3: Separador farallones — entre categorías y grid, solo sin búsqueda */}
-        {!searchQuery && (
-          <div style={{ width: '100%', lineHeight: 0 }}>
-            <img
-              src="/images/farallones.jpeg"
-              alt="Farallones de Ocaña"
-              style={{
-                width: '100%',
-                height: 'clamp(140px, 25vw, 200px)',
-                objectFit: 'cover',
-                objectPosition: 'center',
-                display: 'block',
-              }}
-            />
-          </div>
-        )}
-
-        <ProductGrid activeCategory={activeCategory} searchQuery={searchQuery} />
+        {/* Carta tipo menú físico */}
+        <CartaMenu searchQuery={searchQuery} />
       </motion.div>
 
       {/* ── Barra inferior sticky (móvil) ── */}
@@ -99,7 +67,7 @@ export default function MenuPage() {
                 }}
               >
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
-                  <span className="font-brinnan" style={{ color: 'rgba(255,241,210,0.7)', fontSize: '0.72rem', fontWeight: 700, lineHeight: 1 }}>
+                  <span className="font-brinnan" style={{ color: 'rgba(255,241,210,0.7)', fontSize: '0.72rem', lineHeight: 1 }}>
                     {totalItems} {totalItems === 1 ? 'producto' : 'productos'}
                   </span>
                   <span className="font-chreed" style={{ color: 'var(--secundario)', fontSize: '1.2rem', lineHeight: 1.1 }}>

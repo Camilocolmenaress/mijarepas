@@ -4,19 +4,16 @@
 @font-face {
   font-family: 'Chreed';
   src: url('/fonts/Chreed-Black.otf') format('opentype');
-  font-weight: 400 900;
   font-display: swap;
 }
 @font-face {
   font-family: 'Healing';
   src: url('/fonts/Healing.otf') format('opentype');
-  font-weight: 400 900;
   font-display: swap;
 }
 @font-face {
   font-family: 'Brinnan';
-  src: url('/fonts/Brinnan_Regular.otf') format('opentype');
-  font-weight: 400 900;
+  src: url('/fonts/Brinnan Regular.otf') format('opentype');
   font-display: swap;
 }
 
