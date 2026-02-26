@@ -31,7 +31,7 @@ export default function ProductCard({ producto }) {
     toast(`${producto.emoji} ${producto.nombre} agregada`, {
       style: {
         background: 'var(--cafe)', color: 'var(--crema)',
-        fontFamily: "'Brinnan', sans-serif", fontWeight: 700,
+        fontWeight: 700,
         borderRadius: '12px', fontSize: '0.85rem',
       },
       duration: 1800,
@@ -66,7 +66,6 @@ export default function ProductCard({ producto }) {
             background: badgeStyle.bg, color: badgeStyle.text,
             borderRadius: '50px', padding: '2px 8px',
             fontSize: '0.63rem', fontWeight: 800,
-            fontFamily: "'Brinnan', sans-serif",
           }}
         >
           {producto.badge}

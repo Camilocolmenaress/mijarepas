@@ -23,24 +23,24 @@
 /* ─── Paleta oficial Mijarepas ─────────────────────────────────────── */
 :root {
   /* Primarios */
-  --primario:        #eb1e55;   /* fucsia — botones CTA, fondos principales  */
-  --primario-hover:  #c8154a;   /* fucsia oscuro — hover de botones           */
-  --secundario:      #f9ac31;   /* dorado — acentos, precios destacados       */
-  --cafe:            #42261a;   /* café chocolate — textos, navbar            */
-  --crema:           #fff1d2;   /* fondo de páginas, cards                    */
-  --verde:           #007d3e;   /* badges, etiquetas                          */
-  --azul:            #00afec;   /* categorías, chips informativos             */
+  --primario:        #eb1e55;
+  --primario-hover:  #c8154a;
+  --secundario:      #f9ac31;
+  --cafe:            #42261a;
+  --crema:           #fff1d2;
+  --verde:           #007d3e;
+  --azul:            #00afec;
 
   /* Derivados utilitarios */
-  --crema-oscuro:    #f0dca8;   /* bordes sobre crema                         */
-  --cafe-medio:      #7a4d35;   /* textos secundarios, placeholders           */
+  --crema-oscuro:    #f0dca8;
+  --cafe-medio:      #7a4d35;
   --blanco:          #ffffff;
 
   /* Sombras */
   --sombra:    0 4px 20px rgba(66,38,26,0.13);
   --sombra-lg: 0 8px 32px rgba(66,38,26,0.20);
 
-  /* Legado — conservados para no romper referencias que pudieran quedar */
+  /* Legado */
   --rojo-mijarepas:    #eb1e55;
   --dorado-mijarepas:  #f9ac31;
   --cafe-oscuro:       #42261a;
@@ -48,11 +48,14 @@
   --sombra-calida-lg:  0 8px 32px rgba(66,38,26,0.20);
 }
 
-* {
+/* ─── Reset global — Brinnan como base absoluta ─────────────────────── */
+/* Sobrescribe Tailwind Preflight y cualquier fuente del sistema          */
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   -webkit-tap-highlight-color: transparent;
+  font-family: 'Brinnan', 'Brinnan', sans-serif;
 }
 
 html {
@@ -60,7 +63,7 @@ html {
 }
 
 body {
-  font-family: 'Brinnan', sans-serif;
+  font-family: 'Brinnan', 'Brinnan', sans-serif;
   background-color: var(--crema);
   color: var(--cafe);
   min-height: 100vh;
@@ -68,6 +71,12 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Forzar herencia en inputs, botones y elementos de formulario          */
+/* (los navegadores suelen ignorar la herencia en estos elementos)       */
+input, textarea, select, button {
+  font-family: 'Brinnan', 'Brinnan', sans-serif;
 }
 
 #root {
@@ -97,16 +106,16 @@ body {
 }
 
 /* ─── Tipografía — Manual de marca Mijarepas ────────────────────────── */
-/* Chreed    → Títulos de sección, nombre restaurante, headers principales */
-/* Healing   → Subtítulos, nombres de productos, categorías               */
-/* Brinnan   → Textos informativos, descripciones, precios, botones        */
-.font-chreed  { font-family: 'Chreed', cursive; }
-.font-healing { font-family: 'Healing', cursive; }
-.font-brinnan { font-family: 'Brinnan', sans-serif; }
+/* Chreed   → Títulos, headers, nombres de sección                       */
+/* Healing  → Nombres de productos, subtítulos, etiquetas                */
+/* Brinnan  → Todo lo demás: descripciones, precios, botones, inputs     */
+.font-chreed  { font-family: 'Chreed'; }
+.font-healing { font-family: 'Healing'; }
+.font-brinnan { font-family: 'Brinnan'; }
 
-/* Alias legacy — por si quedara alguna referencia residual */
-.font-fredoka { font-family: 'Chreed', cursive; }
-.font-nunito  { font-family: 'Brinnan', sans-serif; }
+/* Alias legacy */
+.font-fredoka { font-family: 'Chreed'; }
+.font-nunito  { font-family: 'Brinnan'; }
 
 /* ─── Scrollbar ─────────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
@@ -169,6 +178,6 @@ body {
 
 /* ─── Toast personalizado ───────────────────────────────────────────── */
 .mijarepas-toast {
-  font-family: 'Brinnan', sans-serif !important;
+  font-family: 'Brinnan' !important;
   font-weight: 700 !important;
 }

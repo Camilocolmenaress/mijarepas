@@ -34,11 +34,11 @@ export default function CheckoutPage() {
       const addr = await detectarUbicacion()
       setDireccion(addr)
       toast.success('📍 Ubicación detectada', {
-        style: { fontFamily: "'Brinnan', sans-serif", fontWeight: 700, borderRadius: '12px' },
+        style: { fontWeight: 700, borderRadius: '12px' },
       })
     } catch (e) {
       toast.error(e.message || 'No se pudo detectar la ubicación. Escríbela manualmente.', {
-        style: { fontFamily: "'Brinnan', sans-serif", fontWeight: 700, borderRadius: '12px' },
+        style: { fontWeight: 700, borderRadius: '12px' },
       })
     } finally {
       setLoadingGeo(false)
@@ -56,7 +56,7 @@ export default function CheckoutPage() {
       nombreRef.current?.focus()
       shake(nombreRef)
       toast.error('¡Escribe tu nombre para continuar!', {
-        style: { fontFamily: "'Brinnan', sans-serif", fontWeight: 700, borderRadius: '12px' },
+        style: { fontWeight: 700, borderRadius: '12px' },
       })
       return
     }
@@ -65,7 +65,7 @@ export default function CheckoutPage() {
       telefonoRef.current?.focus()
       shake(telefonoRef)
       toast.error('El teléfono es obligatorio para coordinar tu domicilio', {
-        style: { fontFamily: "'Brinnan', sans-serif", fontWeight: 700, borderRadius: '12px' },
+        style: { fontWeight: 700, borderRadius: '12px' },
       })
       return
     }
@@ -99,7 +99,6 @@ export default function CheckoutPage() {
     color: 'var(--crema)',
     background: 'rgba(255,255,255,0.15)',
     outline: 'none', boxSizing: 'border-box',
-    fontFamily: "'Brinnan', sans-serif",
     /* placeholder color via CSS — se aplica globalmente en index.css */
   })
 

@@ -38,7 +38,7 @@ export default function ProductPage() {
     toast(`${producto.emoji} ${producto.nombre} — ×${qty} agregada`, {
       style: {
         background: 'var(--cafe)', color: 'var(--crema)',
-        fontFamily: "'Brinnan', sans-serif", fontWeight: 700, borderRadius: '12px',
+        fontWeight: 700, borderRadius: '12px',
       },
       duration: 2000,
     })
@@ -94,7 +94,6 @@ export default function ProductPage() {
               background: 'var(--secundario)', color: 'var(--cafe)',
               borderRadius: '50px', padding: '4px 12px',
               fontSize: '0.75rem', fontWeight: 800,
-              fontFamily: "'Brinnan', sans-serif",
             }}
           >
             {producto.badge}
@@ -135,7 +134,6 @@ export default function ProductPage() {
               color: qty <= 1 ? 'var(--crema-oscuro)' : 'var(--cafe)',
               fontSize: '1.3rem', cursor: qty <= 1 ? 'default' : 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontFamily: "'Chreed', cursive",
             }}
           >−</button>
 
@@ -157,7 +155,6 @@ export default function ProductPage() {
               border: 'none', background: 'var(--primario)',
               color: 'white', fontSize: '1.3rem', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontFamily: "'Chreed', cursive",
               boxShadow: '0 3px 10px rgba(235,30,85,0.35)',
             }}
           >+</button>
@@ -177,7 +174,6 @@ export default function ProductPage() {
             padding: '12px 14px', fontSize: '0.875rem',
             color: 'var(--cafe)', background: 'var(--crema)',
             resize: 'none', outline: 'none',
-            fontFamily: "'Brinnan', sans-serif",
             lineHeight: 1.5, marginBottom: '16px',
             boxSizing: 'border-box',
           }}

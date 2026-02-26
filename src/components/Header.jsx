@@ -123,7 +123,6 @@ export default function Header() {
                     borderRadius: '50%', width: '20px', height: '20px',
                     fontSize: '0.7rem', fontWeight: 800,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontFamily: "'Brinnan', sans-serif",
                     border: '2px solid var(--cafe)',
                   }}
                 >
