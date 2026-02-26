@@ -96,7 +96,7 @@ function SeccionArepas() {
   const chicharronas = productos.filter(p => p.cat === 'chicharronas')
   const hamburguesas = productos.filter(p => p.cat === 'hamburguesas')
   return (
-    <div style={{ background: '#fff1d2', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 160px' }}>
+    <div style={{ background: '#fff1d2', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
       <h2 className="font-chreed" style={{ color: '#f9ac31', fontSize: '52px', lineHeight: 1 }}>AREPAS</h2>
       <Placeholder bg="#e8d9b8" border="#42261a" textColor="#42261a" />
       <SubTitulo texto="Chicharrona" color="#00afec" size="32px" />
@@ -113,7 +113,7 @@ function SeccionArepas() {
 function SeccionEspeciales() {
   const especiales  = productos.filter(p => p.cat === 'especiales')
   return (
-    <div style={{ background: '#f9ac31', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 160px' }}>
+    <div style={{ background: '#f9ac31', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
       <p className="font-healing" style={{ color: '#eb1e55', fontSize: '28px', lineHeight: 1.1 }}>Vea pues las</p>
       <h2 className="font-chreed" style={{ color: '#42261a', fontSize: '52px', lineHeight: 1, marginBottom: '16px' }}>ESPECIALES</h2>
       <Placeholder bg="#e09a20" border="#42261a" textColor="#42261a" />
@@ -129,7 +129,7 @@ function SeccionQuesudita() {
   const escoge3 = productos.filter(p => ['add1','add2','add3','add4','add5','add6'].includes(p.id))
   const escoge4 = productos.filter(p => ['add7','add8','add9','add10','add11','add12'].includes(p.id))
   return (
-    <div style={{ background: '#eb1e55', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 160px' }}>
+    <div style={{ background: '#eb1e55', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
       <h2 className="font-chreed" style={{ color: '#fff1d2', fontSize: '52px', lineHeight: 1 }}>ARMA</h2>
       <p className="font-healing" style={{ color: '#f9ac31', fontSize: '36px', lineHeight: 1.1, marginBottom: '6px' }}>Tu quesudita</p>
       <p className="font-brinnan" style={{ color: '#fff1d2', fontSize: '14px', marginBottom: '12px' }}>
@@ -153,7 +153,7 @@ function SeccionQuesudita() {
 function SeccionDesgranados() {
   const desgranadas = productos.filter(p => p.cat === 'desgranadas')
   return (
-    <div style={{ background: '#42261a', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 160px' }}>
+    <div style={{ background: '#42261a', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
       <p className="font-healing" style={{ color: '#eb1e55', fontSize: '28px', lineHeight: 1.1 }}>Los</p>
       <h2 className="font-chreed" style={{ color: '#f9ac31', fontSize: '42px', lineHeight: 1.05, marginBottom: '16px' }}>DESGRANADOS MÁS AMADOS</h2>
       <Placeholder bg="#2c1a0e" border="#f9ac31" textColor="#f9ac31" />
@@ -166,7 +166,7 @@ function SeccionDesgranados() {
 function SeccionParrilla() {
   const parrilla = productos.filter(p => p.cat === 'parrilla')
   return (
-    <div style={{ background: '#eb1e55', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 160px' }}>
+    <div style={{ background: '#eb1e55', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
       <p className="font-healing" style={{ color: '#f9ac31', fontSize: '28px', lineHeight: 1.1 }}>Las</p>
       <h2 className="font-chreed" style={{ color: '#f9ac31', fontSize: '42px', lineHeight: 1.05, marginBottom: '16px' }}>PARRILLADAS MÁS ESPERADAS</h2>
       <Placeholder bg="#c8154a" border="#f9ac31" textColor="#f9ac31" />
@@ -179,7 +179,7 @@ function SeccionParrilla() {
 function SeccionClasicos() {
   const delicias = productos.filter(p => p.cat === 'delicias')
   return (
-    <div style={{ background: '#007d3e', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 160px' }}>
+    <div style={{ background: '#007d3e', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
       <h2 className="font-chreed" style={{ color: '#f9ac31', fontSize: '52px', lineHeight: 1 }}>CLÁSICOS</h2>
       <p className="font-healing" style={{ color: '#fff1d2', fontSize: '32px', lineHeight: 1.1, marginBottom: '16px' }}>Ocañeros</p>
       <Placeholder bg="#006030" border="#f9ac31" textColor="#f9ac31" />
@@ -196,7 +196,7 @@ function SeccionBebidas() {
   const calientes  = productos.filter(p => p.cat === 'calientes')
   const otras      = productos.filter(p => ['bf12','bf13','bf14','bf15'].includes(p.id))
   return (
-    <div style={{ background: '#00afec', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 160px' }}>
+    <div style={{ background: '#00afec', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
       <h2 className="font-chreed" style={{ color: '#fff1d2', fontSize: '42px', lineHeight: 1 }}>PA' QUE SE</h2>
       <h2 className="font-chreed" style={{ color: '#fff1d2', fontSize: '42px', lineHeight: 1, marginBottom: '16px' }}>REFRESQUE</h2>
       <SubTitulo texto="LIMONADAS" color="#f9ac31" size="24px" />
@@ -265,7 +265,7 @@ function FilaProductoAdicional({ producto }) {
 function SeccionAdicionales() {
   const adicionales = productos.filter(p => p.cat === 'adicionales')
   return (
-    <div style={{ background: '#fff1d2', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 160px' }}>
+    <div style={{ background: '#fff1d2', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
       <h2 className="font-healing" style={{ color: '#eb1e55', fontSize: '42px', lineHeight: 1, marginBottom: '16px' }}>Adicionales</h2>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 12px' }}>
         {adicionales.map(p => <FilaProductoAdicional key={p.id} producto={p} />)}
@@ -305,7 +305,15 @@ const DOT_COLORS = ['#eb1e55','#f9ac31','#eb1e55','#f9ac31','#f9ac31','#f9ac31',
 export default function CartaMenu({ searchQuery, heroBannerHeight = 0 }) {
   const scrollRef = useRef(null)
   const [activeIdx, setActiveIdx] = useState(0)
+  const [showSwipeHint, setShowSwipeHint] = useState(true)
+  const hintDismissed = useRef(false)
   const HEADER_H = 64 // altura del navbar
+
+  // Auto-dismiss swipe hint después de 4s
+  useEffect(() => {
+    const t = setTimeout(() => setShowSwipeHint(false), 4000)
+    return () => clearTimeout(t)
+  }, [])
 
   // Detectar sección activa al hacer scroll horizontal
   const handleScroll = () => {
@@ -313,6 +321,11 @@ export default function CartaMenu({ searchQuery, heroBannerHeight = 0 }) {
     if (!el) return
     const idx = Math.round(el.scrollLeft / el.offsetWidth)
     setActiveIdx(Math.min(idx, 7))
+    // Dismiss hint al primer scroll horizontal real
+    if (!hintDismissed.current && el.scrollLeft > 10) {
+      hintDismissed.current = true
+      setShowSwipeHint(false)
+    }
   }
 
   const goTo = (idx) => {
@@ -352,6 +365,59 @@ export default function CartaMenu({ searchQuery, heroBannerHeight = 0 }) {
         <SeccionBebidas />
         <SeccionAdicionales />
       </div>
+
+      {/* ── Swipe hint — fijo encima de los dots ── */}
+      <AnimatePresence>
+        {showSwipeHint && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 8 }}
+            transition={{ duration: 0.35 }}
+            style={{
+              position: 'fixed',
+              bottom: '118px',
+              left: 0, right: 0,
+              display: 'flex',
+              justifyContent: 'center',
+              zIndex: 160,
+              pointerEvents: 'none',
+            }}
+          >
+            <div style={{
+              background: 'rgba(66,38,26,0.75)',
+              borderRadius: '20px',
+              padding: '8px 16px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+            }}>
+              {/* Flecha animada */}
+              <motion.span
+                animate={{ x: [0, 8, 0] }}
+                transition={{ duration: 0.9, repeat: Infinity, ease: 'easeInOut' }}
+                style={{
+                  display: 'inline-block',
+                  fontSize: '1rem',
+                  lineHeight: 1,
+                  color: '#fff1d2',
+                }}
+              >
+                →
+              </motion.span>
+              <p className="font-brinnan" style={{
+                color: '#fff1d2',
+                fontSize: '13px',
+                fontWeight: 700,
+                margin: 0,
+                whiteSpace: 'nowrap',
+              }}>
+                Desliza para ver más
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ── Dots de navegación ── */}
       <div
