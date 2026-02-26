@@ -617,25 +617,59 @@ function SeccionAdicionales() {
 
 /* ─── Búsqueda ───────────────────────────────────────────────────────── */
 function BusquedaResultados({ searchQuery }) {
+  const { addItem } = useCartStore()
+  const [modalProducto, setModalProducto] = useState(null)
+
   const filtered = productos.filter(p =>
     p.nombre.toLowerCase().includes(searchQuery.toLowerCase()) ||
     (p.desc || '').toLowerCase().includes(searchQuery.toLowerCase())
   )
+
+  const handleAgregarVariante = (variante, sabor) => {
+    const producto = modalProducto
+    const nombreFinal = sabor
+      ? `${producto.nombre} de ${sabor} — ${variante.label}`
+      : `${producto.nombre} — ${variante.label}`
+    const idFinal = sabor
+      ? `${producto.id}-${sabor.toLowerCase().replace(/ /g, '-')}-${variante.label.toLowerCase().replace(/ /g, '-')}`
+      : `${producto.id}-${variante.label.toLowerCase().replace(/ /g, '-')}`
+    addItem({ ...producto, id: idFinal, nombre: nombreFinal, precio: variante.precio }, 1, '')
+    toast(`${producto.emoji} ${nombreFinal} agregada`, {
+      style: { background: '#42261a', color: '#fff1d2', borderRadius: '12px', fontSize: '0.85rem' },
+      duration: 1800,
+    })
+    setModalProducto(null)
+  }
+
   return (
-    <div style={{ background: '#fff1d2', minHeight: '70vh', padding: '16px 20px 100px' }}>
-      <p className="font-brinnan" style={{ fontSize: '0.82rem', color: '#7a4d35', marginBottom: '16px' }}>
-        {filtered.length} resultado{filtered.length !== 1 ? 's' : ''} para «{searchQuery}»
-      </p>
-      {filtered.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '48px 0' }}>
-          <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🔍</div>
-          <p className="font-chreed" style={{ color: '#42261a', fontSize: '1.3rem' }}>Sin resultados</p>
-          <p className="font-brinnan" style={{ color: '#7a4d35', fontSize: '0.85rem', marginTop: '4px' }}>Intenta con otro nombre</p>
-        </div>
-      ) : filtered.map(p => (
-        <FilaProducto key={p.id} producto={p} nombreColor="#42261a" descColor="#42261a" precioColor="#eb1e55" btnBg="#eb1e55" btnColor="#fff" sepColor="#42261a" />
-      ))}
-    </div>
+    <>
+      <div style={{ background: '#fff1d2', minHeight: '70vh', padding: '16px 20px 100px' }}>
+        <p className="font-brinnan" style={{ fontSize: '0.82rem', color: '#7a4d35', marginBottom: '16px' }}>
+          {filtered.length} resultado{filtered.length !== 1 ? 's' : ''} para «{searchQuery}»
+        </p>
+        {filtered.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '48px 0' }}>
+            <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🔍</div>
+            <p className="font-chreed" style={{ color: '#42261a', fontSize: '1.3rem' }}>Sin resultados</p>
+            <p className="font-brinnan" style={{ color: '#7a4d35', fontSize: '0.85rem', marginTop: '4px' }}>Intenta con otro nombre</p>
+          </div>
+        ) : filtered.map(p =>
+            p.variantes
+              ? <FilaProductoBebida key={p.id} producto={p} onOpenModal={setModalProducto} />
+              : <FilaProducto key={p.id} producto={p} nombreColor="#42261a" descColor="#42261a" precioColor="#eb1e55" btnBg="#eb1e55" btnColor="#fff" sepColor="#42261a" />
+          )
+        }
+      </div>
+
+      {/* Modal — fuera del flujo de lista para evitar stacking context */}
+      {modalProducto && (
+        <ModalVariante
+          producto={modalProducto}
+          onClose={() => setModalProducto(null)}
+          onAgregar={handleAgregarVariante}
+        />
+      )}
+    </>
   )
 }
 
