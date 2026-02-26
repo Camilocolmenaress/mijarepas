@@ -331,195 +331,166 @@ function SeccionClasicos() {
   )
 }
 
-/* ─── Modal selector de variante ─────────────────────────────────────── */
+/* ─── Modal selector de variante — se renderiza desde CartaMenu raíz ── */
 function ModalVariante({ producto, onClose, onAgregar }) {
-  const [varSel, setVarSel]       = useState(null)
-  const [saborSel, setSaborSel]   = useState(null)
+  const [varSel, setVarSel]     = useState(null)
+  const [saborSel, setSaborSel] = useState(null)
 
   const tieneSabores = !!(producto.sabores && producto.sabores.length > 0)
   const puedeAgregar = varSel && (!tieneSabores || saborSel)
 
-  const handleAgregar = () => {
-    if (!puedeAgregar) return
-    onAgregar(varSel, saborSel)
-  }
-
-  // Texto del botón
   const textoBoton = () => {
-    if (!tieneSabores) {
-      return varSel ? `Agregar — ${formatCOP(varSel.precio)}` : 'Selecciona un tamaño'
-    }
+    if (!tieneSabores) return varSel ? `Agregar — ${formatCOP(varSel.precio)}` : 'Selecciona un tamaño'
     if (!saborSel) return 'Selecciona un sabor'
     if (!varSel)   return 'Selecciona un tamaño'
     return `Agregar — ${formatCOP(varSel.precio)}`
   }
 
   return (
-    /* Overlay — z-index: 40 */
+    /* Overlay — z-index 500, encima de TODO incluyendo dots */
     <div
       onClick={onClose}
       style={{
-        position: 'fixed', inset: 0, zIndex: 40,
-        background: 'rgba(0,0,0,0.45)',
+        position: 'fixed', inset: 0, zIndex: 500,
+        background: 'rgba(0,0,0,0.55)',
         display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
       }}
     >
-      {/* Sheet — z-index: 50 */}
+      {/* Sheet */}
       <div
         onClick={e => e.stopPropagation()}
         style={{
-          background: '#fff', borderRadius: '20px 20px 0 0',
-          padding: '24px 20px 36px', width: '100%', maxWidth: '480px',
-          boxShadow: '0 -4px 32px rgba(0,0,0,0.18)',
-          zIndex: 50, position: 'relative',
+          background: '#fff',
+          borderRadius: '20px 20px 0 0',
+          width: '100%', maxWidth: '480px',
+          maxHeight: '85dvh',
+          display: 'flex', flexDirection: 'column',
+          boxShadow: '0 -6px 40px rgba(0,0,0,0.22)',
         }}
       >
-        {/* Manija */}
-        <div style={{ width: '40px', height: '4px', borderRadius: '2px', background: '#ddd', margin: '0 auto 20px' }} />
+        {/* ── Cabecera fija ── */}
+        <div style={{ padding: '16px 20px 0', flexShrink: 0 }}>
+          {/* Manija */}
+          <div style={{ width: '36px', height: '4px', borderRadius: '2px', background: '#ddd', margin: '0 auto 14px' }} />
+          {/* Título */}
+          <p className="font-healing" style={{ color: '#42261a', fontSize: '22px', lineHeight: 1.2, textAlign: 'center', marginBottom: '16px' }}>
+            {producto.emoji} {producto.nombre}
+          </p>
+        </div>
 
-        {/* Título */}
-        <p className="font-healing" style={{ color: '#42261a', fontSize: '22px', lineHeight: 1.2, marginBottom: '18px', textAlign: 'center' }}>
-          {producto.emoji} {producto.nombre}
-        </p>
+        {/* ── Área scrolleable ── */}
+        <div style={{ overflowY: 'auto', flex: 1, padding: '0 20px' }}>
 
-        {/* ── Sabores (solo si el producto los tiene) ── */}
-        {tieneSabores && (
-          <div style={{ marginBottom: '20px' }}>
-            <p className="font-brinnan" style={{ color: '#42261a', fontSize: '13px', fontWeight: 700, marginBottom: '10px' }}>
-              SABOR
-            </p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-              {producto.sabores.map(s => {
-                const sel = saborSel === s
+          {/* Sabores */}
+          {tieneSabores && (
+            <div style={{ marginBottom: '20px' }}>
+              <p className="font-brinnan" style={{ color: '#42261a', fontSize: '12px', letterSpacing: '0.05em', marginBottom: '10px' }}>
+                SABOR
+              </p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                {producto.sabores.map(s => {
+                  const sel = saborSel === s
+                  return (
+                    <button
+                      key={s}
+                      onClick={() => setSaborSel(s)}
+                      className="font-brinnan"
+                      style={{
+                        padding: '8px 16px', borderRadius: '20px', cursor: 'pointer',
+                        border: '2px solid #eb1e55',
+                        background: sel ? '#eb1e55' : 'transparent',
+                        color: sel ? '#fff' : '#eb1e55',
+                        fontSize: '14px',
+                        transition: 'all 0.15s ease',
+                      }}
+                    >
+                      {s}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Tamaños */}
+          <div style={{ marginBottom: '16px' }}>
+            {tieneSabores && (
+              <p className="font-brinnan" style={{ color: '#42261a', fontSize: '12px', letterSpacing: '0.05em', marginBottom: '10px' }}>
+                TAMAÑO
+              </p>
+            )}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {producto.variantes.map(v => {
+                const sel = varSel?.label === v.label
                 return (
-                  <button
-                    key={s}
-                    onClick={() => setSaborSel(s)}
-                    className="font-brinnan"
+                  <div
+                    key={v.label}
+                    onClick={() => setVarSel(v)}
                     style={{
-                      padding: '7px 14px', borderRadius: '20px', cursor: 'pointer',
-                      border: '2px solid #eb1e55',
-                      background: sel ? '#eb1e55' : 'transparent',
-                      color: sel ? '#fff' : '#eb1e55',
-                      fontSize: '14px', fontWeight: 700,
+                      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                      padding: '13px 16px', borderRadius: '12px', cursor: 'pointer',
+                      border: `2px solid ${sel ? '#eb1e55' : '#e0e0e0'}`,
+                      background: sel ? '#fff1d2' : '#fafafa',
                       transition: 'all 0.15s ease',
                     }}
                   >
-                    {s}
-                  </button>
+                    <span className="font-healing" style={{ color: '#42261a', fontSize: '18px' }}>{v.label}</span>
+                    <span className="font-chreed" style={{ color: sel ? '#eb1e55' : '#888', fontSize: '15px' }}>
+                      {formatCOP(v.precio)}
+                    </span>
+                  </div>
                 )
               })}
             </div>
           </div>
-        )}
-
-        {/* ── Tamaños ── */}
-        <div style={{ marginBottom: '20px' }}>
-          {tieneSabores && (
-            <p className="font-brinnan" style={{ color: '#42261a', fontSize: '13px', fontWeight: 700, marginBottom: '10px' }}>
-              TAMAÑO
-            </p>
-          )}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            {producto.variantes.map(v => {
-              const sel = varSel?.label === v.label
-              return (
-                <div
-                  key={v.label}
-                  onClick={() => setVarSel(v)}
-                  style={{
-                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                    padding: '14px 16px', borderRadius: '12px', cursor: 'pointer',
-                    border: `2px solid ${sel ? '#eb1e55' : '#ccc'}`,
-                    background: sel ? '#fff1d2' : '#fff',
-                    transition: 'all 0.15s ease',
-                  }}
-                >
-                  <span className="font-healing" style={{ color: '#42261a', fontSize: '18px' }}>{v.label}</span>
-                  <span className="font-chreed" style={{ color: sel ? '#eb1e55' : '#666', fontSize: '16px' }}>
-                    {formatCOP(v.precio)}
-                  </span>
-                </div>
-              )
-            })}
-          </div>
         </div>
 
-        {/* Botón Agregar */}
-        <button
-          onClick={handleAgregar}
-          disabled={!puedeAgregar}
-          className="font-brinnan"
-          style={{
-            width: '100%', padding: '15px', borderRadius: '14px', border: 'none',
-            background: puedeAgregar ? '#eb1e55' : '#ccc',
-            color: '#fff', fontSize: '1rem', fontWeight: 700,
-            cursor: puedeAgregar ? 'pointer' : 'default',
-            transition: 'background 0.2s ease',
-            marginBottom: '10px',
-          }}
-        >
-          {textoBoton()}
-        </button>
-
-        {/* Cancelar */}
-        <button
-          onClick={onClose}
-          className="font-brinnan"
-          style={{
-            width: '100%', background: 'none', border: 'none',
-            color: '#999', fontSize: '0.9rem', cursor: 'pointer', padding: '8px',
-          }}
-        >
-          Cancelar
-        </button>
+        {/* ── Footer fijo — botones ── */}
+        <div style={{ padding: '16px 20px 32px', flexShrink: 0, borderTop: '1px solid #f0f0f0' }}>
+          <button
+            onClick={() => puedeAgregar && onAgregar(varSel, saborSel)}
+            disabled={!puedeAgregar}
+            className="font-brinnan"
+            style={{
+              width: '100%', padding: '15px', borderRadius: '14px', border: 'none',
+              background: puedeAgregar ? '#eb1e55' : '#ddd',
+              color: puedeAgregar ? '#fff' : '#aaa',
+              fontSize: '1rem',
+              cursor: puedeAgregar ? 'pointer' : 'default',
+              transition: 'background 0.2s ease',
+              marginBottom: '10px',
+            }}
+          >
+            {textoBoton()}
+          </button>
+          <button
+            onClick={onClose}
+            className="font-brinnan"
+            style={{
+              width: '100%', background: 'none', border: 'none',
+              color: '#aaa', fontSize: '0.9rem', cursor: 'pointer', padding: '6px',
+            }}
+          >
+            Cancelar
+          </button>
+        </div>
       </div>
     </div>
   )
 }
 
 /* ─── Fila de bebida con variantes ──────────────────────────────────── */
-function FilaProductoBebida({ producto }) {
-  const { addItem } = useCartStore()
-  const [modalOpen, setModalOpen] = useState(false)
+/* El modal NO se monta aquí — se pasa onOpenModal al padre           */
+function FilaProductoBebida({ producto, onOpenModal }) {
   const [popped, setPopped] = useState(false)
 
   const handleAdd = (e) => {
     e.stopPropagation()
     if (producto.variantes) {
-      setModalOpen(true)
+      onOpenModal(producto)
     } else {
-      addItem(producto)
-      setPopped(true)
-      setTimeout(() => setPopped(false), 350)
-      toast(`${producto.emoji} ${producto.nombre} agregada`, {
-        style: { background: '#42261a', color: '#fff1d2', borderRadius: '12px', fontSize: '0.85rem' },
-        duration: 1800,
-      })
+      // sin variantes: agrega directo (ruta no usada actualmente)
     }
-  }
-
-  const handleAgregarVariante = (variante, sabor) => {
-    const nombreFinal = sabor
-      ? `${producto.nombre} de ${sabor} — ${variante.label}`
-      : `${producto.nombre} — ${variante.label}`
-    const idFinal = sabor
-      ? `${producto.id}-${sabor.toLowerCase().replace(/ /g, '-')}-${variante.label.toLowerCase().replace(/ /g, '-')}`
-      : `${producto.id}-${variante.label.toLowerCase().replace(/ /g, '-')}`
-    const productoVariante = {
-      ...producto,
-      id: idFinal,
-      nombre: nombreFinal,
-      precio: variante.precio,
-    }
-    addItem(productoVariante, 1, '')
-    setPopped(true)
-    setTimeout(() => setPopped(false), 350)
-    toast(`${producto.emoji} ${nombreFinal} agregada`, {
-      style: { background: '#42261a', color: '#fff1d2', borderRadius: '12px', fontSize: '0.85rem' },
-      duration: 1800,
-    })
-    setModalOpen(false)
   }
 
   return (
@@ -556,20 +527,12 @@ function FilaProductoBebida({ producto }) {
         </div>
       </div>
       <div style={{ borderBottom: '1.5px dashed #42261a', opacity: 0.3 }} />
-
-      {modalOpen && (
-        <ModalVariante
-          producto={producto}
-          onClose={() => setModalOpen(false)}
-          onAgregar={handleAgregarVariante}
-        />
-      )}
     </>
   )
 }
 
 /* ─── SECCIÓN 7 — Azul: Bebidas ─────────────────────────────────────── */
-function SeccionBebidas() {
+function SeccionBebidas({ onOpenModal }) {
   const limonadas = productos.filter(p => ['bf1','bf2','bf3','bf4','bf5'].includes(p.id))
   const jugos     = productos.filter(p => ['bf6','bf7','bf8'].includes(p.id))
   const cervezas  = productos.filter(p => ['bf9','bf10','bf11'].includes(p.id))
@@ -580,9 +543,9 @@ function SeccionBebidas() {
       <h2 className="font-chreed" style={{ color: '#fff1d2', fontSize: '42px', lineHeight: 1 }}>PA' QUE SE</h2>
       <h2 className="font-chreed" style={{ color: '#fff1d2', fontSize: '42px', lineHeight: 1, marginBottom: '16px' }}>REFRESQUE</h2>
       <SubTitulo texto="LIMONADAS" color="#f9ac31" size="24px" />
-      {limonadas.map(p => <FilaProductoBebida key={p.id} producto={p} />)}
+      {limonadas.map(p => <FilaProductoBebida key={p.id} producto={p} onOpenModal={onOpenModal} />)}
       <SubTitulo texto="JUGOS Y GRANIZADAS" color="#f9ac31" size="24px" />
-      {jugos.map(p => <FilaProductoBebida key={p.id} producto={p} />)}
+      {jugos.map(p => <FilaProductoBebida key={p.id} producto={p} onOpenModal={onOpenModal} />)}
       <SubTitulo texto="CERVEZAS" color="#f9ac31" size="24px" />
       {cervezas.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#42261a" descColor="#42261a" precioColor="#eb1e55" btnBg="#42261a" btnColor="#fff" sepColor="#42261a" />)}
       <SubTitulo texto="BEBIDAS CALIENTES" color="#f9ac31" size="24px" />
@@ -681,11 +644,15 @@ const DOT_COLORS = ['#eb1e55','#f9ac31','#eb1e55','#f9ac31','#f9ac31','#f9ac31',
 
 /* ─── Componente principal ───────────────────────────────────────────── */
 export default function CartaMenu({ searchQuery }) {
-  const scrollRef = useRef(null)
-  const [activeIdx, setActiveIdx] = useState(0)
+  const scrollRef       = useRef(null)
+  const [activeIdx, setActiveIdx]         = useState(0)
   const [showSwipeHint, setShowSwipeHint] = useState(true)
-  const hintDismissed = useRef(false)
-  const HEADER_H = 64
+  const hintDismissed   = useRef(false)
+  const HEADER_H        = 64
+
+  // ── Estado del modal levantado aquí (fuera del scroll container) ──
+  const [modalProducto, setModalProducto] = useState(null)
+  const { addItem } = useCartStore()
 
   // Auto-dismiss swipe hint después de 4s
   useEffect(() => {
@@ -709,6 +676,23 @@ export default function CartaMenu({ searchQuery }) {
     if (!el) return
     el.scrollTo({ left: idx * el.offsetWidth, behavior: 'smooth' })
     setActiveIdx(idx)
+  }
+
+  const handleAgregarVariante = (variante, sabor) => {
+    const producto = modalProducto
+    const nombreFinal = sabor
+      ? `${producto.nombre} de ${sabor} — ${variante.label}`
+      : `${producto.nombre} — ${variante.label}`
+    const idFinal = sabor
+      ? `${producto.id}-${sabor.toLowerCase().replace(/ /g, '-')}-${variante.label.toLowerCase().replace(/ /g, '-')}`
+      : `${producto.id}-${variante.label.toLowerCase().replace(/ /g, '-')}`
+    const productoVariante = { ...producto, id: idFinal, nombre: nombreFinal, precio: variante.precio }
+    addItem(productoVariante, 1, '')
+    toast(`${producto.emoji} ${nombreFinal} agregada`, {
+      style: { background: '#42261a', color: '#fff1d2', borderRadius: '12px', fontSize: '0.85rem' },
+      duration: 1800,
+    })
+    setModalProducto(null)
   }
 
   if (searchQuery && searchQuery.length > 1) {
@@ -735,41 +719,35 @@ export default function CartaMenu({ searchQuery }) {
         <SeccionDesgranados />
         <SeccionParrilla />
         <SeccionClasicos />
-        <SeccionBebidas />
+        <SeccionBebidas onOpenModal={setModalProducto} />
         <SeccionAdicionales />
       </div>
 
-      {/* ── Swipe hint — fijo encima de los dots ── */}
+      {/* ── Swipe hint ── */}
       {showSwipeHint && (
         <div
           className="anim-fadeInUp"
           style={{
             position: 'fixed', bottom: '118px', left: 0, right: 0,
             display: 'flex', justifyContent: 'center',
-            zIndex: 160, pointerEvents: 'none',
+            zIndex: 20, pointerEvents: 'none',
           }}
         >
           <div style={{
             background: 'rgba(66,38,26,0.75)', borderRadius: '20px',
             padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '8px',
           }}>
-            <span
-              className="anim-swipeArrow"
-              style={{ display: 'inline-block', fontSize: '1rem', lineHeight: 1, color: '#fff1d2' }}
-            >
+            <span className="anim-swipeArrow" style={{ display: 'inline-block', fontSize: '1rem', lineHeight: 1, color: '#fff1d2' }}>
               →
             </span>
-            <p className="font-brinnan" style={{
-              color: '#fff1d2', fontSize: '13px', fontWeight: 700,
-              margin: 0, whiteSpace: 'nowrap',
-            }}>
+            <p className="font-brinnan" style={{ color: '#fff1d2', fontSize: '13px', fontWeight: 700, margin: 0, whiteSpace: 'nowrap' }}>
               Desliza para ver más
             </p>
           </div>
         </div>
       )}
 
-      {/* ── Dots de navegación ── */}
+      {/* ── Dots de navegación — z-index 10, quedan bajo el modal (500) ── */}
       <div
         style={{
           position: 'fixed', bottom: '88px', left: 0, right: 0,
@@ -799,6 +777,15 @@ export default function CartaMenu({ searchQuery }) {
           ))}
         </div>
       </div>
+
+      {/* ── Modal de variante — renderizado AQUÍ, fuera del scroll container ── */}
+      {modalProducto && (
+        <ModalVariante
+          producto={modalProducto}
+          onClose={() => setModalProducto(null)}
+          onAgregar={handleAgregarVariante}
+        />
+      )}
     </div>
   )
 }
