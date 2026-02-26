@@ -31,7 +31,7 @@ export default function ProductCard({ producto }) {
     toast(`${producto.emoji} ${producto.nombre} agregada`, {
       style: {
         background: 'var(--cafe)', color: 'var(--crema)',
-        fontFamily: "'Nunito', sans-serif", fontWeight: 700,
+        fontFamily: "'Brinnan', sans-serif", fontWeight: 700,
         borderRadius: '12px', fontSize: '0.85rem',
       },
       duration: 1800,
@@ -66,7 +66,7 @@ export default function ProductCard({ producto }) {
             background: badgeStyle.bg, color: badgeStyle.text,
             borderRadius: '50px', padding: '2px 8px',
             fontSize: '0.63rem', fontWeight: 800,
-            fontFamily: "'Nunito', sans-serif",
+            fontFamily: "'Brinnan', sans-serif",
           }}
         >
           {producto.badge}
@@ -100,9 +100,9 @@ export default function ProductCard({ producto }) {
 
       {/* Contenido */}
       <div style={{ padding: '10px 10px 12px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-        {/* Nombre — Fredoka One, café oscuro */}
+        {/* Nombre — Healing */}
         <h3
-          className="font-fredoka"
+          className="font-chreed"
           style={{
             fontSize: '0.95rem', color: 'var(--cafe)',
             lineHeight: 1.2, marginBottom: '3px',
@@ -113,7 +113,7 @@ export default function ProductCard({ producto }) {
 
         {producto.desc && (
           <p
-            className="font-nunito line-clamp-2"
+            className="font-brinnan line-clamp-2"
             style={{ fontSize: '0.72rem', color: 'var(--cafe-medio)', lineHeight: 1.4, flex: 1, marginBottom: '8px' }}
           >
             {producto.desc}
@@ -121,9 +121,9 @@ export default function ProductCard({ producto }) {
         )}
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto' }}>
-          {/* Precio — fucsia, Nunito bold */}
+          {/* Precio — Brinnan bold */}
           <span
-            className="font-nunito"
+            className="font-brinnan"
             style={{ color: 'var(--primario)', fontSize: '1rem', fontWeight: 800 }}
           >
             {formatCOP(producto.precio)}

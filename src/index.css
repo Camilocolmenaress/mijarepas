@@ -1,6 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;500;600;700;800&display=swap');
-
 @import "tailwindcss";
+
+/* ─── Fuentes oficiales Mijarepas ───────────────────────────────────── */
+@font-face {
+  font-family: 'Chreed';
+  src: url('/fonts/Chreed-Black.otf') format('opentype');
+  font-weight: 400 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Healing';
+  src: url('/fonts/Healing.otf') format('opentype');
+  font-weight: 400 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Brinnan';
+  src: url('/fonts/Brinnan_Regular.otf') format('opentype');
+  font-weight: 400 900;
+  font-display: swap;
+}
 
 /* ─── Paleta oficial Mijarepas ─────────────────────────────────────── */
 :root {
@@ -42,7 +60,7 @@ html {
 }
 
 body {
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Brinnan', sans-serif;
   background-color: var(--crema);
   color: var(--cafe);
   min-height: 100vh;
@@ -78,9 +96,17 @@ body {
   z-index: 2;
 }
 
-/* ─── Tipografía ────────────────────────────────────────────────────── */
-.font-fredoka  { font-family: 'Fredoka One', cursive; }
-.font-nunito   { font-family: 'Nunito', sans-serif; }
+/* ─── Tipografía — Manual de marca Mijarepas ────────────────────────── */
+/* Chreed    → Títulos de sección, nombre restaurante, headers principales */
+/* Healing   → Subtítulos, nombres de productos, categorías               */
+/* Brinnan   → Textos informativos, descripciones, precios, botones        */
+.font-chreed  { font-family: 'Chreed', cursive; }
+.font-healing { font-family: 'Healing', cursive; }
+.font-brinnan { font-family: 'Brinnan', sans-serif; }
+
+/* Alias legacy — por si quedara alguna referencia residual */
+.font-fredoka { font-family: 'Chreed', cursive; }
+.font-nunito  { font-family: 'Brinnan', sans-serif; }
 
 /* ─── Scrollbar ─────────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
@@ -143,6 +169,6 @@ body {
 
 /* ─── Toast personalizado ───────────────────────────────────────────── */
 .mijarepas-toast {
-  font-family: 'Nunito', sans-serif !important;
+  font-family: 'Brinnan', sans-serif !important;
   font-weight: 700 !important;
 }

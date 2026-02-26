@@ -71,22 +71,22 @@ export default function PromoPopup({ onClose }) {
               borderRadius: '50px', padding: '4px 14px',
               fontSize: '0.75rem', fontWeight: 800, marginBottom: '12px',
             }}
-            className="font-nunito"
+            className="font-brinnan"
           >
             ¡PROMO DEL DÍA!
           </div>
 
-          <h2 className="font-fredoka" style={{ color: 'white', fontSize: '1.6rem', lineHeight: 1.2, margin: 0 }}>
+          <h2 className="font-chreed" style={{ color: 'white', fontSize: '1.6rem', lineHeight: 1.2, margin: 0 }}>
             Arepa Ocañerisima
           </h2>
-          <p className="font-fredoka" style={{ color: 'var(--secundario)', fontSize: '1.1rem', marginTop: '4px' }}>
+          <p className="font-chreed" style={{ color: 'var(--secundario)', fontSize: '1.1rem', marginTop: '4px' }}>
             + Granizada Gratis
           </p>
         </div>
 
         {/* Cuerpo */}
         <div style={{ padding: '20px 24px 24px', textAlign: 'center' }}>
-          <p className="font-nunito" style={{ color: 'var(--cafe-medio)', fontSize: '0.9rem', lineHeight: 1.5, marginBottom: '20px' }}>
+          <p className="font-brinnan" style={{ color: 'var(--cafe-medio)', fontSize: '0.9rem', lineHeight: 1.5, marginBottom: '20px' }}>
             Pide la Ocañerisima hoy y te llevamos una granizada de naranja gratis.
             ¡Solo por tiempo limitado! 🎉
           </p>
@@ -94,7 +94,7 @@ export default function PromoPopup({ onClose }) {
           <motion.button
             whileTap={{ scale: 0.96 }}
             onClick={onClose}
-            className="font-fredoka"
+            className="font-chreed"
             style={{
               width: '100%', background: 'var(--primario)',
               color: 'white', border: 'none', borderRadius: '12px',
@@ -108,7 +108,7 @@ export default function PromoPopup({ onClose }) {
 
           <button
             onClick={onClose}
-            className="font-nunito"
+            className="font-brinnan"
             style={{
               background: 'none', border: 'none',
               color: 'var(--cafe-medio)', fontSize: '0.85rem',

@@ -34,11 +34,11 @@ export default function CheckoutPage() {
       const addr = await detectarUbicacion()
       setDireccion(addr)
       toast.success('📍 Ubicación detectada', {
-        style: { fontFamily: "'Nunito', sans-serif", fontWeight: 700, borderRadius: '12px' },
+        style: { fontFamily: "'Brinnan', sans-serif", fontWeight: 700, borderRadius: '12px' },
       })
     } catch (e) {
       toast.error(e.message || 'No se pudo detectar la ubicación. Escríbela manualmente.', {
-        style: { fontFamily: "'Nunito', sans-serif", fontWeight: 700, borderRadius: '12px' },
+        style: { fontFamily: "'Brinnan', sans-serif", fontWeight: 700, borderRadius: '12px' },
       })
     } finally {
       setLoadingGeo(false)
@@ -56,7 +56,7 @@ export default function CheckoutPage() {
       nombreRef.current?.focus()
       shake(nombreRef)
       toast.error('¡Escribe tu nombre para continuar!', {
-        style: { fontFamily: "'Nunito', sans-serif", fontWeight: 700, borderRadius: '12px' },
+        style: { fontFamily: "'Brinnan', sans-serif", fontWeight: 700, borderRadius: '12px' },
       })
       return
     }
@@ -65,7 +65,7 @@ export default function CheckoutPage() {
       telefonoRef.current?.focus()
       shake(telefonoRef)
       toast.error('El teléfono es obligatorio para coordinar tu domicilio', {
-        style: { fontFamily: "'Nunito', sans-serif", fontWeight: 700, borderRadius: '12px' },
+        style: { fontFamily: "'Brinnan', sans-serif", fontWeight: 700, borderRadius: '12px' },
       })
       return
     }
@@ -99,7 +99,7 @@ export default function CheckoutPage() {
     color: 'var(--crema)',
     background: 'rgba(255,255,255,0.15)',
     outline: 'none', boxSizing: 'border-box',
-    fontFamily: "'Nunito', sans-serif",
+    fontFamily: "'Brinnan', sans-serif",
     /* placeholder color via CSS — se aplica globalmente en index.css */
   })
 
@@ -152,7 +152,7 @@ export default function CheckoutPage() {
               fontSize: '1rem', color: 'var(--crema)',
             }}
           >←</button>
-          <h2 className="font-fredoka" style={{ fontSize: '1.4rem', color: '#ffffff' }}>
+          <h2 className="font-chreed" style={{ fontSize: '1.4rem', color: '#ffffff' }}>
             Datos del domicilio
           </h2>
         </div>
@@ -161,7 +161,7 @@ export default function CheckoutPage() {
 
           {/* Nombre */}
           <div style={{ marginBottom: '14px' }}>
-            <label className="font-nunito" style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--crema)', display: 'block', marginBottom: '5px', opacity: 0.9 }}>
+            <label className="font-brinnan" style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--crema)', display: 'block', marginBottom: '5px', opacity: 0.9 }}>
               Nombre *
             </label>
             <input
@@ -170,14 +170,14 @@ export default function CheckoutPage() {
               value={nombre}
               onChange={e => { setNombre(e.target.value); setNombreError(false) }}
               placeholder="¿Cómo te llamas?"
-              className="font-nunito checkout-input"
+              className="font-brinnan checkout-input"
               style={inputStyle(nombreError)}
             />
           </div>
 
           {/* Teléfono */}
           <div style={{ marginBottom: '14px' }}>
-            <label className="font-nunito" style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--crema)', display: 'block', marginBottom: '5px', opacity: 0.9 }}>
+            <label className="font-brinnan" style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--crema)', display: 'block', marginBottom: '5px', opacity: 0.9 }}>
               Teléfono *
             </label>
             <input
@@ -186,14 +186,14 @@ export default function CheckoutPage() {
               value={telefono}
               onChange={e => { setTelefono(e.target.value); setTelefonoError(false) }}
               placeholder="Tu número de celular"
-              className="font-nunito checkout-input"
+              className="font-brinnan checkout-input"
               style={inputStyle(telefonoError)}
             />
           </div>
 
           {/* Dirección */}
           <div style={{ marginBottom: '14px' }}>
-            <label className="font-nunito" style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--crema)', display: 'block', marginBottom: '5px', opacity: 0.9 }}>
+            <label className="font-brinnan" style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--crema)', display: 'block', marginBottom: '5px', opacity: 0.9 }}>
               Dirección de entrega
             </label>
             <div style={{ position: 'relative' }}>
@@ -202,7 +202,7 @@ export default function CheckoutPage() {
                 value={loadingGeo ? '' : direccion}
                 onChange={e => setDireccion(e.target.value)}
                 placeholder="Calle, barrio, ciudad..."
-                className="font-nunito checkout-input"
+                className="font-brinnan checkout-input"
                 style={{
                   ...inputStyle(false),
                   padding: '12px 48px 12px 14px',
@@ -226,7 +226,7 @@ export default function CheckoutPage() {
               </button>
             </div>
             {direccion === '' && !loadingGeo && (
-              <p className="font-nunito" style={{ fontSize: '0.72rem', color: 'rgba(255,241,210,0.7)', margin: '6px 2px 0', lineHeight: 1.4 }}>
+              <p className="font-brinnan" style={{ fontSize: '0.72rem', color: 'rgba(255,241,210,0.7)', margin: '6px 2px 0', lineHeight: 1.4 }}>
                 📍 Toca el ícono de ubicación para detectar tu dirección automáticamente
               </p>
             )}
@@ -239,19 +239,19 @@ export default function CheckoutPage() {
           }}>
             <div style={{ marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span className="font-nunito" style={{ color: 'rgba(255,241,210,0.75)', fontSize: '0.85rem' }}>Subtotal</span>
-                <span className="font-nunito" style={{ color: 'var(--crema)', fontSize: '0.85rem', fontWeight: 700 }}>{formatCOP(subtotal)}</span>
+                <span className="font-brinnan" style={{ color: 'rgba(255,241,210,0.75)', fontSize: '0.85rem' }}>Subtotal</span>
+                <span className="font-brinnan" style={{ color: 'var(--crema)', fontSize: '0.85rem', fontWeight: 700 }}>{formatCOP(subtotal)}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span className="font-nunito" style={{ color: 'rgba(255,241,210,0.75)', fontSize: '0.85rem' }}>🛵 Domicilio</span>
-                <span className="font-nunito" style={{ color: 'var(--crema)', fontSize: '0.85rem', fontWeight: 700 }}>{formatCOP(COSTO_DOMICILIO)}</span>
+                <span className="font-brinnan" style={{ color: 'rgba(255,241,210,0.75)', fontSize: '0.85rem' }}>🛵 Domicilio</span>
+                <span className="font-brinnan" style={{ color: 'var(--crema)', fontSize: '0.85rem', fontWeight: 700 }}>{formatCOP(COSTO_DOMICILIO)}</span>
               </div>
               <div style={{
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                 borderTop: '1.5px solid rgba(255,255,255,0.2)', paddingTop: '8px', marginTop: '2px',
               }}>
-                <span className="font-nunito" style={{ color: 'rgba(255,241,210,0.9)', fontWeight: 800, fontSize: '0.9rem' }}>Total</span>
-                <span className="font-fredoka" style={{ color: 'var(--secundario)', fontSize: '1.7rem' }}>{formatCOP(total)}</span>
+                <span className="font-brinnan" style={{ color: 'rgba(255,241,210,0.9)', fontWeight: 800, fontSize: '0.9rem' }}>Total</span>
+                <span className="font-chreed" style={{ color: 'var(--secundario)', fontSize: '1.7rem' }}>{formatCOP(total)}</span>
               </div>
             </div>
 
@@ -259,7 +259,7 @@ export default function CheckoutPage() {
             <motion.button
               whileTap={{ scale: 0.97 }}
               onClick={handleSubmit}
-              className="font-fredoka"
+              className="font-chreed"
               style={{
                 width: '100%', background: 'var(--primario)',
                 color: 'white', border: 'none', borderRadius: '12px',
@@ -271,7 +271,7 @@ export default function CheckoutPage() {
               ¡Hacer Pedido! 🎉
             </motion.button>
 
-            <p className="font-nunito" style={{ textAlign: 'center', color: 'rgba(255,241,210,0.65)', fontSize: '0.75rem', marginTop: '10px' }}>
+            <p className="font-brinnan" style={{ textAlign: 'center', color: 'rgba(255,241,210,0.65)', fontSize: '0.75rem', marginTop: '10px' }}>
               💰 Pago al recibir
             </p>
           </div>

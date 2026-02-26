@@ -74,7 +74,7 @@ export default function Header() {
               placeholder="Buscar platillo..."
               value={searchQuery}
               onChange={e => handleSearch(e.target.value)}
-              className="font-nunito"
+              className="font-brinnan"
               style={{
                 border: 'none', background: 'transparent', outline: 'none',
                 width: '100%', fontSize: '0.875rem', color: 'var(--crema)', fontWeight: 600,
@@ -123,7 +123,7 @@ export default function Header() {
                     borderRadius: '50%', width: '20px', height: '20px',
                     fontSize: '0.7rem', fontWeight: 800,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontFamily: "'Nunito', sans-serif",
+                    fontFamily: "'Brinnan', sans-serif",
                     border: '2px solid var(--cafe)',
                   }}
                 >

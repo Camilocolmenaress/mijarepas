@@ -38,7 +38,7 @@ export default function ProductPage() {
     toast(`${producto.emoji} ${producto.nombre} — ×${qty} agregada`, {
       style: {
         background: 'var(--cafe)', color: 'var(--crema)',
-        fontFamily: "'Nunito', sans-serif", fontWeight: 700, borderRadius: '12px',
+        fontFamily: "'Brinnan', sans-serif", fontWeight: 700, borderRadius: '12px',
       },
       duration: 2000,
     })
@@ -94,7 +94,7 @@ export default function ProductPage() {
               background: 'var(--secundario)', color: 'var(--cafe)',
               borderRadius: '50px', padding: '4px 12px',
               fontSize: '0.75rem', fontWeight: 800,
-              fontFamily: "'Nunito', sans-serif",
+              fontFamily: "'Brinnan', sans-serif",
             }}
           >
             {producto.badge}
@@ -104,22 +104,22 @@ export default function ProductPage() {
 
       {/* Contenido */}
       <div style={{ padding: '20px 20px 0', maxWidth: '640px', margin: '0 auto' }}>
-        {/* Nombre — Fredoka One, café */}
+        {/* Nombre — Healing */}
         <h2
-          className="font-fredoka"
+          className="font-chreed"
           style={{ fontSize: '1.6rem', color: 'var(--cafe)', marginBottom: '6px', lineHeight: 1.1 }}
         >
           {producto.nombre}
         </h2>
 
         {producto.desc && (
-          <p className="font-nunito" style={{ color: 'var(--cafe-medio)', fontSize: '0.9rem', lineHeight: 1.55, marginBottom: '12px' }}>
+          <p className="font-brinnan" style={{ color: 'var(--cafe-medio)', fontSize: '0.9rem', lineHeight: 1.55, marginBottom: '12px' }}>
             {producto.desc}
           </p>
         )}
 
-        {/* Precio — fucsia, Nunito bold */}
-        <p className="font-nunito" style={{ color: 'var(--primario)', fontSize: '1.75rem', fontWeight: 800, marginBottom: '20px' }}>
+        {/* Precio — Brinnan bold */}
+        <p className="font-brinnan" style={{ color: 'var(--primario)', fontSize: '1.75rem', fontWeight: 800, marginBottom: '20px' }}>
           {formatCOP(producto.precio)}
         </p>
 
@@ -135,7 +135,7 @@ export default function ProductPage() {
               color: qty <= 1 ? 'var(--crema-oscuro)' : 'var(--cafe)',
               fontSize: '1.3rem', cursor: qty <= 1 ? 'default' : 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontFamily: "'Fredoka One', cursive",
+              fontFamily: "'Chreed', cursive",
             }}
           >−</button>
 
@@ -143,7 +143,7 @@ export default function ProductPage() {
             key={qty}
             initial={{ scale: 1.3 }} animate={{ scale: 1 }}
             transition={{ type: 'spring', stiffness: 350, damping: 14 }}
-            className="font-fredoka"
+            className="font-chreed"
             style={{ fontSize: '1.5rem', color: 'var(--cafe)', minWidth: '32px', textAlign: 'center' }}
           >
             {qty}
@@ -157,7 +157,7 @@ export default function ProductPage() {
               border: 'none', background: 'var(--primario)',
               color: 'white', fontSize: '1.3rem', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontFamily: "'Fredoka One', cursive",
+              fontFamily: "'Chreed', cursive",
               boxShadow: '0 3px 10px rgba(235,30,85,0.35)',
             }}
           >+</button>
@@ -170,14 +170,14 @@ export default function ProductPage() {
           placeholder="¿Alguna nota? (sin ají, extra queso...)"
           maxLength={150}
           rows={2}
-          className="font-nunito"
+          className="font-brinnan"
           style={{
             width: '100%', borderRadius: '12px',
             border: '1.5px solid var(--crema-oscuro)',
             padding: '12px 14px', fontSize: '0.875rem',
             color: 'var(--cafe)', background: 'var(--crema)',
             resize: 'none', outline: 'none',
-            fontFamily: "'Nunito', sans-serif",
+            fontFamily: "'Brinnan', sans-serif",
             lineHeight: 1.5, marginBottom: '16px',
             boxSizing: 'border-box',
           }}
@@ -187,7 +187,7 @@ export default function ProductPage() {
         <motion.button
           whileTap={{ scale: 0.97 }}
           onClick={handleAdd}
-          className="font-fredoka"
+          className="font-chreed"
           style={{
             width: '100%',
             background: added ? 'var(--verde)' : 'var(--primario)',

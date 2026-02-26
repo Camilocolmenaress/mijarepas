@@ -73,10 +73,10 @@ export default function SuccessScreen({ pedido, onReset }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
         >
-          <h1 className="font-fredoka" style={{ color: 'white', fontSize: '2.2rem', marginBottom: '6px' }}>
+          <h1 className="font-chreed" style={{ color: 'white', fontSize: '2.2rem', marginBottom: '6px' }}>
             ¡Gracias por tu pedido! 🎉
           </h1>
-          <p className="font-nunito" style={{ color: 'rgba(255,245,228,0.9)', fontSize: '0.95rem', lineHeight: 1.5 }}>
+          <p className="font-brinnan" style={{ color: 'rgba(255,245,228,0.9)', fontSize: '0.95rem', lineHeight: 1.5 }}>
             Recibimos tu pedido con éxito, <strong>{pedido.nombre}</strong>.
             {pedido.telefono && (
               <>
@@ -104,13 +104,13 @@ export default function SuccessScreen({ pedido, onReset }) {
             background: 'var(--crema)', borderRadius: '50px',
             padding: '6px 14px', marginBottom: '16px',
           }}>
-            <span className="font-nunito" style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--cafe-medio)' }}>
+            <span className="font-brinnan" style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--cafe-medio)' }}>
               🛵 Domicilio
             </span>
           </div>
 
           {pedido.direccion && (
-            <p className="font-nunito" style={{ fontSize: '0.8rem', color: 'var(--cafe-medio)', marginBottom: '12px', textAlign: 'left' }}>
+            <p className="font-brinnan" style={{ fontSize: '0.8rem', color: 'var(--cafe-medio)', marginBottom: '12px', textAlign: 'left' }}>
               📍 {pedido.direccion}
             </p>
           )}
@@ -127,16 +127,16 @@ export default function SuccessScreen({ pedido, onReset }) {
                 }}
               >
                 <div style={{ textAlign: 'left', flex: 1 }}>
-                  <span className="font-nunito" style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--cafe-oscuro)' }}>
+                  <span className="font-brinnan" style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--cafe-oscuro)' }}>
                     ×{item.qty} {item.nombre}
                   </span>
                   {item.nota && (
-                    <span className="font-nunito" style={{ fontSize: '0.72rem', color: 'var(--cafe-medio)', display: 'block', fontStyle: 'italic' }}>
+                    <span className="font-brinnan" style={{ fontSize: '0.72rem', color: 'var(--cafe-medio)', display: 'block', fontStyle: 'italic' }}>
                       {item.nota}
                     </span>
                   )}
                 </div>
-                <span className="font-fredoka" style={{ color: 'var(--cafe-oscuro)', fontSize: '0.9rem', flexShrink: 0 }}>
+                <span className="font-chreed" style={{ color: 'var(--cafe-oscuro)', fontSize: '0.9rem', flexShrink: 0 }}>
                   {formatCOP(item.subtotal)}
                 </span>
               </div>
@@ -147,16 +147,16 @@ export default function SuccessScreen({ pedido, onReset }) {
           <div style={{ borderTop: '1px solid var(--crema-oscuro)', marginTop: '8px', paddingTop: '10px' }}>
             {/* Subtotal row */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-              <span className="font-nunito" style={{ fontSize: '0.8rem', color: 'var(--cafe-medio)' }}>Subtotal</span>
-              <span className="font-nunito" style={{ fontSize: '0.8rem', color: 'var(--cafe-oscuro)', fontWeight: 700 }}>
+              <span className="font-brinnan" style={{ fontSize: '0.8rem', color: 'var(--cafe-medio)' }}>Subtotal</span>
+              <span className="font-brinnan" style={{ fontSize: '0.8rem', color: 'var(--cafe-oscuro)', fontWeight: 700 }}>
                 {formatCOP(pedido.subtotal ?? pedido.total)}
               </span>
             </div>
             {/* Domicilio row */}
             {pedido.costoDomicilio != null && (
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                <span className="font-nunito" style={{ fontSize: '0.8rem', color: 'var(--cafe-medio)' }}>🛵 Domicilio</span>
-                <span className="font-nunito" style={{ fontSize: '0.8rem', color: 'var(--cafe-oscuro)', fontWeight: 700 }}>
+                <span className="font-brinnan" style={{ fontSize: '0.8rem', color: 'var(--cafe-medio)' }}>🛵 Domicilio</span>
+                <span className="font-brinnan" style={{ fontSize: '0.8rem', color: 'var(--cafe-oscuro)', fontWeight: 700 }}>
                   {formatCOP(pedido.costoDomicilio)}
                 </span>
               </div>
@@ -167,8 +167,8 @@ export default function SuccessScreen({ pedido, onReset }) {
               marginTop: '6px', paddingTop: '10px',
               display: 'flex', justifyContent: 'space-between', alignItems: 'center',
             }}>
-              <span className="font-nunito" style={{ fontWeight: 800, color: 'var(--cafe-medio)' }}>Total</span>
-              <span className="font-fredoka" style={{ fontSize: '1.5rem', color: 'var(--rojo-mijarepas)' }}>
+              <span className="font-brinnan" style={{ fontWeight: 800, color: 'var(--cafe-medio)' }}>Total</span>
+              <span className="font-chreed" style={{ fontSize: '1.5rem', color: 'var(--rojo-mijarepas)' }}>
                 {formatCOP(pedido.total)}
               </span>
             </div>
@@ -181,7 +181,7 @@ export default function SuccessScreen({ pedido, onReset }) {
             display: 'flex', alignItems: 'center', gap: '8px',
           }}>
             <span>💰</span>
-            <span className="font-nunito" style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--cafe-medio)' }}>
+            <span className="font-brinnan" style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--cafe-medio)' }}>
               Pago al recibir
             </span>
           </div>
@@ -203,7 +203,7 @@ export default function SuccessScreen({ pedido, onReset }) {
           }}
         >
           <p
-            className="font-nunito"
+            className="font-brinnan"
             style={{
               color: 'var(--cafe-oscuro)',
               fontSize: '0.9rem',
@@ -225,7 +225,7 @@ export default function SuccessScreen({ pedido, onReset }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.75 }}
           whileTap={{ scale: 0.96 }}
-          className="font-fredoka"
+          className="font-chreed"
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -265,7 +265,7 @@ export default function SuccessScreen({ pedido, onReset }) {
           transition={{ delay: 0.85 }}
           whileTap={{ scale: 0.96 }}
           onClick={onReset}
-          className="font-fredoka"
+          className="font-chreed"
           style={{
             background: 'rgba(255,255,255,0.2)',
             color: 'white', border: '2px solid rgba(255,255,255,0.5)',

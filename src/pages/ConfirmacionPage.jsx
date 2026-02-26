@@ -121,13 +121,13 @@ export default function ConfirmacionPage() {
           {/* Título + subtítulo */}
           <motion.div {...spring(0.28)} style={{ width: '100%' }}>
             <h1
-              className="font-fredoka"
+              className="font-chreed"
               style={{ color: '#ffffff', fontSize: 'clamp(1.8rem, 7vw, 2.4rem)', lineHeight: 1.15, margin: '0 0 10px' }}
             >
               ¡Gracias por tu pedido! 🎉
             </h1>
             <p
-              className="font-nunito"
+              className="font-brinnan"
               style={{ color: 'rgba(255,241,210,0.93)', fontSize: '0.95rem', lineHeight: 1.55, margin: 0 }}
             >
               Recibimos tu pedido con éxito,{' '}
@@ -156,7 +156,7 @@ export default function ConfirmacionPage() {
             {/* Badge domicilio */}
             <div style={{ marginBottom: '14px' }}>
               <span
-                className="font-nunito"
+                className="font-brinnan"
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: '5px',
                   background: 'var(--crema)', borderRadius: '50px',
@@ -169,7 +169,7 @@ export default function ConfirmacionPage() {
             </div>
 
             {pedido.direccion && (
-              <p className="font-nunito" style={{ fontSize: '0.8rem', color: 'var(--cafe-medio)', marginBottom: '12px' }}>
+              <p className="font-brinnan" style={{ fontSize: '0.8rem', color: 'var(--cafe-medio)', marginBottom: '12px' }}>
                 📍 {pedido.direccion}
               </p>
             )}
@@ -179,16 +179,16 @@ export default function ConfirmacionPage() {
               {pedido.items.map((item, idx) => (
                 <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '10px', marginBottom: '9px' }}>
                   <div style={{ flex: 1 }}>
-                    <span className="font-nunito" style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--cafe)' }}>
+                    <span className="font-brinnan" style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--cafe)' }}>
                       ×{item.qty} {item.nombre}
                     </span>
                     {item.nota && (
-                      <span className="font-nunito" style={{ display: 'block', fontSize: '0.72rem', fontStyle: 'italic', color: 'var(--cafe-medio)', marginTop: '1px' }}>
+                      <span className="font-brinnan" style={{ display: 'block', fontSize: '0.72rem', fontStyle: 'italic', color: 'var(--cafe-medio)', marginTop: '1px' }}>
                         {item.nota}
                       </span>
                     )}
                   </div>
-                  <span className="font-fredoka" style={{ fontSize: '0.88rem', color: 'var(--cafe)', flexShrink: 0 }}>
+                  <span className="font-chreed" style={{ fontSize: '0.88rem', color: 'var(--cafe)', flexShrink: 0 }}>
                     {formatCOP(item.subtotal)}
                   </span>
                 </div>
@@ -198,26 +198,26 @@ export default function ConfirmacionPage() {
             {/* Subtotal / Domicilio / Total */}
             <div style={{ borderTop: '1.5px solid var(--crema-oscuro)', paddingTop: '10px', display: 'flex', flexDirection: 'column', gap: '7px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span className="font-nunito" style={{ fontSize: '0.82rem', color: 'var(--cafe-medio)' }}>Subtotal</span>
-                <span className="font-nunito" style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--cafe)' }}>{formatCOP(pedido.subtotal)}</span>
+                <span className="font-brinnan" style={{ fontSize: '0.82rem', color: 'var(--cafe-medio)' }}>Subtotal</span>
+                <span className="font-brinnan" style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--cafe)' }}>{formatCOP(pedido.subtotal)}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span className="font-nunito" style={{ fontSize: '0.82rem', color: 'var(--cafe-medio)' }}>🛵 Domicilio</span>
-                <span className="font-nunito" style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--cafe)' }}>{formatCOP(pedido.costoDomicilio)}</span>
+                <span className="font-brinnan" style={{ fontSize: '0.82rem', color: 'var(--cafe-medio)' }}>🛵 Domicilio</span>
+                <span className="font-brinnan" style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--cafe)' }}>{formatCOP(pedido.costoDomicilio)}</span>
               </div>
               <div style={{
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                 borderTop: '2px solid var(--crema-oscuro)', paddingTop: '9px', marginTop: '2px',
               }}>
-                <span className="font-nunito" style={{ fontWeight: 800, color: 'var(--cafe-medio)', fontSize: '0.9rem' }}>Total</span>
-                <span className="font-fredoka" style={{ fontSize: '1.55rem', color: 'var(--primario)' }}>{formatCOP(pedido.total)}</span>
+                <span className="font-brinnan" style={{ fontWeight: 800, color: 'var(--cafe-medio)', fontSize: '0.9rem' }}>Total</span>
+                <span className="font-chreed" style={{ fontSize: '1.55rem', color: 'var(--primario)' }}>{formatCOP(pedido.total)}</span>
               </div>
             </div>
 
             {/* Pago al recibir */}
             <div style={{ background: 'var(--crema)', borderRadius: '10px', padding: '9px 13px', marginTop: '12px', display: 'flex', alignItems: 'center', gap: '7px' }}>
               <span>💰</span>
-              <span className="font-nunito" style={{ fontSize: '0.83rem', fontWeight: 700, color: 'var(--cafe-medio)' }}>Pago al recibir</span>
+              <span className="font-brinnan" style={{ fontSize: '0.83rem', fontWeight: 700, color: 'var(--cafe-medio)' }}>Pago al recibir</span>
             </div>
           </motion.div>
 
@@ -232,7 +232,7 @@ export default function ConfirmacionPage() {
               borderRadius: '16px', padding: '14px 18px',
             }}
           >
-            <p className="font-nunito" style={{ margin: 0, color: '#fff', fontSize: '0.92rem', fontWeight: 700, lineHeight: 1.45 }}>
+            <p className="font-brinnan" style={{ margin: 0, color: '#fff', fontSize: '0.92rem', fontWeight: 700, lineHeight: 1.45 }}>
               ⏱️ Tu domicilio llegará en aproximadamente <strong>40 minutos</strong>
             </p>
           </motion.div>
@@ -244,7 +244,7 @@ export default function ConfirmacionPage() {
             rel="noopener noreferrer"
             {...spring(0.64)}
             whileTap={{ scale: 0.96 }}
-            className="font-fredoka"
+            className="font-chreed"
             style={{
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
               width: '100%', background: '#25D366', color: '#fff',
@@ -265,7 +265,7 @@ export default function ConfirmacionPage() {
             {...spring(0.72)}
             whileTap={{ scale: 0.96 }}
             onClick={handleReset}
-            className="font-fredoka"
+            className="font-chreed"
             style={{
               width: '100%',
               background: 'rgba(255,255,255,0.15)',

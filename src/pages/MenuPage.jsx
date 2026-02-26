@@ -99,17 +99,17 @@ export default function MenuPage() {
                 }}
               >
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
-                  <span className="font-nunito" style={{ color: 'rgba(255,241,210,0.7)', fontSize: '0.72rem', fontWeight: 700, lineHeight: 1 }}>
+                  <span className="font-brinnan" style={{ color: 'rgba(255,241,210,0.7)', fontSize: '0.72rem', fontWeight: 700, lineHeight: 1 }}>
                     {totalItems} {totalItems === 1 ? 'producto' : 'productos'}
                   </span>
-                  <span className="font-fredoka" style={{ color: 'var(--secundario)', fontSize: '1.2rem', lineHeight: 1.1 }}>
+                  <span className="font-chreed" style={{ color: 'var(--secundario)', fontSize: '1.2rem', lineHeight: 1.1 }}>
                     {formatCOP(totalPrice)}
                   </span>
                 </div>
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   onClick={() => navigate('/carrito')}
-                  className="font-fredoka"
+                  className="font-chreed"
                   style={{
                     background: 'var(--primario)',
                     color: 'white', border: 'none',

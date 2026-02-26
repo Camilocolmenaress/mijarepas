@@ -26,7 +26,7 @@ export default function CartPage() {
         padding: '16px 16px 8px',
         borderBottom: '1px solid var(--crema-oscuro)',
       }}>
-        <h2 className="font-fredoka" style={{ fontSize: '1.4rem', color: 'var(--cafe)' }}>
+        <h2 className="font-chreed" style={{ fontSize: '1.4rem', color: 'var(--cafe)' }}>
           Tu Pedido 🛒
         </h2>
         <button
@@ -47,15 +47,15 @@ export default function CartPage() {
         {items.length === 0 && (
           <div style={{ textAlign: 'center', padding: '64px 16px' }}>
             <div style={{ fontSize: '3.5rem', marginBottom: '12px' }}>🍽️</div>
-            <p className="font-fredoka" style={{ fontSize: '1.2rem', color: 'var(--cafe)', marginBottom: '6px' }}>
+            <p className="font-chreed" style={{ fontSize: '1.2rem', color: 'var(--cafe)', marginBottom: '6px' }}>
               Tu pedido está vacío
             </p>
-            <p className="font-nunito" style={{ color: 'var(--cafe-medio)', fontSize: '0.9rem', marginBottom: '20px' }}>
+            <p className="font-brinnan" style={{ color: 'var(--cafe-medio)', fontSize: '0.9rem', marginBottom: '20px' }}>
               ¡Elige algo delicioso!
             </p>
             <button
               onClick={() => navigate('/menu')}
-              className="font-fredoka"
+              className="font-chreed"
               style={{
                 background: 'var(--primario)', color: 'white',
                 border: 'none', borderRadius: '12px', padding: '12px 28px',
@@ -87,16 +87,16 @@ export default function CartPage() {
                     <span style={{ fontSize: '1.6rem', flexShrink: 0 }}>{item.emoji}</span>
 
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <p className="font-nunito" style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--cafe)', lineHeight: 1.3 }}>
+                      <p className="font-brinnan" style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--cafe)', lineHeight: 1.3 }}>
                         {item.nombre}
                       </p>
                       {item.nota && (
-                        <p className="font-nunito" style={{ fontSize: '0.72rem', color: 'var(--cafe-medio)', fontStyle: 'italic' }}>
+                        <p className="font-brinnan" style={{ fontSize: '0.72rem', color: 'var(--cafe-medio)', fontStyle: 'italic' }}>
                           {item.nota}
                         </p>
                       )}
-                      {/* Precio en fucsia, Nunito bold */}
-                      <p className="font-nunito" style={{ color: 'var(--primario)', fontSize: '0.9rem', fontWeight: 800 }}>
+                      {/* Precio — Brinnan bold */}
+                      <p className="font-brinnan" style={{ color: 'var(--primario)', fontSize: '0.9rem', fontWeight: 800 }}>
                         {formatCOP(item.precio * item.qty)}
                       </p>
                     </div>
@@ -114,7 +114,7 @@ export default function CartPage() {
                           fontSize: '1rem', color: 'var(--cafe-medio)',
                         }}
                       >−</button>
-                      <span className="font-fredoka" style={{ minWidth: '20px', textAlign: 'center', color: 'var(--cafe)' }}>
+                      <span className="font-chreed" style={{ minWidth: '20px', textAlign: 'center', color: 'var(--cafe)' }}>
                         {item.qty}
                       </span>
                       <button
@@ -141,10 +141,10 @@ export default function CartPage() {
               display: 'flex', justifyContent: 'space-between', alignItems: 'center',
               marginBottom: '20px',
             }}>
-              <span className="font-nunito" style={{ color: 'var(--cafe-medio)', fontWeight: 700, fontSize: '0.9rem' }}>
+              <span className="font-brinnan" style={{ color: 'var(--cafe-medio)', fontWeight: 700, fontSize: '0.9rem' }}>
                 Total
               </span>
-              <span className="font-fredoka" style={{ color: 'var(--cafe)', fontSize: '1.6rem' }}>
+              <span className="font-chreed" style={{ color: 'var(--cafe)', fontSize: '1.6rem' }}>
                 {formatCOP(total)}
               </span>
             </div>
@@ -153,7 +153,7 @@ export default function CartPage() {
             <motion.button
               whileTap={{ scale: 0.97 }}
               onClick={() => navigate('/checkout')}
-              className="font-fredoka"
+              className="font-chreed"
               style={{
                 width: '100%', background: 'var(--primario)',
                 color: 'white', border: 'none', borderRadius: '12px',
@@ -166,7 +166,7 @@ export default function CartPage() {
               Continuar con el pedido →
             </motion.button>
 
-            <p className="font-nunito" style={{ textAlign: 'center', color: 'var(--cafe-medio)', fontSize: '0.75rem', marginTop: '6px' }}>
+            <p className="font-brinnan" style={{ textAlign: 'center', color: 'var(--cafe-medio)', fontSize: '0.75rem', marginTop: '6px' }}>
               💰 Pago al recibir
             </p>
           </>

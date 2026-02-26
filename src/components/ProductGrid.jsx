@@ -13,7 +13,7 @@ export default function ProductGrid({ activeCategory, searchQuery }) {
     return (
       <div style={{ padding: '16px' }}>
         <p
-          className="font-nunito"
+          className="font-brinnan"
           style={{ fontSize: '0.8rem', color: 'var(--cafe-medio)', marginBottom: '12px', fontWeight: 700 }}
         >
           {filtered.length} resultado{filtered.length !== 1 ? 's' : ''} para "{searchQuery}"
@@ -21,10 +21,10 @@ export default function ProductGrid({ activeCategory, searchQuery }) {
         {filtered.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '40px 0' }}>
             <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🔍</div>
-            <p className="font-fredoka" style={{ color: 'var(--cafe-medio)', fontSize: '1.1rem' }}>
+            <p className="font-chreed" style={{ color: 'var(--cafe-medio)', fontSize: '1.1rem' }}>
               Sin resultados
             </p>
-            <p className="font-nunito" style={{ color: 'var(--cafe-medio)', fontSize: '0.85rem' }}>
+            <p className="font-brinnan" style={{ color: 'var(--cafe-medio)', fontSize: '0.85rem' }}>
               Intenta con otro nombre
             </p>
           </div>
@@ -49,7 +49,7 @@ export default function ProductGrid({ activeCategory, searchQuery }) {
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
         <span style={{ fontSize: '1.5rem' }}>{catInfo?.emoji}</span>
         <h2
-          className="font-pacifico"
+          className="font-chreed"
           style={{ color: 'var(--cafe-oscuro)', fontSize: '1.1rem' }}
         >
           {catInfo?.label}

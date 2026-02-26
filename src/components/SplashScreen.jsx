@@ -48,7 +48,7 @@ export default function SplashScreen({ onStart }) {
         >
           {/* Eslogan en crema, letra espaciada */}
           <p
-            className="font-nunito"
+            className="font-brinnan"
             style={{
               color: 'rgba(255,241,210,0.88)', fontSize: '0.82rem',
               letterSpacing: '0.12em', textTransform: 'uppercase',
@@ -66,7 +66,7 @@ export default function SplashScreen({ onStart }) {
           transition={{ delay: 0.55, type: 'spring', stiffness: 150, damping: 14 }}
           whileTap={{ scale: 0.95 }}
           onClick={onStart}
-          className="font-fredoka"
+          className="font-chreed"
           style={{
             background: 'var(--secundario)',   /* #f9ac31 dorado */
             color: 'var(--cafe)',

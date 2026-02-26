@@ -38,7 +38,7 @@ export default function CategoryTabs({ activeCategory, onSelect }) {
               data-cat={cat.id}
               onClick={() => handleSelect(cat.id)}
               aria-pressed={isActive}
-              className="font-nunito"
+              className="font-brinnan"
               style={{
                 scrollSnapAlign: 'start',
                 flexShrink: 0,

@@ -91,20 +91,20 @@ export default function BannerCarousel() {
                   background: 'rgba(255,255,255,0.2)',
                   color: 'white', borderRadius: '50px',
                   padding: '2px 10px', fontSize: '0.7rem', fontWeight: 800,
-                  marginBottom: '6px', fontFamily: "'Nunito', sans-serif",
+                  marginBottom: '6px', fontFamily: "'Brinnan', sans-serif",
                   textTransform: 'uppercase', letterSpacing: '0.05em',
                 }}
               >
                 {b.tag}
               </div>
               <h3
-                className="font-fredoka"
+                className="font-chreed"
                 style={{ color: 'white', fontSize: '1.35rem', lineHeight: 1.2, margin: 0 }}
               >
                 {b.titulo}
               </h3>
               <p
-                className="font-nunito"
+                className="font-brinnan"
                 style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.85rem', marginTop: '2px' }}
               >
                 {b.subtexto}
