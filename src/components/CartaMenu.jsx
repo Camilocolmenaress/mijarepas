@@ -5,22 +5,6 @@ import useCartStore from '../store/useCartStore'
 import { productos } from '../data/menu'
 import { formatCOP } from '../utils/formatCOP'
 
-/* ─── Placeholder imagen ─────────────────────────────────────────────── */
-function Placeholder({ bg, border, textColor }) {
-  return (
-    <div style={{
-      width: '100%', height: '180px', borderRadius: '12px',
-      background: bg, border: `2px dashed ${border}`,
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      marginBottom: '16px', flexShrink: 0,
-    }}>
-      <span className="font-brinnan" style={{ color: textColor, opacity: 0.4, fontSize: '0.88rem' }}>
-        [ Foto del plato ]
-      </span>
-    </div>
-  )
-}
-
 /* ─── Fila de producto ───────────────────────────────────────────────── */
 function FilaProducto({ producto, nombreColor, descColor, precioColor, btnBg, btnColor, sepColor, sinBoton = false }) {
   const navigate = useNavigate()
@@ -95,7 +79,7 @@ function SeccionArepas() {
   return (
     <div style={{ background: '#fff1d2', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
       <h2 className="font-chreed" style={{ color: '#f9ac31', fontSize: '52px', lineHeight: 1 }}>AREPAS</h2>
-      <Placeholder bg="#e8d9b8" border="#42261a" textColor="#42261a" />
+      <img src="/images/foto-clasicas.png" alt="Arepas Clásicas" style={{ width: '100%', height: '220px', objectFit: 'contain', objectPosition: 'center', display: 'block', marginBottom: '16px' }} />
       <SubTitulo texto="Chicharrona" color="#00afec" size="32px" />
       {chicharronas.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#42261a" descColor="#42261a" precioColor="#eb1e55" btnBg="#eb1e55" btnColor="#fff" sepColor="#42261a" />)}
       <SubTitulo texto="Areburger" color="#007d3e" size="32px" />
@@ -113,7 +97,7 @@ function SeccionEspeciales() {
     <div style={{ background: '#f9ac31', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
       <p className="font-healing" style={{ color: '#eb1e55', fontSize: '28px', lineHeight: 1.1 }}>Vea pues las</p>
       <h2 className="font-chreed" style={{ color: '#42261a', fontSize: '52px', lineHeight: 1, marginBottom: '16px' }}>ESPECIALES</h2>
-      <Placeholder bg="#e09a20" border="#42261a" textColor="#42261a" />
+      <img src="/images/foto-especiales.png" alt="Arepas Especiales" style={{ width: '100%', height: '220px', objectFit: 'contain', objectPosition: 'center', display: 'block', marginBottom: '16px' }} />
       {especiales.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#42261a" descColor="#42261a" precioColor="#eb1e55" btnBg="#42261a" btnColor="#fff" sepColor="#42261a" />)}
     </div>
   )
@@ -227,7 +211,7 @@ function SeccionQuesudita() {
           SELECCIONA 7 INGREDIENTES $33.500
         </span>
       </div>
-      <Placeholder bg="#c8154a" border="#fff1d2" textColor="#fff1d2" />
+      <img src="/images/foto-quesudita.png" alt="Arma Tu Quesudita" style={{ width: '100%', height: '220px', objectFit: 'contain', objectPosition: 'center', display: 'block', marginBottom: '16px' }} />
 
       {/* ESCOGE 3 */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '16px 0 4px' }}>
@@ -303,7 +287,7 @@ function SeccionDesgranados() {
     <div style={{ background: '#42261a', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
       <p className="font-healing" style={{ color: '#eb1e55', fontSize: '28px', lineHeight: 1.1 }}>Los</p>
       <h2 className="font-chreed" style={{ color: '#f9ac31', fontSize: '42px', lineHeight: 1.05, marginBottom: '16px' }}>DESGRANADOS MÁS AMADOS</h2>
-      <Placeholder bg="#2c1a0e" border="#f9ac31" textColor="#f9ac31" />
+      <img src="/images/foto-desgranados.png" alt="Arepas Desgranadas" style={{ width: '100%', height: '220px', objectFit: 'contain', objectPosition: 'center', display: 'block', marginBottom: '16px' }} />
       {desgranadas.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#fff1d2" descColor="#fff1d2" precioColor="#f9ac31" btnBg="#f9ac31" btnColor="#42261a" sepColor="#fff1d2" />)}
     </div>
   )
@@ -316,7 +300,7 @@ function SeccionParrilla() {
     <div style={{ background: '#eb1e55', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
       <p className="font-healing" style={{ color: '#f9ac31', fontSize: '28px', lineHeight: 1.1 }}>Las</p>
       <h2 className="font-chreed" style={{ color: '#f9ac31', fontSize: '42px', lineHeight: 1.05, marginBottom: '16px' }}>PARRILLADAS MÁS ESPERADAS</h2>
-      <Placeholder bg="#c8154a" border="#f9ac31" textColor="#f9ac31" />
+      <img src="/images/foto-parrilladas.png" alt="Parrilladas" style={{ width: '100%', height: '220px', objectFit: 'contain', objectPosition: 'center', display: 'block', marginBottom: '16px' }} />
       {parrilla.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#fff1d2" descColor="#fff1d2" precioColor="#f9ac31" btnBg="#f9ac31" btnColor="#42261a" sepColor="#fff1d2" />)}
     </div>
   )
@@ -329,7 +313,7 @@ function SeccionClasicos() {
     <div style={{ background: '#007d3e', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
       <h2 className="font-chreed" style={{ color: '#f9ac31', fontSize: '52px', lineHeight: 1 }}>CLÁSICOS</h2>
       <p className="font-healing" style={{ color: '#fff1d2', fontSize: '32px', lineHeight: 1.1, marginBottom: '16px' }}>Ocañeros</p>
-      <Placeholder bg="#006030" border="#f9ac31" textColor="#f9ac31" />
+      <img src="/images/foto-clasicos-ocaneros.png" alt="Clásicos Ocañeros" style={{ width: '100%', height: '220px', objectFit: 'contain', objectPosition: 'center', display: 'block', marginBottom: '16px' }} />
       {delicias.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#fff1d2" descColor="#fff1d2" precioColor="#f9ac31" btnBg="#f9ac31" btnColor="#42261a" sepColor="#fff1d2" />)}
     </div>
   )
