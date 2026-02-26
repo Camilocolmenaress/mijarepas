@@ -293,8 +293,8 @@ function SeccionDesgranados() {
     <div style={{ background: '#42261a', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
       <p className="font-healing" style={{ color: '#eb1e55', fontSize: '28px', lineHeight: 1.1 }}>Los</p>
       <h2 className="font-chreed" style={{ color: '#f9ac31', fontSize: '42px', lineHeight: 1.05, marginBottom: '16px' }}>DESGRANADOS MÁS AMADOS</h2>
-      <div style={{ width: '100%', height: '300px', overflow: 'hidden', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <img src="/images/foto-desgranados.png" alt="Arepas Desgranadas" style={{ width: '95%', height: 'auto', display: 'block', transform: 'scale(1.0)', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
+      <div style={{ width: '100%', height: '320px', overflow: 'visible', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <img src="/images/foto-desgranados.png" alt="Arepas Desgranadas" style={{ width: '70%', height: 'auto', maxHeight: '280px', objectFit: 'contain', display: 'block', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
       </div>
       {desgranadas.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#fff1d2" descColor="#fff1d2" precioColor="#f9ac31" btnBg="#f9ac31" btnColor="#42261a" sepColor="#fff1d2" />)}
     </div>
@@ -308,8 +308,8 @@ function SeccionParrilla() {
     <div style={{ background: '#eb1e55', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
       <p className="font-healing" style={{ color: '#f9ac31', fontSize: '28px', lineHeight: 1.1 }}>Las</p>
       <h2 className="font-chreed" style={{ color: '#f9ac31', fontSize: '42px', lineHeight: 1.05, marginBottom: '16px' }}>PARRILLADAS MÁS ESPERADAS</h2>
-      <div style={{ width: '100%', height: '300px', overflow: 'hidden', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <img src="/images/foto-parrilladas.png" alt="Parrilladas" style={{ width: '95%', height: 'auto', display: 'block', transform: 'scale(1.0)', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
+      <div style={{ width: '100%', height: '320px', overflow: 'visible', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <img src="/images/foto-parrilladas.png" alt="Parrilladas" style={{ width: '70%', height: 'auto', maxHeight: '280px', objectFit: 'contain', display: 'block', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
       </div>
       {parrilla.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#fff1d2" descColor="#fff1d2" precioColor="#f9ac31" btnBg="#f9ac31" btnColor="#42261a" sepColor="#fff1d2" />)}
     </div>
@@ -323,8 +323,8 @@ function SeccionClasicos() {
     <div style={{ background: '#007d3e', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
       <h2 className="font-chreed" style={{ color: '#f9ac31', fontSize: '52px', lineHeight: 1 }}>CLÁSICOS</h2>
       <p className="font-healing" style={{ color: '#fff1d2', fontSize: '32px', lineHeight: 1.1, marginBottom: '16px' }}>Ocañeros</p>
-      <div style={{ width: '100%', height: '300px', overflow: 'hidden', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <img src="/images/foto-clasicos-ocaneros.png" alt="Clásicos Ocañeros" style={{ width: '85%', height: 'auto', display: 'block', transform: 'scale(1.0)', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
+      <div style={{ width: '100%', height: '320px', overflow: 'visible', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <img src="/images/foto-clasicos-ocaneros.png" alt="Clásicos Ocañeros" style={{ width: '65%', height: 'auto', maxHeight: '280px', objectFit: 'contain', display: 'block', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
       </div>
       {delicias.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#fff1d2" descColor="#fff1d2" precioColor="#f9ac31" btnBg="#f9ac31" btnColor="#42261a" sepColor="#fff1d2" />)}
     </div>
