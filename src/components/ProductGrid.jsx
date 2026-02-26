@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion'
 import ProductCard from './ProductCard'
 import { productos, categorias } from '../data/menu'
 
@@ -58,14 +57,13 @@ export default function ProductGrid({ activeCategory, searchQuery }) {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
         {catProducts.map((p, i) => (
-          <motion.div
+          <div
             key={p.id}
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.04, duration: 0.3 }}
+            className="anim-fadeInUp"
+            style={{ animationDelay: `${i * 0.04}s`, animationFillMode: 'both' }}
           >
             <ProductCard producto={p} />
-          </motion.div>
+          </div>
         ))}
       </div>
     </div>

@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion'
 import { useEffect } from 'react'
 
 export default function PromoPopup({ onClose }) {
@@ -9,10 +8,8 @@ export default function PromoPopup({ onClose }) {
   }, [onClose])
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+    <div
+      className="anim-fadeIn"
       style={{
         position: 'fixed', inset: 0, zIndex: 999,
         background: 'rgba(66,38,26,0.65)',
@@ -22,32 +19,23 @@ export default function PromoPopup({ onClose }) {
       }}
       onClick={onClose}
     >
-      <motion.div
-        initial={{ scale: 0.8, opacity: 0, y: 20 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.85, opacity: 0 }}
-        transition={{ type: 'spring', stiffness: 220, damping: 20 }}
+      <div
+        className="anim-scaleIn"
         onClick={e => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-label="Promoción del día"
         style={{
-          background: '#ffffff',
-          borderRadius: '24px', padding: '0',
-          maxWidth: '360px', width: '100%',
-          overflow: 'hidden',
-          boxShadow: '0 20px 60px rgba(66,38,26,0.35)',
-          position: 'relative',
+          background: '#ffffff', borderRadius: '24px', padding: '0',
+          maxWidth: '360px', width: '100%', overflow: 'hidden',
+          boxShadow: '0 20px 60px rgba(66,38,26,0.35)', position: 'relative',
         }}
       >
-        {/* Header — degradado fucsia */}
-        <div
-          style={{
-            background: 'linear-gradient(135deg, var(--primario) 0%, #a01040 100%)',
-            padding: '32px 24px 24px',
-            textAlign: 'center', position: 'relative',
-          }}
-        >
+        {/* Header fucsia */}
+        <div style={{
+          background: 'linear-gradient(135deg, var(--primario) 0%, #a01040 100%)',
+          padding: '32px 24px 24px', textAlign: 'center', position: 'relative',
+        }}>
           <button
             onClick={onClose}
             aria-label="Cerrar promoción"
@@ -56,22 +44,19 @@ export default function PromoPopup({ onClose }) {
               background: 'rgba(255,255,255,0.2)', border: 'none',
               borderRadius: '50%', width: '32px', height: '32px',
               color: 'white', fontSize: '1.1rem', cursor: 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              lineHeight: 1,
+              display: 'flex', alignItems: 'center', justifyContent: 'center', lineHeight: 1,
             }}
           >✕</button>
 
           <div style={{ fontSize: '3.5rem', marginBottom: '8px' }}>🫓🔥</div>
 
-          {/* Badge dorado */}
           <div
+            className="font-brinnan"
             style={{
-              display: 'inline-block',
-              background: 'var(--secundario)', color: 'var(--cafe)',
+              display: 'inline-block', background: 'var(--secundario)', color: 'var(--cafe)',
               borderRadius: '50px', padding: '4px 14px',
               fontSize: '0.75rem', fontWeight: 800, marginBottom: '12px',
             }}
-            className="font-brinnan"
           >
             ¡PROMO DEL DÍA!
           </div>
@@ -91,34 +76,31 @@ export default function PromoPopup({ onClose }) {
             ¡Solo por tiempo limitado! 🎉
           </p>
 
-          <motion.button
-            whileTap={{ scale: 0.96 }}
+          <button
             onClick={onClose}
             className="font-chreed"
             style={{
               width: '100%', background: 'var(--primario)',
               color: 'white', border: 'none', borderRadius: '12px',
               padding: '16px', fontSize: '1.1rem', cursor: 'pointer',
-              boxShadow: '0 4px 16px rgba(235,30,85,0.4)',
-              minHeight: '52px',
+              boxShadow: '0 4px 16px rgba(235,30,85,0.4)', minHeight: '52px',
             }}
           >
             ¡Lo quiero! 🛒
-          </motion.button>
+          </button>
 
           <button
             onClick={onClose}
             className="font-brinnan"
             style={{
-              background: 'none', border: 'none',
-              color: 'var(--cafe-medio)', fontSize: '0.85rem',
-              marginTop: '12px', cursor: 'pointer', textDecoration: 'underline',
+              background: 'none', border: 'none', color: 'var(--cafe-medio)',
+              fontSize: '0.85rem', marginTop: '12px', cursor: 'pointer', textDecoration: 'underline',
             }}
           >
             Ver el menú completo
           </button>
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   )
 }

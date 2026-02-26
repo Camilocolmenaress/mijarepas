@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import toast from 'react-hot-toast'
 import useCartStore from '../store/useCartStore'
 import { formatCOP } from '../utils/formatCOP'
@@ -93,7 +92,6 @@ export default function CheckoutPage() {
     navigate('/confirmacion', { replace: true })
   }
 
-  /* ── Estilos de inputs: fondo semitransparente, texto blanco/crema ── */
   const inputStyle = (hasError) => ({
     width: '100%', borderRadius: '12px',
     border: `1.5px solid ${hasError ? 'var(--secundario)' : 'rgba(255,255,255,0.35)'}`,
@@ -101,11 +99,9 @@ export default function CheckoutPage() {
     color: 'var(--crema)',
     background: 'rgba(255,255,255,0.15)',
     outline: 'none', boxSizing: 'border-box',
-    /* placeholder color via CSS — se aplica globalmente en index.css */
   })
 
   return (
-    /* ── Cambio 4: Wrapper con imagen de fondo + overlay oscuro ── */
     <div
       style={{
         minHeight: 'calc(100dvh - 64px)',
@@ -116,7 +112,7 @@ export default function CheckoutPage() {
         position: 'relative',
       }}
     >
-      {/* Overlay #42261a al 75% */}
+      {/* Overlay */}
       <div
         style={{
           position: 'absolute', inset: 0,
@@ -125,11 +121,8 @@ export default function CheckoutPage() {
         }}
       />
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.2 }}
+      <div
+        className="page-enter"
         style={{
           position: 'relative', zIndex: 1,
           maxWidth: '640px', margin: '0 auto',
@@ -266,8 +259,7 @@ export default function CheckoutPage() {
             </div>
 
             {/* CTA */}
-            <motion.button
-              whileTap={{ scale: 0.97 }}
+            <button
               onClick={handleSubmit}
               className="font-chreed"
               style={{
@@ -276,17 +268,18 @@ export default function CheckoutPage() {
                 padding: '16px', fontSize: '1.15rem', cursor: 'pointer',
                 boxShadow: '0 4px 20px rgba(235,30,85,0.5)',
                 minHeight: '54px',
+                transition: 'opacity 0.15s ease',
               }}
             >
               ¡Hacer Pedido! 🎉
-            </motion.button>
+            </button>
 
             <p className="font-brinnan" style={{ textAlign: 'center', color: 'rgba(255,241,210,0.65)', fontSize: '0.75rem', marginTop: '10px' }}>
               💰 Pago al recibir
             </p>
           </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   )
 }

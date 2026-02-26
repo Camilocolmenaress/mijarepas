@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import toast from 'react-hot-toast'
 import useCartStore from '../store/useCartStore'
 import { productos } from '../data/menu'
@@ -26,12 +25,13 @@ function Placeholder({ bg, border, textColor }) {
 function FilaProducto({ producto, nombreColor, descColor, precioColor, btnBg, btnColor, sepColor, sinBoton = false }) {
   const navigate = useNavigate()
   const { addItem } = useCartStore()
-  const [popKey, setPopKey] = useState(0)
+  const [popped, setPopped] = useState(false)
 
   const handleAdd = (e) => {
     e.stopPropagation()
     addItem(producto)
-    setPopKey(k => k + 1)
+    setPopped(true)
+    setTimeout(() => setPopped(false), 350)
     toast(`${producto.emoji} ${producto.nombre} agregada`, {
       style: { background: '#42261a', color: '#fff1d2', borderRadius: '12px', fontSize: '0.85rem' },
       duration: 1800,
@@ -59,20 +59,17 @@ function FilaProducto({ producto, nombreColor, descColor, precioColor, btnBg, bt
             {formatCOP(producto.precio)}
           </span>
           {!sinBoton && (
-            <motion.button
-              key={popKey}
-              initial={popKey > 0 ? { scale: 1.45 } : { scale: 1 }}
-              animate={{ scale: 1 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 12 }}
+            <button
               onClick={handleAdd}
               aria-label={`Agregar ${producto.nombre}`}
+              className={popped ? 'pop' : ''}
               style={{
                 background: btnBg, color: btnColor, border: 'none',
                 borderRadius: '50%', width: '36px', height: '36px',
                 fontSize: '1.2rem', cursor: 'pointer', flexShrink: 0,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}
-            >+</motion.button>
+            >+</button>
           )}
         </div>
       </div>
@@ -111,7 +108,7 @@ function SeccionArepas() {
 
 /* ─── SECCIÓN 2 — Amarillo: Especiales ──────────────────────────────── */
 function SeccionEspeciales() {
-  const especiales  = productos.filter(p => p.cat === 'especiales')
+  const especiales = productos.filter(p => p.cat === 'especiales')
   return (
     <div style={{ background: '#f9ac31', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
       <p className="font-healing" style={{ color: '#eb1e55', fontSize: '28px', lineHeight: 1.1 }}>Vea pues las</p>
@@ -124,8 +121,6 @@ function SeccionEspeciales() {
 
 /* ─── SECCIÓN 3 — Fucsia: Quesudita ─────────────────────────────────── */
 function SeccionQuesudita() {
-  // Para la quesudita usamos chicharronas como "Escoge 3" y clasicas como "Escoge 4" (ingredientes disponibles)
-  // En la carta física los 7 ingredientes se escogen de adicionales + opciones de relleno
   const escoge3 = productos.filter(p => ['add1','add2','add3','add4','add5','add6'].includes(p.id))
   const escoge4 = productos.filter(p => ['add7','add8','add9','add10','add11','add12'].includes(p.id))
   return (
@@ -175,7 +170,7 @@ function SeccionParrilla() {
   )
 }
 
-/* ─── SECCIÓN 6 — Verde: Clásicos Ocañeros (Delicias) ───────────────── */
+/* ─── SECCIÓN 6 — Verde: Clásicos Ocañeros ──────────────────────────── */
 function SeccionClasicos() {
   const delicias = productos.filter(p => p.cat === 'delicias')
   return (
@@ -190,11 +185,11 @@ function SeccionClasicos() {
 
 /* ─── SECCIÓN 7 — Azul: Bebidas ─────────────────────────────────────── */
 function SeccionBebidas() {
-  const limonadas  = productos.filter(p => ['bf1','bf2','bf3','bf4','bf5'].includes(p.id))
-  const jugos      = productos.filter(p => ['bf6','bf7','bf8'].includes(p.id))
-  const cervezas   = productos.filter(p => ['bf9','bf10','bf11'].includes(p.id))
-  const calientes  = productos.filter(p => p.cat === 'calientes')
-  const otras      = productos.filter(p => ['bf12','bf13','bf14','bf15'].includes(p.id))
+  const limonadas = productos.filter(p => ['bf1','bf2','bf3','bf4','bf5'].includes(p.id))
+  const jugos     = productos.filter(p => ['bf6','bf7','bf8'].includes(p.id))
+  const cervezas  = productos.filter(p => ['bf9','bf10','bf11'].includes(p.id))
+  const calientes = productos.filter(p => p.cat === 'calientes')
+  const otras     = productos.filter(p => ['bf12','bf13','bf14','bf15'].includes(p.id))
   return (
     <div style={{ background: '#00afec', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
       <h2 className="font-chreed" style={{ color: '#fff1d2', fontSize: '42px', lineHeight: 1 }}>PA' QUE SE</h2>
@@ -216,11 +211,12 @@ function SeccionBebidas() {
 /* ─── Fila de adicional (2 columnas, siempre con botón +) ───────────── */
 function FilaProductoAdicional({ producto }) {
   const { addItem } = useCartStore()
-  const [popKey, setPopKey] = useState(0)
+  const [popped, setPopped] = useState(false)
 
   const handleAdd = () => {
     addItem(producto)
-    setPopKey(k => k + 1)
+    setPopped(true)
+    setTimeout(() => setPopped(false), 350)
     toast(`${producto.emoji || '✅'} ${producto.nombre} agregado`, {
       style: { background: '#42261a', color: '#fff1d2', borderRadius: '12px', fontSize: '0.85rem' },
       duration: 1800,
@@ -240,20 +236,17 @@ function FilaProductoAdicional({ producto }) {
           <span className="font-chreed" style={{ color: '#eb1e55', fontSize: '14px' }}>
             {formatCOP(producto.precio)}
           </span>
-          <motion.button
-            key={popKey}
-            initial={popKey > 0 ? { scale: 1.5 } : { scale: 1 }}
-            animate={{ scale: 1 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 12 }}
+          <button
             onClick={(e) => { e.stopPropagation(); handleAdd() }}
             aria-label={`Agregar ${producto.nombre}`}
+            className={popped ? 'pop' : ''}
             style={{
               background: '#eb1e55', color: '#fff', border: 'none',
               borderRadius: '50%', width: '30px', height: '30px',
               fontSize: '1rem', cursor: 'pointer', flexShrink: 0,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}
-          >+</motion.button>
+          >+</button>
         </div>
       </div>
       <div style={{ borderBottom: '1.5px dashed #42261a', opacity: 0.3 }} />
@@ -302,12 +295,12 @@ function BusquedaResultados({ searchQuery }) {
 const DOT_COLORS = ['#eb1e55','#f9ac31','#eb1e55','#f9ac31','#f9ac31','#f9ac31','#fff1d2','#eb1e55']
 
 /* ─── Componente principal ───────────────────────────────────────────── */
-export default function CartaMenu({ searchQuery, heroBannerHeight = 0 }) {
+export default function CartaMenu({ searchQuery }) {
   const scrollRef = useRef(null)
   const [activeIdx, setActiveIdx] = useState(0)
   const [showSwipeHint, setShowSwipeHint] = useState(true)
   const hintDismissed = useRef(false)
-  const HEADER_H = 64 // altura del navbar
+  const HEADER_H = 64
 
   // Auto-dismiss swipe hint después de 4s
   useEffect(() => {
@@ -315,13 +308,11 @@ export default function CartaMenu({ searchQuery, heroBannerHeight = 0 }) {
     return () => clearTimeout(t)
   }, [])
 
-  // Detectar sección activa al hacer scroll horizontal
   const handleScroll = () => {
     const el = scrollRef.current
     if (!el) return
     const idx = Math.round(el.scrollLeft / el.offsetWidth)
     setActiveIdx(Math.min(idx, 7))
-    // Dismiss hint al primer scroll horizontal real
     if (!hintDismissed.current && el.scrollLeft > 10) {
       hintDismissed.current = true
       setShowSwipeHint(false)
@@ -346,14 +337,11 @@ export default function CartaMenu({ searchQuery, heroBannerHeight = 0 }) {
         ref={scrollRef}
         onScroll={handleScroll}
         style={{
-          display: 'flex',
-          flexDirection: 'row',
-          overflowX: 'scroll',
-          scrollSnapType: 'x mandatory',
+          display: 'flex', flexDirection: 'row',
+          overflowX: 'scroll', scrollSnapType: 'x mandatory',
           WebkitOverflowScrolling: 'touch',
           height: `calc(100dvh - ${HEADER_H}px)`,
-          scrollbarWidth: 'none',
-          msOverflowStyle: 'none',
+          scrollbarWidth: 'none', msOverflowStyle: 'none',
         }}
       >
         <SeccionArepas />
@@ -367,69 +355,41 @@ export default function CartaMenu({ searchQuery, heroBannerHeight = 0 }) {
       </div>
 
       {/* ── Swipe hint — fijo encima de los dots ── */}
-      <AnimatePresence>
-        {showSwipeHint && (
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 8 }}
-            transition={{ duration: 0.35 }}
-            style={{
-              position: 'fixed',
-              bottom: '118px',
-              left: 0, right: 0,
-              display: 'flex',
-              justifyContent: 'center',
-              zIndex: 160,
-              pointerEvents: 'none',
-            }}
-          >
-            <div style={{
-              background: 'rgba(66,38,26,0.75)',
-              borderRadius: '20px',
-              padding: '8px 16px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
+      {showSwipeHint && (
+        <div
+          className="anim-fadeInUp"
+          style={{
+            position: 'fixed', bottom: '118px', left: 0, right: 0,
+            display: 'flex', justifyContent: 'center',
+            zIndex: 160, pointerEvents: 'none',
+          }}
+        >
+          <div style={{
+            background: 'rgba(66,38,26,0.75)', borderRadius: '20px',
+            padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '8px',
+          }}>
+            <span
+              className="anim-swipeArrow"
+              style={{ display: 'inline-block', fontSize: '1rem', lineHeight: 1, color: '#fff1d2' }}
+            >
+              →
+            </span>
+            <p className="font-brinnan" style={{
+              color: '#fff1d2', fontSize: '13px', fontWeight: 700,
+              margin: 0, whiteSpace: 'nowrap',
             }}>
-              {/* Flecha animada */}
-              <motion.span
-                animate={{ x: [0, 8, 0] }}
-                transition={{ duration: 0.9, repeat: Infinity, ease: 'easeInOut' }}
-                style={{
-                  display: 'inline-block',
-                  fontSize: '1rem',
-                  lineHeight: 1,
-                  color: '#fff1d2',
-                }}
-              >
-                →
-              </motion.span>
-              <p className="font-brinnan" style={{
-                color: '#fff1d2',
-                fontSize: '13px',
-                fontWeight: 700,
-                margin: 0,
-                whiteSpace: 'nowrap',
-              }}>
-                Desliza para ver más
-              </p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              Desliza para ver más
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* ── Dots de navegación ── */}
       <div
         style={{
-          position: 'fixed',
-          bottom: '88px',
-          left: 0, right: 0,
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '8px',
-          zIndex: 150,
-          pointerEvents: 'none',
+          position: 'fixed', bottom: '88px', left: 0, right: 0,
+          display: 'flex', justifyContent: 'center', gap: '8px',
+          zIndex: 150, pointerEvents: 'none',
         }}
       >
         {DOT_COLORS.map((color, i) => (
@@ -438,8 +398,7 @@ export default function CartaMenu({ searchQuery, heroBannerHeight = 0 }) {
             onClick={() => goTo(i)}
             aria-label={`Ir a sección ${i + 1}`}
             style={{
-              width: '8px', height: '8px',
-              borderRadius: '50%',
+              width: '8px', height: '8px', borderRadius: '50%',
               border: 'none', padding: 0, cursor: 'pointer',
               pointerEvents: 'all',
               background: i === activeIdx ? color : 'rgba(255,255,255,0.9)',

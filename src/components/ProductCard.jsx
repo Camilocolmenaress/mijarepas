@@ -1,18 +1,17 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import toast from 'react-hot-toast'
 import useCartStore from '../store/useCartStore'
 import { formatCOP } from '../utils/formatCOP'
 
 /* Badges con colores de marca */
 const BADGE_COLORS = {
-  Clásica:            { bg: '#e3f6ff', text: '#00afec' },   /* azul marca */
+  Clásica:            { bg: '#e3f6ff', text: '#00afec' },
   Especial:           { bg: '#fff3cd', text: '#c47a00' },
   Desgranado:         { bg: '#e3f6ff', text: '#00afec' },
-  Chicharrona:        { bg: '#ffe0e8', text: '#eb1e55' },   /* fucsia marca */
+  Chicharrona:        { bg: '#ffe0e8', text: '#eb1e55' },
   Hamburguesa:        { bg: '#f0e8fd', text: '#5a2d82' },
-  Compartir:          { bg: '#d4f0e3', text: '#007d3e' },   /* verde marca */
+  Compartir:          { bg: '#d4f0e3', text: '#007d3e' },
   Desayuno:           { bg: '#fff3e0', text: '#c47a00' },
   Popular:            { bg: '#ffe0e8', text: '#eb1e55' },
   'Jarra disponible': { bg: '#e3f6ff', text: '#00afec' },
@@ -22,12 +21,13 @@ const BADGE_COLORS = {
 export default function ProductCard({ producto }) {
   const navigate = useNavigate()
   const { addItem } = useCartStore()
-  const [popKey, setPopKey] = useState(0)
+  const [popped, setPopped] = useState(false)
 
   const handleAdd = (e) => {
     e.stopPropagation()
     addItem(producto)
-    setPopKey(k => k + 1)
+    setPopped(true)
+    setTimeout(() => setPopped(false), 350)
     toast(`${producto.emoji} ${producto.nombre} agregada`, {
       style: {
         background: 'var(--cafe)', color: 'var(--crema)',
@@ -43,8 +43,7 @@ export default function ProductCard({ producto }) {
     : null
 
   return (
-    <motion.div
-      whileTap={{ scale: 0.97 }}
+    <div
       onClick={() => navigate(`/producto/${producto.id}`)}
       style={{
         background: '#ffffff',
@@ -54,8 +53,8 @@ export default function ProductCard({ producto }) {
         cursor: 'pointer',
         display: 'flex', flexDirection: 'column',
         position: 'relative',
-        /* Borde izquierdo dorado — identidad visual de la marca */
         borderLeft: '4px solid var(--secundario)',
+        transition: 'transform 0.1s ease',
       }}
     >
       {/* Badge */}
@@ -99,7 +98,6 @@ export default function ProductCard({ producto }) {
 
       {/* Contenido */}
       <div style={{ padding: '10px 10px 12px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-        {/* Nombre — Healing */}
         <h3
           className="font-chreed"
           style={{
@@ -120,7 +118,6 @@ export default function ProductCard({ producto }) {
         )}
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto' }}>
-          {/* Precio — Brinnan bold */}
           <span
             className="font-brinnan"
             style={{ color: 'var(--primario)', fontSize: '1rem', fontWeight: 800 }}
@@ -128,14 +125,11 @@ export default function ProductCard({ producto }) {
             {formatCOP(producto.precio)}
           </span>
 
-          {/* Botón + */}
-          <motion.button
-            key={popKey}
-            initial={popKey > 0 ? { scale: 1.4 } : { scale: 1 }}
-            animate={{ scale: 1 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 12 }}
+          {/* Botón + con animación pop CSS */}
+          <button
             onClick={handleAdd}
             aria-label={`Agregar ${producto.nombre}`}
+            className={popped ? 'pop' : ''}
             style={{
               background: 'var(--primario)',
               color: 'white', border: 'none',
@@ -147,9 +141,9 @@ export default function ProductCard({ producto }) {
             }}
           >
             +
-          </motion.button>
+          </button>
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }

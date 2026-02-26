@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { AnimatePresence } from 'framer-motion'
 import SplashScreen from '../components/SplashScreen'
 import PromoPopup from '../components/PromoPopup'
 
@@ -25,15 +24,8 @@ export default function SplashPage() {
 
   return (
     <>
-      <AnimatePresence mode="wait">
-        <SplashScreen key="splash" onStart={handleStart} />
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {showPromo && (
-          <PromoPopup key="promo" onClose={handlePromoClose} />
-        )}
-      </AnimatePresence>
+      <SplashScreen onStart={handleStart} />
+      {showPromo && <PromoPopup onClose={handlePromoClose} />}
     </>
   )
 }

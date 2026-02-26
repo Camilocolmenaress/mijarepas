@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
 import useCartStore from '../store/useCartStore'
 
 export default function Header() {
@@ -36,38 +35,24 @@ export default function Header() {
       }}
     >
       <div style={{ maxWidth: '640px', margin: '0 auto' }}>
-
-        {/* ── Fila única: logo imagen + buscador + carrito ── */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
 
-          {/* Logo oficial — imagen */}
-          <div
-            onClick={() => navigate('/menu')}
-            style={{ flexShrink: 0, cursor: 'pointer', lineHeight: 0 }}
-          >
+          {/* Logo */}
+          <div onClick={() => navigate('/menu')} style={{ flexShrink: 0, cursor: 'pointer', lineHeight: 0 }}>
             <img
               src="/images/logo-transparente.png"
               alt="Mijarepas"
-              style={{
-                height: '44px',
-                width: 'auto',
-                objectFit: 'contain',
-                display: 'block',
-              }}
+              style={{ height: '44px', width: 'auto', objectFit: 'contain', display: 'block' }}
             />
           </div>
 
           {/* Buscador */}
-          <div
-            style={{
-              flex: 1,
-              display: 'flex', alignItems: 'center',
-              background: 'rgba(255,255,255,0.10)',
-              borderRadius: '50px',
-              padding: '7px 13px', gap: '8px',
-              border: '1.5px solid rgba(255,255,255,0.18)',
-            }}
-          >
+          <div style={{
+            flex: 1, display: 'flex', alignItems: 'center',
+            background: 'rgba(255,255,255,0.10)',
+            borderRadius: '50px', padding: '7px 13px', gap: '8px',
+            border: '1.5px solid rgba(255,255,255,0.18)',
+          }}>
             <span style={{ fontSize: '0.9rem', color: 'rgba(255,241,210,0.6)', flexShrink: 0 }}>🔍</span>
             <input
               type="search"
@@ -111,28 +96,24 @@ export default function Header() {
             }}
           >
             🛒
-            <AnimatePresence>
-              {totalItems > 0 && (
-                <motion.span
-                  key={badgeKey}
-                  initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 12 }}
-                  style={{
-                    position: 'absolute', top: '-4px', right: '-4px',
-                    background: 'var(--secundario)', color: 'var(--cafe)',
-                    borderRadius: '50%', width: '20px', height: '20px',
-                    fontSize: '0.7rem', fontWeight: 800,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    border: '2px solid var(--cafe)',
-                  }}
-                >
-                  {totalItems > 9 ? '9+' : totalItems}
-                </motion.span>
-              )}
-            </AnimatePresence>
+            {totalItems > 0 && (
+              <span
+                key={badgeKey}
+                className="anim-badgePop"
+                style={{
+                  position: 'absolute', top: '-4px', right: '-4px',
+                  background: 'var(--secundario)', color: 'var(--cafe)',
+                  borderRadius: '50%', width: '20px', height: '20px',
+                  fontSize: '0.7rem', fontWeight: 800,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  border: '2px solid var(--cafe)',
+                }}
+              >
+                {totalItems > 9 ? '9+' : totalItems}
+              </span>
+            )}
           </button>
         </div>
-
       </div>
     </header>
   )

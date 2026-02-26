@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import toast from 'react-hot-toast'
 import useCartStore from '../store/useCartStore'
 import { productos } from '../data/menu'
@@ -36,10 +35,7 @@ export default function ProductPage() {
     addItem(producto, qty, nota)
     setAdded(true)
     toast(`${producto.emoji} ${producto.nombre} — ×${qty} agregada`, {
-      style: {
-        background: 'var(--cafe)', color: 'var(--crema)',
-        fontWeight: 700, borderRadius: '12px',
-      },
+      style: { background: 'var(--cafe)', color: 'var(--crema)', fontWeight: 700, borderRadius: '12px' },
       duration: 2000,
     })
     setTimeout(handleBack, 350)
@@ -48,11 +44,8 @@ export default function ProductPage() {
   if (!producto) return null
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 24 }}
-      transition={{ duration: 0.22 }}
+    <div
+      className="page-enter"
       style={{
         minHeight: '100dvh', background: '#ffffff',
         paddingBottom: 'max(24px, env(safe-area-inset-bottom))',
@@ -69,7 +62,6 @@ export default function ProductPage() {
       >
         {producto.emoji}
 
-        {/* Botón volver */}
         <button
           ref={backRef}
           onClick={handleBack}
@@ -81,12 +73,10 @@ export default function ProductPage() {
             width: '40px', height: '40px', cursor: 'pointer',
             fontSize: '1.1rem',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-            color: 'var(--cafe)',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)', color: 'var(--cafe)',
           }}
         >←</button>
 
-        {/* Badge — dorado */}
         {producto.badge && (
           <div
             style={{
@@ -103,11 +93,7 @@ export default function ProductPage() {
 
       {/* Contenido */}
       <div style={{ padding: '20px 20px 0', maxWidth: '640px', margin: '0 auto' }}>
-        {/* Nombre — Healing */}
-        <h2
-          className="font-chreed"
-          style={{ fontSize: '1.6rem', color: 'var(--cafe)', marginBottom: '6px', lineHeight: 1.1 }}
-        >
+        <h2 className="font-chreed" style={{ fontSize: '1.6rem', color: 'var(--cafe)', marginBottom: '6px', lineHeight: 1.1 }}>
           {producto.nombre}
         </h2>
 
@@ -117,7 +103,6 @@ export default function ProductPage() {
           </p>
         )}
 
-        {/* Precio — Brinnan bold */}
         <p className="font-brinnan" style={{ color: 'var(--primario)', fontSize: '1.75rem', fontWeight: 800, marginBottom: '20px' }}>
           {formatCOP(producto.precio)}
         </p>
@@ -137,15 +122,12 @@ export default function ProductPage() {
             }}
           >−</button>
 
-          <motion.span
-            key={qty}
-            initial={{ scale: 1.3 }} animate={{ scale: 1 }}
-            transition={{ type: 'spring', stiffness: 350, damping: 14 }}
+          <span
             className="font-chreed"
             style={{ fontSize: '1.5rem', color: 'var(--cafe)', minWidth: '32px', textAlign: 'center' }}
           >
             {qty}
-          </motion.span>
+          </span>
 
           <button
             onClick={() => setQty(q => q + 1)}
@@ -160,7 +142,7 @@ export default function ProductPage() {
           >+</button>
         </div>
 
-        {/* Nota especial */}
+        {/* Nota */}
         <textarea
           value={nota}
           onChange={e => setNota(e.target.value)}
@@ -174,14 +156,12 @@ export default function ProductPage() {
             padding: '12px 14px', fontSize: '0.875rem',
             color: 'var(--cafe)', background: 'var(--crema)',
             resize: 'none', outline: 'none',
-            lineHeight: 1.5, marginBottom: '16px',
-            boxSizing: 'border-box',
+            lineHeight: 1.5, marginBottom: '16px', boxSizing: 'border-box',
           }}
         />
 
-        {/* Botón agregar — fucsia, border-radius 12px */}
-        <motion.button
-          whileTap={{ scale: 0.97 }}
+        {/* Botón agregar */}
+        <button
           onClick={handleAdd}
           className="font-chreed"
           style={{
@@ -195,8 +175,8 @@ export default function ProductPage() {
           }}
         >
           {added ? '✅ ¡Agregado!' : `Agregar al pedido 🛒 — ${formatCOP(producto.precio * qty)}`}
-        </motion.button>
+        </button>
       </div>
-    </motion.div>
+    </div>
   )
 }
