@@ -6,6 +6,9 @@ const useCartStore = create((set, get) => ({
   lastOrder: null,
   paymentMethod: null,   // 'nequi' | 'bancolombia' | 'efectivo'
   extras: { servilletas: false, salsas: false, tartara: 0, pina: 0 },
+  sede: null,            // 'Aurora' | 'Lagos' | 'Mutis' | 'Piedecuesta'
+
+  setSede: (sede) => set({ sede }),
 
   addItem: (producto, qty = 1, nota = '') => {
     const { items } = get()

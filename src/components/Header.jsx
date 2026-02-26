@@ -7,7 +7,7 @@ export default function Header() {
   const [searchParams, setSearchParams] = useSearchParams()
   const searchQuery = searchParams.get('search') || ''
 
-  const { items } = useCartStore()
+  const { items, sede } = useCartStore()
   const totalItems = items.reduce((a, i) => a + i.qty, 0)
   const [badgeKey, setBadgeKey] = useState(0)
   const prevTotal = useRef(totalItems)
@@ -35,6 +35,18 @@ export default function Header() {
       }}
     >
       <div style={{ maxWidth: '640px', margin: '0 auto' }}>
+        {/* Badge de sede */}
+        {sede && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '5px' }}>
+            <span style={{ fontSize: '0.7rem' }}>📍</span>
+            <span
+              className="font-brinnan"
+              style={{ color: '#f9ac31', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.03em' }}
+            >
+              Sede {sede}
+            </span>
+          </div>
+        )}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
 
           {/* Logo */}

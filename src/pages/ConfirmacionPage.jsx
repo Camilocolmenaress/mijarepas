@@ -24,7 +24,7 @@ const CAT_ORDER = ['clasicas','especiales','desgranadas','chicharronas','hamburg
 
 export default function ConfirmacionPage() {
   const navigate  = useNavigate()
-  const { lastOrder, clearCart } = useCartStore()
+  const { lastOrder, clearCart, sede } = useCartStore()
   const fired = useRef(false)
 
   useEffect(() => {
@@ -91,6 +91,7 @@ export default function ConfirmacionPage() {
     `¡Hola! Acabo de hacer un pedido en Mijarepas 🫓\n\n` +
     `👤 Nombre: ${pedido.nombre}\n` +
     `📞 Teléfono: ${pedido.telefono}\n` +
+    (sede ? `🏪 Sede: ${sede}\n` : '') +
     `📍 Dirección: ${pedido.direccion || 'No especificada'}\n\n` +
     `🛒 Pedido:\n${lineasPorCategoria}\n\n` +
     (extrasLinea ? `➕ Extras: ${extrasLinea}\n\n` : '') +
@@ -198,6 +199,11 @@ export default function ConfirmacionPage() {
               </span>
             </div>
 
+            {sede && (
+              <p className="font-brinnan" style={{ fontSize: '0.8rem', color: 'var(--cafe-medio)', marginBottom: '4px' }}>
+                🏪 Sede {sede}
+              </p>
+            )}
             {pedido.direccion && (
               <p className="font-brinnan" style={{ fontSize: '0.8rem', color: 'var(--cafe-medio)', marginBottom: '12px' }}>
                 📍 {pedido.direccion}
