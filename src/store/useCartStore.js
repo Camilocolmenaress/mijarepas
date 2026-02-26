@@ -39,6 +39,12 @@ const useCartStore = create((set, get) => ({
     set({ items: updated })
   },
 
+  // Actualiza la nota de un item ya en el carrito
+  updateNota: (key, nota) => {
+    const { items } = get()
+    set({ items: items.map(i => i.key === key ? { ...i, nota } : i) })
+  },
+
   clearCart: () => set({ items: [], paymentMethod: null, extras: { servilletas: false, salsas: false, tartara: 0, pina: 0 } }),
 
   setLastOrder: (pedido) => set({ lastOrder: pedido }),

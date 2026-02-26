@@ -6,6 +6,22 @@ import { formatCOP } from '../utils/formatCOP'
 
 const WHATSAPP_NUMBER = '573150642289'
 
+const CAT_LABELS = {
+  clasicas:     { label: 'Arepas Clásicas',      emoji: '🫓' },
+  especiales:   { label: 'Arepas Especiales',     emoji: '🌟' },
+  desgranadas:  { label: 'Arepas Desgranadas',    emoji: '🌽' },
+  chicharronas: { label: 'Arepas Chicharronas',   emoji: '🐷' },
+  hamburguesas: { label: 'Arepas Hamburguesa',    emoji: '🍔' },
+  parrilla:     { label: 'Parrilla',              emoji: '🥩' },
+  delicias:     { label: 'Delicias de mi Tierra', emoji: '🍲' },
+  frias:        { label: 'Bebidas Frías',         emoji: '🍹' },
+  calientes:    { label: 'Bebidas Calientes',     emoji: '☕' },
+  adicionales:  { label: 'Adicionales',           emoji: '➕' },
+  quesudita:    { label: 'Tu Quesudita',          emoji: '🧀' },
+}
+
+const CAT_ORDER = ['clasicas','especiales','desgranadas','chicharronas','hamburguesas','parrilla','delicias','frias','calientes','quesudita','adicionales']
+
 export default function ConfirmacionPage() {
   const navigate  = useNavigate()
   const { lastOrder, clearCart } = useCartStore()
@@ -38,15 +54,34 @@ export default function ConfirmacionPage() {
 
   const pedido = lastOrder
 
-  const lineas = pedido.items
-    .map(i => `• ${i.qty}× ${i.nombre}${i.nota ? ` (${i.nota})` : ''} — ${formatCOP(i.subtotal)}`)
-    .join('\n')
+  /* ── Construir mensaje WhatsApp con categorías (AJUSTE 4) ── */
+  const itemsByCat = {}
+  pedido.items.forEach(item => {
+    const cat = item.cat || 'adicionales'
+    if (!itemsByCat[cat]) itemsByCat[cat] = []
+    itemsByCat[cat].push(item)
+  })
+  const catsPresentes = CAT_ORDER.filter(c => itemsByCat[c]?.length > 0)
+
+  const lineasPorCategoria = catsPresentes.map(cat => {
+    const catInfo = CAT_LABELS[cat] || { label: cat, emoji: '📦' }
+    const lineasCat = itemsByCat[cat].map(i => {
+      let linea = `  • ${i.qty}× ${i.nombre} — ${formatCOP(i.subtotal)}`
+      if (i.cat === 'quesudita' && i.nota) {
+        linea += `\n    ${i.nota}`
+      } else if (i.nota) {
+        linea += `\n    📝 ${i.nota}`
+      }
+      return linea
+    }).join('\n')
+    return `${catInfo.emoji} ${catInfo.label}:\n${lineasCat}`
+  }).join('\n\n')
 
   const extrasLinea = pedido.extras
     ? [
         pedido.extras.servilletas && '🧻 Servilletas',
-        pedido.extras.tartara > 0 && `🥣 Tártara ×${pedido.extras.tartara}`,
-        pedido.extras.pina > 0 && `🍍 Salsa piña ×${pedido.extras.pina}`,
+        pedido.extras.tartara > 0 && `Salsa Tártara ×${pedido.extras.tartara}`,
+        pedido.extras.pina > 0 && `Salsa Piña ×${pedido.extras.pina}`,
       ].filter(Boolean).join(', ')
     : ''
 
@@ -57,7 +92,7 @@ export default function ConfirmacionPage() {
     `👤 Nombre: ${pedido.nombre}\n` +
     `📞 Teléfono: ${pedido.telefono}\n` +
     `📍 Dirección: ${pedido.direccion || 'No especificada'}\n\n` +
-    `🛒 Pedido:\n${lineas}\n\n` +
+    `🛒 Pedido:\n${lineasPorCategoria}\n\n` +
     (extrasLinea ? `➕ Extras: ${extrasLinea}\n\n` : '') +
     `💰 Total: ${formatCOP(pedido.total)}\n` +
     `🛵 + Valor del domicilio cobrado por la empresa encargada\n` +
@@ -137,7 +172,7 @@ export default function ConfirmacionPage() {
             </p>
           </div>
 
-          {/* Resumen del pedido */}
+          {/* Resumen del pedido — agrupado por categoría */}
           <div
             className="anim-fadeInUp-d2"
             style={{
@@ -169,25 +204,43 @@ export default function ConfirmacionPage() {
               </p>
             )}
 
-            {/* Lista de productos */}
+            {/* Lista agrupada por categoría */}
             <div style={{ borderTop: '1px solid var(--crema-oscuro)', paddingTop: '12px', marginBottom: '8px' }}>
-              {pedido.items.map((item, idx) => (
-                <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '10px', marginBottom: '9px' }}>
-                  <div style={{ flex: 1 }}>
-                    <span className="font-brinnan" style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--cafe)' }}>
-                      ×{item.qty} {item.nombre}
-                    </span>
-                    {item.nota && (
-                      <span className="font-brinnan" style={{ display: 'block', fontSize: '0.72rem', fontStyle: 'italic', color: 'var(--cafe-medio)', marginTop: '1px' }}>
-                        {item.nota}
-                      </span>
+              {catsPresentes.map((cat, catIdx) => {
+                const catInfo = CAT_LABELS[cat] || { label: cat, emoji: '📦' }
+                return (
+                  <div key={cat} style={{ marginBottom: '10px' }}>
+                    <p className="font-chreed" style={{ fontSize: '0.82rem', color: '#42261a', margin: '0 0 6px' }}>
+                      {catInfo.emoji} {catInfo.label}
+                    </p>
+                    {itemsByCat[cat].map((item, idx) => (
+                      <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '10px', marginBottom: '6px', paddingLeft: '8px' }}>
+                        <div style={{ flex: 1 }}>
+                          <span className="font-brinnan" style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--cafe)' }}>
+                            ×{item.qty} {item.nombre}
+                          </span>
+                          {item.cat === 'quesudita' && item.nota && (
+                            <span className="font-brinnan" style={{ display: 'block', fontSize: '0.7rem', fontStyle: 'italic', color: 'var(--cafe-medio)', marginTop: '1px' }}>
+                              {item.nota}
+                            </span>
+                          )}
+                          {item.cat !== 'quesudita' && item.nota && (
+                            <span className="font-brinnan" style={{ display: 'block', fontSize: '0.7rem', fontStyle: 'italic', color: '#eb1e55', marginTop: '1px' }}>
+                              📝 {item.nota}
+                            </span>
+                          )}
+                        </div>
+                        <span className="font-chreed" style={{ fontSize: '0.85rem', color: 'var(--cafe)', flexShrink: 0 }}>
+                          {formatCOP(item.subtotal)}
+                        </span>
+                      </div>
+                    ))}
+                    {catIdx < catsPresentes.length - 1 && (
+                      <div style={{ borderBottom: '1px dashed var(--crema-oscuro)', margin: '8px 0' }} />
                     )}
                   </div>
-                  <span className="font-chreed" style={{ fontSize: '0.88rem', color: 'var(--cafe)', flexShrink: 0 }}>
-                    {formatCOP(item.subtotal)}
-                  </span>
-                </div>
-              ))}
+                )
+              })}
             </div>
 
             {/* Subtotal / Domicilio / Total */}
@@ -226,8 +279,8 @@ export default function ConfirmacionPage() {
                   ➕ Extras:{' '}
                   {[
                     pedido.extras.servilletas && '🧻 Servilletas',
-                    pedido.extras.tartara > 0 && `🥣 Tártara ×${pedido.extras.tartara}`,
-                    pedido.extras.pina > 0 && `🍍 Piña ×${pedido.extras.pina}`,
+                    pedido.extras.tartara > 0 && `Tártara ×${pedido.extras.tartara}`,
+                    pedido.extras.pina > 0 && `Piña ×${pedido.extras.pina}`,
                   ].filter(Boolean).join(' · ')}
                 </span>
               </div>

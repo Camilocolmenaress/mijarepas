@@ -12,7 +12,6 @@ export default function ProductPage() {
 
   const producto = productos.find(p => p.id === id)
   const [qty, setQty] = useState(1)
-  const [nota, setNota] = useState('')
   const [added, setAdded] = useState(false)
   const backRef = useRef(null)
 
@@ -32,7 +31,7 @@ export default function ProductPage() {
   }
 
   const handleAdd = () => {
-    addItem(producto, qty, nota)
+    addItem(producto, qty, '')
     setAdded(true)
     toast(`${producto.emoji} ${producto.nombre} — ×${qty} agregada`, {
       style: { background: 'var(--cafe)', color: 'var(--crema)', fontWeight: 700, borderRadius: '12px' },
@@ -141,24 +140,6 @@ export default function ProductPage() {
             }}
           >+</button>
         </div>
-
-        {/* Nota */}
-        <textarea
-          value={nota}
-          onChange={e => setNota(e.target.value)}
-          placeholder="¿Alguna nota? (sin ají, extra queso...)"
-          maxLength={150}
-          rows={2}
-          className="font-brinnan"
-          style={{
-            width: '100%', borderRadius: '12px',
-            border: '1.5px solid var(--crema-oscuro)',
-            padding: '12px 14px', fontSize: '0.875rem',
-            color: 'var(--cafe)', background: 'var(--crema)',
-            resize: 'none', outline: 'none',
-            lineHeight: 1.5, marginBottom: '16px', boxSizing: 'border-box',
-          }}
-        />
 
         {/* Botón agregar */}
         <button

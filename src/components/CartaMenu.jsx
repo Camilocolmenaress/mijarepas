@@ -119,10 +119,102 @@ function SeccionEspeciales() {
   )
 }
 
-/* ─── SECCIÓN 3 — Fucsia: Quesudita ─────────────────────────────────── */
+/* ─── SECCIÓN 3 — Fucsia: Quesudita con checkboxes ──────────────────── */
+const QUESUDITA_PRECIO = 33500
+const QUESUDITA_ID = 'quesudita-personalizada'
+
+// add1-add6 → ESCOGE 3 | add7-add12 → ESCOGE 4
+const IDS_ESCOGE3 = ['add1','add2','add3','add4','add5','add6']
+const IDS_ESCOGE4 = ['add7','add8','add9','add10','add11','add12']
+
+function CheckboxIngrediente({ nombre, precio, checked, disabled, onToggle, colorText, colorCheck, colorDis }) {
+  return (
+    <div
+      onClick={disabled && !checked ? undefined : onToggle}
+      style={{
+        display: 'flex', alignItems: 'center', gap: '10px',
+        padding: '10px 0', cursor: disabled && !checked ? 'default' : 'pointer',
+        opacity: disabled && !checked ? 0.4 : 1,
+        transition: 'opacity 0.2s ease',
+      }}
+    >
+      {/* Checkbox visual */}
+      <div style={{
+        width: '22px', height: '22px', borderRadius: '6px', flexShrink: 0,
+        border: `2px solid ${checked ? colorCheck : 'rgba(255,241,210,0.5)'}`,
+        background: checked ? colorCheck : 'transparent',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        transition: 'all 0.15s ease',
+      }}>
+        {checked && (
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+            <path d="M1 5L4.5 8.5L11 1.5" stroke="#42261a" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        )}
+      </div>
+      <span className="font-healing" style={{ color: colorText, fontSize: '16px', lineHeight: 1.2, flex: 1 }}>
+        {nombre}
+      </span>
+    </div>
+  )
+}
+
 function SeccionQuesudita() {
-  const escoge3 = productos.filter(p => ['add1','add2','add3','add4','add5','add6'].includes(p.id))
-  const escoge4 = productos.filter(p => ['add7','add8','add9','add10','add11','add12'].includes(p.id))
+  const { addItem } = useCartStore()
+  const [sel3, setSel3] = useState([])   // ids seleccionados de ESCOGE 3
+  const [sel4, setSel4] = useState([])   // ids de ESCOGE 4
+  const [popped, setPopped] = useState(false)
+
+  const prod3 = productos.filter(p => IDS_ESCOGE3.includes(p.id))
+  const prod4 = productos.filter(p => IDS_ESCOGE4.includes(p.id))
+
+  const toggle3 = (id) => {
+    if (sel3.includes(id)) { setSel3(sel3.filter(x => x !== id)); return }
+    if (sel3.length >= 3) return
+    setSel3([...sel3, id])
+  }
+  const toggle4 = (id) => {
+    if (sel4.includes(id)) { setSel4(sel4.filter(x => x !== id)); return }
+    if (sel4.length >= 4) return
+    setSel4([...sel4, id])
+  }
+
+  const canAdd = sel3.length === 3 && sel4.length === 4
+
+  const handleAgregar = () => {
+    if (!canAdd) {
+      toast.error(
+        sel3.length < 3
+          ? `Escoge ${3 - sel3.length} ingrediente${3 - sel3.length > 1 ? 's' : ''} más del primer grupo`
+          : `Escoge ${4 - sel4.length} ingrediente${4 - sel4.length > 1 ? 's' : ''} más del segundo grupo`,
+        { style: { fontWeight: 700, borderRadius: '12px' } }
+      )
+      return
+    }
+    const nombres3 = sel3.map(id => productos.find(p => p.id === id)?.nombre).join(', ')
+    const nombres4 = sel4.map(id => productos.find(p => p.id === id)?.nombre).join(', ')
+    const descripcion = `${nombres3} · ${nombres4}`
+
+    const productQuesudita = {
+      id: QUESUDITA_ID,
+      cat: 'quesudita',
+      nombre: 'Quesudita Personalizada',
+      emoji: '🧀',
+      precio: QUESUDITA_PRECIO,
+      desc: descripcion,
+    }
+    addItem(productQuesudita, 1, descripcion)
+    setPopped(true)
+    setTimeout(() => setPopped(false), 350)
+    toast('🧀 ¡Quesudita armada y agregada!', {
+      style: { background: '#42261a', color: '#fff1d2', borderRadius: '12px', fontSize: '0.85rem' },
+      duration: 2200,
+    })
+    // Reset selección
+    setSel3([])
+    setSel4([])
+  }
+
   return (
     <div style={{ background: '#eb1e55', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
       <h2 className="font-chreed" style={{ color: '#fff1d2', fontSize: '52px', lineHeight: 1 }}>ARMA</h2>
@@ -136,10 +228,70 @@ function SeccionQuesudita() {
         </span>
       </div>
       <Placeholder bg="#c8154a" border="#fff1d2" textColor="#fff1d2" />
-      <h3 className="font-chreed" style={{ color: '#f9ac31', fontSize: '20px', margin: '16px 0 4px' }}>ESCOGE 3</h3>
-      {escoge3.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#fff1d2" descColor="#fff1d2" precioColor="#f9ac31" btnBg="#f9ac31" btnColor="#42261a" sepColor="#fff1d2" />)}
-      <h3 className="font-chreed" style={{ color: '#f9ac31', fontSize: '20px', margin: '20px 0 4px' }}>ESCOGE 4</h3>
-      {escoge4.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#fff1d2" descColor="#fff1d2" precioColor="#f9ac31" btnBg="#f9ac31" btnColor="#42261a" sepColor="#fff1d2" />)}
+
+      {/* ESCOGE 3 */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '16px 0 4px' }}>
+        <h3 className="font-chreed" style={{ color: '#f9ac31', fontSize: '20px', margin: 0 }}>ESCOGE 3</h3>
+        <span className="font-brinnan" style={{ color: sel3.length === 3 ? '#f9ac31' : 'rgba(255,241,210,0.6)', fontSize: '13px', fontWeight: 700 }}>
+          {sel3.length}/3
+        </span>
+      </div>
+      {prod3.map(p => (
+        <div key={p.id}>
+          <CheckboxIngrediente
+            nombre={p.nombre}
+            checked={sel3.includes(p.id)}
+            disabled={sel3.length >= 3}
+            onToggle={() => toggle3(p.id)}
+            colorText="#fff1d2"
+            colorCheck="#f9ac31"
+          />
+          <div style={{ borderBottom: '1.5px dashed rgba(255,241,210,0.3)' }} />
+        </div>
+      ))}
+
+      {/* ESCOGE 4 */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '20px 0 4px' }}>
+        <h3 className="font-chreed" style={{ color: '#f9ac31', fontSize: '20px', margin: 0 }}>ESCOGE 4</h3>
+        <span className="font-brinnan" style={{ color: sel4.length === 4 ? '#f9ac31' : 'rgba(255,241,210,0.6)', fontSize: '13px', fontWeight: 700 }}>
+          {sel4.length}/4
+        </span>
+      </div>
+      {prod4.map(p => (
+        <div key={p.id}>
+          <CheckboxIngrediente
+            nombre={p.nombre}
+            checked={sel4.includes(p.id)}
+            disabled={sel4.length >= 4}
+            onToggle={() => toggle4(p.id)}
+            colorText="#fff1d2"
+            colorCheck="#f9ac31"
+          />
+          <div style={{ borderBottom: '1.5px dashed rgba(255,241,210,0.3)' }} />
+        </div>
+      ))}
+
+      {/* Botón agregar */}
+      <button
+        onClick={handleAgregar}
+        className={`font-chreed${popped ? ' pop' : ''}`}
+        style={{
+          marginTop: '24px',
+          width: '100%',
+          background: canAdd ? '#f9ac31' : 'rgba(249,172,49,0.35)',
+          color: canAdd ? '#42261a' : 'rgba(255,241,210,0.5)',
+          border: 'none', borderRadius: '14px',
+          padding: '15px', fontSize: '1.1rem',
+          cursor: canAdd ? 'pointer' : 'default',
+          transition: 'all 0.2s ease',
+          boxShadow: canAdd ? '0 4px 20px rgba(0,0,0,0.25)' : 'none',
+        }}
+      >
+        {canAdd
+          ? `🧀 Agregar Quesudita — ${formatCOP(QUESUDITA_PRECIO)}`
+          : `Escoge ${3 - sel3.length > 0 ? `${3 - sel3.length} del grupo 1` : `${4 - sel4.length} del grupo 2`}`
+        }
+      </button>
     </div>
   )
 }

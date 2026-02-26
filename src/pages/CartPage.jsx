@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   ShoppingCart, Banknote, Smartphone, Building2,
@@ -6,6 +7,7 @@ import {
 } from 'lucide-react'
 import useCartStore from '../store/useCartStore'
 import { formatCOP } from '../utils/formatCOP'
+import { categorias } from '../data/menu'
 
 /* ─── Icono helper ──────────────────────────────────────────────────── */
 const IC = ({ icon: Icon, size = 18, color = '#42261a', style = {} }) => (
@@ -125,12 +127,80 @@ function CounterRow({ value, onDec, onInc, maxReached }) {
   )
 }
 
+/* ─── Campo de nota por producto ────────────────────────────────────── */
+function NotaProducto({ itemKey, nota }) {
+  const { updateNota } = useCartStore()
+  const [expanded, setExpanded] = useState(!!nota)
+  const [localNota, setLocalNota] = useState(nota || '')
+
+  const handleChange = (val) => {
+    setLocalNota(val)
+    updateNota(itemKey, val)
+  }
+
+  // Si ya tiene nota, mostrar siempre expandido
+  if (nota && !expanded) setExpanded(true)
+
+  return (
+    <div style={{ marginTop: '4px' }}>
+      {!expanded ? (
+        <button
+          onClick={() => setExpanded(true)}
+          className="font-brinnan"
+          style={{
+            background: 'none', border: 'none', padding: 0, cursor: 'pointer',
+            color: '#eb1e55', fontSize: '12px', fontWeight: 700,
+          }}
+        >
+          ＋ Agregar nota
+        </button>
+      ) : (
+        <textarea
+          value={localNota}
+          onChange={e => handleChange(e.target.value)}
+          placeholder="Alguna nota? (sin queso, sin cebolla...)"
+          rows={2}
+          className="font-brinnan"
+          style={{
+            width: '100%', boxSizing: 'border-box',
+            background: 'rgba(0,0,0,0.05)',
+            border: '1px dashed rgba(66,38,26,0.3)',
+            borderRadius: '8px', padding: '8px',
+            fontSize: '13px', color: '#42261a',
+            resize: 'none', outline: 'none', lineHeight: 1.4,
+            marginTop: '2px',
+          }}
+        />
+      )}
+    </div>
+  )
+}
+
+/* ─── Categoría label/emoji para un item ────────────────────────────── */
+const CAT_LABELS = {
+  clasicas:     { label: 'Arepas Clásicas',      emoji: '🫓' },
+  especiales:   { label: 'Arepas Especiales',     emoji: '🌟' },
+  desgranadas:  { label: 'Arepas Desgranadas',    emoji: '🌽' },
+  chicharronas: { label: 'Arepas Chicharronas',   emoji: '🐷' },
+  hamburguesas: { label: 'Arepas Hamburguesa',    emoji: '🍔' },
+  parrilla:     { label: 'Parrilla',              emoji: '🥩' },
+  delicias:     { label: 'Delicias de mi Tierra', emoji: '🍲' },
+  frias:        { label: 'Bebidas Frías',         emoji: '🍹' },
+  calientes:    { label: 'Bebidas Calientes',     emoji: '☕' },
+  adicionales:  { label: 'Adicionales',           emoji: '➕' },
+  quesudita:    { label: 'Tu Quesudita',          emoji: '🧀' },
+}
+
+/* Orden deseado de categorías en el carrito */
+const CAT_ORDER = ['clasicas','especiales','desgranadas','chicharronas','hamburguesas','parrilla','delicias','frias','calientes','quesudita','adicionales']
+
 export default function CartPage() {
   const navigate = useNavigate()
   const { items, updateQty, extras, setExtras, paymentMethod, setPaymentMethod } = useCartStore()
   const subtotal = items.reduce((a, i) => a + i.precio * i.qty, 0)
 
-  const maxSalsas = items.reduce((a, i) => a + i.qty, 0)
+  // AJUSTE 2: max = total de unidades de productos (1 tártara + 1 piña por cada unidad)
+  const totalUnidades = items.reduce((a, i) => a + i.qty, 0)
 
   const handleServilletas = (v) => setExtras({ ...extras, servilletas: v })
   const handleSalsas = (v) => {
@@ -139,9 +209,18 @@ export default function CartPage() {
   }
   const changeSalsa = (tipo, delta) => {
     const curr = extras[tipo]
-    const newVal = Math.max(0, Math.min(maxSalsas, curr + delta))
+    const newVal = Math.max(0, Math.min(totalUnidades, curr + delta))
     setExtras({ ...extras, [tipo]: newVal })
   }
+
+  // Agrupar items por categoría (AJUSTE 3)
+  const itemsByCat = {}
+  items.forEach(item => {
+    const cat = item.cat || 'adicionales'
+    if (!itemsByCat[cat]) itemsByCat[cat] = []
+    itemsByCat[cat].push(item)
+  })
+  const catsPresentes = CAT_ORDER.filter(c => itemsByCat[c]?.length > 0)
 
   return (
     <div
@@ -198,68 +277,93 @@ export default function CartPage() {
           </div>
         )}
 
-        {/* ── Lista de productos ── */}
+        {/* ── Lista de productos agrupada por categoría ── */}
         {items.length > 0 && (
           <>
-            <div style={{ padding: '12px 0' }}>
-              {items.map(item => (
-                <div
-                  key={item.key}
-                  style={{
-                    display: 'flex', alignItems: 'center', gap: '10px',
-                    padding: '10px 0', borderBottom: '1px solid var(--crema-oscuro)',
-                  }}
-                >
-                  <span style={{ fontSize: '1.6rem', flexShrink: 0 }}>{item.emoji}</span>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <p className="font-brinnan" style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--cafe)', lineHeight: 1.3 }}>
-                      {item.nombre}
-                    </p>
-                    {item.nota && (
-                      <p className="font-brinnan" style={{ fontSize: '0.72rem', color: 'var(--cafe-medio)', fontStyle: 'italic' }}>
-                        {item.nota}
-                      </p>
-                    )}
-                    <p className="font-brinnan" style={{ color: 'var(--primario)', fontSize: '0.9rem', fontWeight: 800 }}>
-                      {formatCOP(item.precio * item.qty)}
-                    </p>
+            <div style={{ paddingTop: '12px' }}>
+              {catsPresentes.map((cat, catIdx) => {
+                const catInfo = CAT_LABELS[cat] || { label: cat, emoji: '📦' }
+                const catItems = itemsByCat[cat]
+                return (
+                  <div key={cat}>
+                    {/* Separador de categoría */}
+                    <div style={{
+                      display: 'flex', alignItems: 'center', gap: '8px',
+                      marginTop: catIdx > 0 ? '16px' : '4px', marginBottom: '4px',
+                    }}>
+                      <div style={{ flex: 1, height: '1px', background: 'var(--crema-oscuro)' }} />
+                      <span className="font-chreed" style={{ color: '#42261a', fontSize: '14px', whiteSpace: 'nowrap' }}>
+                        {catInfo.emoji} {catInfo.label}
+                      </span>
+                      <div style={{ flex: 1, height: '1px', background: 'var(--crema-oscuro)' }} />
+                    </div>
+
+                    {catItems.map(item => (
+                      <div key={item.key} style={{ padding: '8px 0', borderBottom: '1px solid var(--crema-oscuro)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <span style={{ fontSize: '1.5rem', flexShrink: 0 }}>{item.emoji}</span>
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <p className="font-brinnan" style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--cafe)', lineHeight: 1.3 }}>
+                              {item.nombre}
+                            </p>
+                            {/* Descripción de quesudita (ingredientes) */}
+                            {item.cat === 'quesudita' && item.nota && (
+                              <p className="font-brinnan" style={{ fontSize: '0.72rem', color: 'var(--cafe-medio)', fontStyle: 'italic', lineHeight: 1.35 }}>
+                                {item.nota}
+                              </p>
+                            )}
+                            <p className="font-brinnan" style={{ color: 'var(--primario)', fontSize: '0.9rem', fontWeight: 800 }}>
+                              {formatCOP(item.precio * item.qty)}
+                            </p>
+                          </div>
+                          {/* Controles de cantidad */}
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+                            <button
+                              onClick={() => updateQty(item.key, -1)}
+                              aria-label="Reducir cantidad"
+                              style={{
+                                width: '28px', height: '28px', borderRadius: '50%',
+                                border: '1.5px solid var(--crema-oscuro)',
+                                background: 'white', cursor: 'pointer',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                              }}
+                            >
+                              <IC icon={Minus} size={13} color="var(--cafe-medio)" />
+                            </button>
+                            <span className="font-chreed" style={{ minWidth: '20px', textAlign: 'center', color: 'var(--cafe)' }}>
+                              {item.qty}
+                            </span>
+                            <button
+                              onClick={() => updateQty(item.key, 1)}
+                              aria-label="Aumentar cantidad"
+                              style={{
+                                width: '28px', height: '28px', borderRadius: '50%',
+                                border: 'none', background: 'var(--primario)',
+                                color: 'white', cursor: 'pointer',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                              }}
+                            >
+                              <IC icon={Plus} size={13} color="#fff" />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Nota por producto — AJUSTE 5 (no mostrar en quesudita, ya usa nota como desc) */}
+                        {item.cat !== 'quesudita' && (
+                          <div style={{ paddingLeft: '40px' }}>
+                            <NotaProducto itemKey={item.key} nota={item.nota} />
+                          </div>
+                        )}
+                      </div>
+                    ))}
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-                    <button
-                      onClick={() => updateQty(item.key, -1)}
-                      aria-label="Reducir cantidad"
-                      style={{
-                        width: '28px', height: '28px', borderRadius: '50%',
-                        border: '1.5px solid var(--crema-oscuro)',
-                        background: 'white', cursor: 'pointer',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      }}
-                    >
-                      <IC icon={Minus} size={13} color="var(--cafe-medio)" />
-                    </button>
-                    <span className="font-chreed" style={{ minWidth: '20px', textAlign: 'center', color: 'var(--cafe)' }}>
-                      {item.qty}
-                    </span>
-                    <button
-                      onClick={() => updateQty(item.key, 1)}
-                      aria-label="Aumentar cantidad"
-                      style={{
-                        width: '28px', height: '28px', borderRadius: '50%',
-                        border: 'none', background: 'var(--primario)',
-                        color: 'white', cursor: 'pointer',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      }}
-                    >
-                      <IC icon={Plus} size={13} color="#fff" />
-                    </button>
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
 
             {/* Subtotal */}
             <div style={{
-              borderTop: '2px solid var(--crema-oscuro)', paddingTop: '14px', marginTop: '4px',
+              borderTop: '2px solid var(--crema-oscuro)', paddingTop: '14px', marginTop: '12px',
               display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px',
             }}>
               <span className="font-brinnan" style={{ color: 'var(--cafe-medio)', fontWeight: 700, fontSize: '0.9rem' }}>Subtotal</span>
@@ -292,21 +396,31 @@ export default function CartPage() {
                 <Toggle active={extras.salsas} onToggle={() => handleSalsas(!extras.salsas)} />
               </div>
 
-              {/* Contadores de salsas — CSS collapse */}
+              {/* Contadores — AJUSTE 2: independientes, máx = totalUnidades cada uno */}
               <div
                 className={'collapse-panel' + (extras.salsas ? ' open' : ' closed')}
                 style={{ marginTop: extras.salsas ? '14px' : 0 }}
               >
                 <p className="font-brinnan" style={{ fontSize: '0.75rem', color: 'var(--cafe-medio)', margin: '0 0 10px' }}>
-                  Máx. 1 salsa por producto pedido ({maxSalsas} en total)
+                  Máx. 1 tártara y 1 piña por cada producto pedido
                 </p>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
                   <span className="font-brinnan" style={{ fontSize: '0.88rem', color: 'var(--cafe)', fontWeight: 700 }}>Tártara</span>
-                  <CounterRow value={extras.tartara} onDec={() => changeSalsa('tartara', -1)} onInc={() => changeSalsa('tartara', 1)} maxReached={extras.tartara + extras.pina >= maxSalsas} />
+                  <CounterRow
+                    value={extras.tartara}
+                    onDec={() => changeSalsa('tartara', -1)}
+                    onInc={() => changeSalsa('tartara', 1)}
+                    maxReached={extras.tartara >= totalUnidades}
+                  />
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <span className="font-brinnan" style={{ fontSize: '0.88rem', color: 'var(--cafe)', fontWeight: 700 }}>Piña</span>
-                  <CounterRow value={extras.pina} onDec={() => changeSalsa('pina', -1)} onInc={() => changeSalsa('pina', 1)} maxReached={extras.tartara + extras.pina >= maxSalsas} />
+                  <CounterRow
+                    value={extras.pina}
+                    onDec={() => changeSalsa('pina', -1)}
+                    onInc={() => changeSalsa('pina', 1)}
+                    maxReached={extras.pina >= totalUnidades}
+                  />
                 </div>
               </div>
             </div>
