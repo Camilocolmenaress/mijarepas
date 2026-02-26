@@ -22,6 +22,10 @@ export default function SplashScreen({ onStart }) {
           initial={{ scale: 0, rotate: -10 }}
           animate={{ scale: 1, rotate: 0 }}
           transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.1 }}
+          style={{
+            display: 'flex', justifyContent: 'center',
+            alignItems: 'center', width: '100%',
+          }}
         >
           <img
             src="/images/logo-transparente.png"
