@@ -92,7 +92,9 @@ export default function ConfirmacionPage() {
     `👤 Nombre: ${pedido.nombre}\n` +
     `📞 Teléfono: ${pedido.telefono}\n` +
     (sede ? `🏪 Sede: ${sede}\n` : '') +
-    `📍 Dirección: ${pedido.direccion || 'No especificada'}\n\n` +
+    `📍 Dirección: ${pedido.direccion || 'No especificada'}\n` +
+    (pedido.especificaciones ? `📝 Especificaciones: ${pedido.especificaciones}\n` : '') +
+    `\n` +
     `🛒 Pedido:\n${lineasPorCategoria}\n\n` +
     (extrasLinea ? `➕ Extras: ${extrasLinea}\n\n` : '') +
     `💰 Total: ${formatCOP(pedido.total)}\n` +
@@ -205,8 +207,13 @@ export default function ConfirmacionPage() {
               </p>
             )}
             {pedido.direccion && (
-              <p className="font-brinnan" style={{ fontSize: '0.8rem', color: 'var(--cafe-medio)', marginBottom: '12px' }}>
+              <p className="font-brinnan" style={{ fontSize: '0.8rem', color: 'var(--cafe-medio)', marginBottom: pedido.especificaciones ? '4px' : '12px' }}>
                 📍 {pedido.direccion}
+              </p>
+            )}
+            {pedido.especificaciones && (
+              <p className="font-brinnan" style={{ fontSize: '0.78rem', color: 'var(--cafe-medio)', marginBottom: '12px', lineHeight: 1.4, opacity: 0.85 }}>
+                📝 {pedido.especificaciones}
               </p>
             )}
 

@@ -16,12 +16,15 @@ export default function CheckoutPage() {
   const [nombre, setNombre] = useState(() => localStorage.getItem('mijarepas_nombre') || '')
   const [telefono, setTelefono] = useState('')
   const [direccion, setDireccion] = useState('')
+  const [especificaciones, setEspecificaciones] = useState('')
   const [loadingGeo, setLoadingGeo] = useState(false)
   const [nombreError, setNombreError] = useState(false)
   const [telefonoError, setTelefonoError] = useState(false)
+  const [direccionError, setDireccionError] = useState(false)
 
   const nombreRef = useRef(null)
   const telefonoRef = useRef(null)
+  const direccionRef = useRef(null)
 
   useEffect(() => {
     if (items.length === 0) navigate('/menu', { replace: true })
@@ -68,6 +71,15 @@ export default function CheckoutPage() {
       })
       return
     }
+    if (!direccion.trim()) {
+      setDireccionError(true)
+      direccionRef.current?.focus()
+      shake(direccionRef)
+      toast.error('Por favor ingresa tu dirección de entrega', {
+        style: { fontWeight: 700, borderRadius: '12px' },
+      })
+      return
+    }
 
     localStorage.setItem('mijarepas_nombre', nombre.trim())
 
@@ -76,10 +88,12 @@ export default function CheckoutPage() {
       telefono: telefono.trim(),
       tipo: 'domicilio',
       mesa: '',
-      direccion,
+      direccion: direccion.trim(),
+      especificaciones: especificaciones.trim(),
       items: items.map(i => ({
         nombre: i.nombre, qty: i.qty, precio: i.precio,
         nota: i.nota, subtotal: i.precio * i.qty,
+        cat: i.cat,
       })),
       subtotal,
       costoDomicilio: 0,
@@ -188,17 +202,18 @@ export default function CheckoutPage() {
           {/* Dirección */}
           <div style={{ marginBottom: '14px' }}>
             <label className="font-brinnan" style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--crema)', display: 'block', marginBottom: '5px', opacity: 0.9 }}>
-              Dirección de entrega
+              Dirección de entrega *
             </label>
             <div style={{ position: 'relative' }}>
               <input
+                ref={direccionRef}
                 type="text"
                 value={loadingGeo ? '' : direccion}
-                onChange={e => setDireccion(e.target.value)}
+                onChange={e => { setDireccion(e.target.value); setDireccionError(false) }}
                 placeholder="Calle, barrio, ciudad..."
                 className="font-brinnan checkout-input"
                 style={{
-                  ...inputStyle(false),
+                  ...inputStyle(direccionError),
                   padding: '12px 48px 12px 14px',
                   background: loadingGeo ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.15)',
                 }}
@@ -219,11 +234,36 @@ export default function CheckoutPage() {
                 {loadingGeo ? '⏳' : '📍'}
               </button>
             </div>
-            {direccion === '' && !loadingGeo && (
+            {direccionError && (
+              <p className="font-brinnan" style={{ fontSize: '0.72rem', color: '#eb1e55', margin: '5px 2px 0', lineHeight: 1.4 }}>
+                Por favor ingresa tu dirección de entrega
+              </p>
+            )}
+            {!direccionError && direccion === '' && !loadingGeo && (
               <p className="font-brinnan" style={{ fontSize: '0.72rem', color: 'rgba(255,241,210,0.7)', margin: '6px 2px 0', lineHeight: 1.4 }}>
                 📍 Toca el ícono de ubicación para detectar tu dirección automáticamente
               </p>
             )}
+          </div>
+
+          {/* Especificaciones adicionales */}
+          <div style={{ marginBottom: '14px' }}>
+            <label className="font-brinnan" style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--crema)', display: 'block', marginBottom: '5px', opacity: 0.9 }}>
+              ¿Algo más que debamos saber?
+            </label>
+            <textarea
+              value={especificaciones}
+              onChange={e => setEspecificaciones(e.target.value)}
+              placeholder="Ej: Apartamento 302, casa esquinera, portón azul, timbre no funciona..."
+              rows={3}
+              className="font-brinnan checkout-input"
+              style={{
+                ...inputStyle(false),
+                resize: 'vertical',
+                minHeight: '72px',
+                lineHeight: 1.5,
+              }}
+            />
           </div>
 
           {/* Resumen de costos */}
