@@ -331,6 +331,184 @@ function SeccionClasicos() {
   )
 }
 
+/* ─── Modal selector de variante ─────────────────────────────────────── */
+function ModalVariante({ producto, onClose, onAgregar }) {
+  const [varSel, setVarSel] = useState(null)
+
+  const handleAgregar = () => {
+    if (!varSel) return
+    onAgregar(varSel)
+  }
+
+  return (
+    /* Overlay */
+    <div
+      onClick={onClose}
+      style={{
+        position: 'fixed', inset: 0, zIndex: 900,
+        background: 'rgba(0,0,0,0.45)',
+        display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
+      }}
+    >
+      {/* Sheet */}
+      <div
+        onClick={e => e.stopPropagation()}
+        style={{
+          background: '#fff', borderRadius: '20px 20px 0 0',
+          padding: '24px 20px 36px', width: '100%', maxWidth: '480px',
+          boxShadow: '0 -4px 32px rgba(0,0,0,0.18)',
+        }}
+      >
+        {/* Manija */}
+        <div style={{ width: '40px', height: '4px', borderRadius: '2px', background: '#ddd', margin: '0 auto 20px' }} />
+
+        {/* Título */}
+        <p className="font-healing" style={{ color: '#42261a', fontSize: '22px', lineHeight: 1.2, marginBottom: '18px', textAlign: 'center' }}>
+          {producto.emoji} {producto.nombre}
+        </p>
+
+        {/* Cards de variante */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '24px' }}>
+          {producto.variantes.map(v => {
+            const sel = varSel?.label === v.label
+            return (
+              <div
+                key={v.label}
+                onClick={() => setVarSel(v)}
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  padding: '14px 16px', borderRadius: '12px', cursor: 'pointer',
+                  border: `2px solid ${sel ? '#eb1e55' : '#ccc'}`,
+                  background: sel ? '#fff1d2' : '#fff',
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                <span className="font-healing" style={{ color: '#42261a', fontSize: '18px' }}>{v.label}</span>
+                <span className="font-chreed" style={{ color: sel ? '#eb1e55' : '#666', fontSize: '16px' }}>
+                  {formatCOP(v.precio)}
+                </span>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Botón Agregar */}
+        <button
+          onClick={handleAgregar}
+          disabled={!varSel}
+          className="font-brinnan"
+          style={{
+            width: '100%', padding: '15px', borderRadius: '14px', border: 'none',
+            background: varSel ? '#eb1e55' : '#ccc',
+            color: '#fff', fontSize: '1rem', fontWeight: 700,
+            cursor: varSel ? 'pointer' : 'default',
+            transition: 'background 0.2s ease',
+            marginBottom: '10px',
+          }}
+        >
+          {varSel ? `Agregar — ${formatCOP(varSel.precio)}` : 'Selecciona un tamaño'}
+        </button>
+
+        {/* Cancelar */}
+        <button
+          onClick={onClose}
+          className="font-brinnan"
+          style={{
+            width: '100%', background: 'none', border: 'none',
+            color: '#999', fontSize: '0.9rem', cursor: 'pointer', padding: '8px',
+          }}
+        >
+          Cancelar
+        </button>
+      </div>
+    </div>
+  )
+}
+
+/* ─── Fila de bebida con variantes ──────────────────────────────────── */
+function FilaProductoBebida({ producto }) {
+  const { addItem } = useCartStore()
+  const [modalOpen, setModalOpen] = useState(false)
+  const [popped, setPopped] = useState(false)
+
+  const handleAdd = (e) => {
+    e.stopPropagation()
+    if (producto.variantes) {
+      setModalOpen(true)
+    } else {
+      addItem(producto)
+      setPopped(true)
+      setTimeout(() => setPopped(false), 350)
+      toast(`${producto.emoji} ${producto.nombre} agregada`, {
+        style: { background: '#42261a', color: '#fff1d2', borderRadius: '12px', fontSize: '0.85rem' },
+        duration: 1800,
+      })
+    }
+  }
+
+  const handleAgregarVariante = (variante) => {
+    const productoVariante = {
+      ...producto,
+      id: `${producto.id}-${variante.label.toLowerCase().replace(/ /g, '-')}`,
+      nombre: `${producto.nombre} — ${variante.label}`,
+      precio: variante.precio,
+    }
+    addItem(productoVariante, 1, '')
+    setPopped(true)
+    setTimeout(() => setPopped(false), 350)
+    toast(`${producto.emoji} ${producto.nombre} (${variante.label}) agregada`, {
+      style: { background: '#42261a', color: '#fff1d2', borderRadius: '12px', fontSize: '0.85rem' },
+      duration: 1800,
+    })
+    setModalOpen(false)
+  }
+
+  return (
+    <>
+      <div
+        style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '11px 0', cursor: 'pointer' }}
+        onClick={handleAdd}
+      >
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <p className="font-healing" style={{ color: '#42261a', fontSize: '18px', lineHeight: 1.2, marginBottom: '2px' }}>
+            {producto.nombre}
+          </p>
+          {producto.desc ? (
+            <p className="font-brinnan" style={{ color: '#42261a', opacity: 0.7, fontSize: '13px', lineHeight: 1.4 }}>
+              {producto.desc}
+            </p>
+          ) : null}
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0, paddingTop: '2px' }}>
+          <span className="font-chreed" style={{ color: '#eb1e55', fontSize: '16px', whiteSpace: 'nowrap' }}>
+            {producto.variantes ? `desde ${formatCOP(producto.variantes[0].precio)}` : formatCOP(producto.precio)}
+          </span>
+          <button
+            onClick={handleAdd}
+            aria-label={`Agregar ${producto.nombre}`}
+            className={popped ? 'pop' : ''}
+            style={{
+              background: '#42261a', color: '#fff', border: 'none',
+              borderRadius: '50%', width: '36px', height: '36px',
+              fontSize: '1.2rem', cursor: 'pointer', flexShrink: 0,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}
+          >+</button>
+        </div>
+      </div>
+      <div style={{ borderBottom: '1.5px dashed #42261a', opacity: 0.3 }} />
+
+      {modalOpen && (
+        <ModalVariante
+          producto={producto}
+          onClose={() => setModalOpen(false)}
+          onAgregar={handleAgregarVariante}
+        />
+      )}
+    </>
+  )
+}
+
 /* ─── SECCIÓN 7 — Azul: Bebidas ─────────────────────────────────────── */
 function SeccionBebidas() {
   const limonadas = productos.filter(p => ['bf1','bf2','bf3','bf4','bf5'].includes(p.id))
@@ -343,9 +521,9 @@ function SeccionBebidas() {
       <h2 className="font-chreed" style={{ color: '#fff1d2', fontSize: '42px', lineHeight: 1 }}>PA' QUE SE</h2>
       <h2 className="font-chreed" style={{ color: '#fff1d2', fontSize: '42px', lineHeight: 1, marginBottom: '16px' }}>REFRESQUE</h2>
       <SubTitulo texto="LIMONADAS" color="#f9ac31" size="24px" />
-      {limonadas.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#42261a" descColor="#42261a" precioColor="#eb1e55" btnBg="#42261a" btnColor="#fff" sepColor="#42261a" />)}
+      {limonadas.map(p => <FilaProductoBebida key={p.id} producto={p} />)}
       <SubTitulo texto="JUGOS Y GRANIZADAS" color="#f9ac31" size="24px" />
-      {jugos.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#42261a" descColor="#42261a" precioColor="#eb1e55" btnBg="#42261a" btnColor="#fff" sepColor="#42261a" />)}
+      {jugos.map(p => <FilaProductoBebida key={p.id} producto={p} />)}
       <SubTitulo texto="CERVEZAS" color="#f9ac31" size="24px" />
       {cervezas.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#42261a" descColor="#42261a" precioColor="#eb1e55" btnBg="#42261a" btnColor="#fff" sepColor="#42261a" />)}
       <SubTitulo texto="BEBIDAS CALIENTES" color="#f9ac31" size="24px" />
