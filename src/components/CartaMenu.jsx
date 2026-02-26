@@ -96,7 +96,7 @@ function SeccionArepas() {
   const chicharronas = productos.filter(p => p.cat === 'chicharronas')
   const hamburguesas = productos.filter(p => p.cat === 'hamburguesas')
   return (
-    <div style={{ background: '#fff1d2', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 120px' }}>
+    <div style={{ background: '#fff1d2', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 160px' }}>
       <h2 className="font-chreed" style={{ color: '#f9ac31', fontSize: '52px', lineHeight: 1 }}>AREPAS</h2>
       <Placeholder bg="#e8d9b8" border="#42261a" textColor="#42261a" />
       <SubTitulo texto="Chicharrona" color="#00afec" size="32px" />
@@ -113,7 +113,7 @@ function SeccionArepas() {
 function SeccionEspeciales() {
   const especiales  = productos.filter(p => p.cat === 'especiales')
   return (
-    <div style={{ background: '#f9ac31', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 120px' }}>
+    <div style={{ background: '#f9ac31', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 160px' }}>
       <p className="font-healing" style={{ color: '#eb1e55', fontSize: '28px', lineHeight: 1.1 }}>Vea pues las</p>
       <h2 className="font-chreed" style={{ color: '#42261a', fontSize: '52px', lineHeight: 1, marginBottom: '16px' }}>ESPECIALES</h2>
       <Placeholder bg="#e09a20" border="#42261a" textColor="#42261a" />
@@ -129,7 +129,7 @@ function SeccionQuesudita() {
   const escoge3 = productos.filter(p => ['add1','add2','add3','add4','add5','add6'].includes(p.id))
   const escoge4 = productos.filter(p => ['add7','add8','add9','add10','add11','add12'].includes(p.id))
   return (
-    <div style={{ background: '#eb1e55', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 120px' }}>
+    <div style={{ background: '#eb1e55', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 160px' }}>
       <h2 className="font-chreed" style={{ color: '#fff1d2', fontSize: '52px', lineHeight: 1 }}>ARMA</h2>
       <p className="font-healing" style={{ color: '#f9ac31', fontSize: '36px', lineHeight: 1.1, marginBottom: '6px' }}>Tu quesudita</p>
       <p className="font-brinnan" style={{ color: '#fff1d2', fontSize: '14px', marginBottom: '12px' }}>
@@ -153,7 +153,7 @@ function SeccionQuesudita() {
 function SeccionDesgranados() {
   const desgranadas = productos.filter(p => p.cat === 'desgranadas')
   return (
-    <div style={{ background: '#42261a', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 120px' }}>
+    <div style={{ background: '#42261a', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 160px' }}>
       <p className="font-healing" style={{ color: '#eb1e55', fontSize: '28px', lineHeight: 1.1 }}>Los</p>
       <h2 className="font-chreed" style={{ color: '#f9ac31', fontSize: '42px', lineHeight: 1.05, marginBottom: '16px' }}>DESGRANADOS MÁS AMADOS</h2>
       <Placeholder bg="#2c1a0e" border="#f9ac31" textColor="#f9ac31" />
@@ -166,7 +166,7 @@ function SeccionDesgranados() {
 function SeccionParrilla() {
   const parrilla = productos.filter(p => p.cat === 'parrilla')
   return (
-    <div style={{ background: '#eb1e55', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 120px' }}>
+    <div style={{ background: '#eb1e55', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 160px' }}>
       <p className="font-healing" style={{ color: '#f9ac31', fontSize: '28px', lineHeight: 1.1 }}>Las</p>
       <h2 className="font-chreed" style={{ color: '#f9ac31', fontSize: '42px', lineHeight: 1.05, marginBottom: '16px' }}>PARRILLADAS MÁS ESPERADAS</h2>
       <Placeholder bg="#c8154a" border="#f9ac31" textColor="#f9ac31" />
@@ -179,7 +179,7 @@ function SeccionParrilla() {
 function SeccionClasicos() {
   const delicias = productos.filter(p => p.cat === 'delicias')
   return (
-    <div style={{ background: '#007d3e', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 120px' }}>
+    <div style={{ background: '#007d3e', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 160px' }}>
       <h2 className="font-chreed" style={{ color: '#f9ac31', fontSize: '52px', lineHeight: 1 }}>CLÁSICOS</h2>
       <p className="font-healing" style={{ color: '#fff1d2', fontSize: '32px', lineHeight: 1.1, marginBottom: '16px' }}>Ocañeros</p>
       <Placeholder bg="#006030" border="#f9ac31" textColor="#f9ac31" />
@@ -196,7 +196,7 @@ function SeccionBebidas() {
   const calientes  = productos.filter(p => p.cat === 'calientes')
   const otras      = productos.filter(p => ['bf12','bf13','bf14','bf15'].includes(p.id))
   return (
-    <div style={{ background: '#00afec', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 120px' }}>
+    <div style={{ background: '#00afec', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 160px' }}>
       <h2 className="font-chreed" style={{ color: '#fff1d2', fontSize: '42px', lineHeight: 1 }}>PA' QUE SE</h2>
       <h2 className="font-chreed" style={{ color: '#fff1d2', fontSize: '42px', lineHeight: 1, marginBottom: '16px' }}>REFRESQUE</h2>
       <SubTitulo texto="LIMONADAS" color="#f9ac31" size="24px" />
@@ -213,14 +213,62 @@ function SeccionBebidas() {
   )
 }
 
+/* ─── Fila de adicional (2 columnas, siempre con botón +) ───────────── */
+function FilaProductoAdicional({ producto }) {
+  const { addItem } = useCartStore()
+  const [popKey, setPopKey] = useState(0)
+
+  const handleAdd = () => {
+    addItem(producto)
+    setPopKey(k => k + 1)
+    toast(`${producto.emoji || '✅'} ${producto.nombre} agregado`, {
+      style: { background: '#42261a', color: '#fff1d2', borderRadius: '12px', fontSize: '0.85rem' },
+      duration: 1800,
+    })
+  }
+
+  return (
+    <>
+      <div
+        onClick={handleAdd}
+        style={{ display: 'flex', flexDirection: 'column', padding: '10px 0', cursor: 'pointer', gap: '4px' }}
+      >
+        <p className="font-healing" style={{ color: '#42261a', fontSize: '15px', lineHeight: 1.2 }}>
+          {producto.nombre}
+        </p>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '6px' }}>
+          <span className="font-chreed" style={{ color: '#eb1e55', fontSize: '14px' }}>
+            {formatCOP(producto.precio)}
+          </span>
+          <motion.button
+            key={popKey}
+            initial={popKey > 0 ? { scale: 1.5 } : { scale: 1 }}
+            animate={{ scale: 1 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 12 }}
+            onClick={(e) => { e.stopPropagation(); handleAdd() }}
+            aria-label={`Agregar ${producto.nombre}`}
+            style={{
+              background: '#eb1e55', color: '#fff', border: 'none',
+              borderRadius: '50%', width: '30px', height: '30px',
+              fontSize: '1rem', cursor: 'pointer', flexShrink: 0,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}
+          >+</motion.button>
+        </div>
+      </div>
+      <div style={{ borderBottom: '1.5px dashed #42261a', opacity: 0.3 }} />
+    </>
+  )
+}
+
 /* ─── SECCIÓN 8 — Crema: Adicionales 2 columnas ─────────────────────── */
 function SeccionAdicionales() {
   const adicionales = productos.filter(p => p.cat === 'adicionales')
   return (
-    <div style={{ background: '#fff1d2', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 120px' }}>
+    <div style={{ background: '#fff1d2', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 160px' }}>
       <h2 className="font-healing" style={{ color: '#eb1e55', fontSize: '42px', lineHeight: 1, marginBottom: '16px' }}>Adicionales</h2>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 12px' }}>
-        {adicionales.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#42261a" descColor="#42261a" precioColor="#eb1e55" btnBg="#eb1e55" btnColor="#fff" sepColor="#42261a" sinBoton />)}
+        {adicionales.map(p => <FilaProductoAdicional key={p.id} producto={p} />)}
       </div>
     </div>
   )

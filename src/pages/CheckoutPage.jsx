@@ -6,13 +6,13 @@ import useCartStore from '../store/useCartStore'
 import { formatCOP } from '../utils/formatCOP'
 import { detectarUbicacion } from '../utils/geolocation'
 
-const COSTO_DOMICILIO = 3000
+const PAYMENT_LABELS = { nequi: 'Nequi 📱', bancolombia: 'Bancolombia 🏦', efectivo: 'Efectivo 💵' }
 
 export default function CheckoutPage() {
   const navigate = useNavigate()
-  const { items, setLastOrder } = useCartStore()
+  const { items, setLastOrder, paymentMethod, extras } = useCartStore()
   const subtotal = items.reduce((a, i) => a + i.precio * i.qty, 0)
-  const total = subtotal + COSTO_DOMICILIO
+  const total = subtotal
 
   const [nombre, setNombre] = useState(() => localStorage.getItem('mijarepas_nombre') || '')
   const [telefono, setTelefono] = useState('')
@@ -83,8 +83,10 @@ export default function CheckoutPage() {
         nota: i.nota, subtotal: i.precio * i.qty,
       })),
       subtotal,
-      costoDomicilio: COSTO_DOMICILIO,
+      costoDomicilio: 0,
       total,
+      paymentMethod: paymentMethod || 'efectivo',
+      extras,
     }
 
     setLastOrder(pedido)
@@ -241,13 +243,22 @@ export default function CheckoutPage() {
                 <span className="font-brinnan" style={{ color: 'rgba(255,241,210,0.75)', fontSize: '0.85rem' }}>Subtotal</span>
                 <span className="font-brinnan" style={{ color: 'var(--crema)', fontSize: '0.85rem', fontWeight: 700 }}>{formatCOP(subtotal)}</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span className="font-brinnan" style={{ color: 'rgba(255,241,210,0.75)', fontSize: '0.85rem' }}>🛵 Domicilio</span>
-                <span className="font-brinnan" style={{ color: 'var(--crema)', fontSize: '0.85rem', fontWeight: 700 }}>{formatCOP(COSTO_DOMICILIO)}</span>
+              <div style={{ marginTop: '2px' }}>
+                <p className="font-brinnan" style={{ color: 'rgba(255,241,210,0.6)', fontSize: '0.78rem', lineHeight: 1.45, margin: 0 }}>
+                  🛵 + Valor del domicilio cobrado por la empresa encargada
+                </p>
               </div>
+              {paymentMethod && (
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '4px' }}>
+                  <span className="font-brinnan" style={{ color: 'rgba(255,241,210,0.75)', fontSize: '0.85rem' }}>💳 Pago</span>
+                  <span className="font-brinnan" style={{ color: 'var(--crema)', fontSize: '0.85rem', fontWeight: 700 }}>
+                    {PAYMENT_LABELS[paymentMethod]}
+                  </span>
+                </div>
+              )}
               <div style={{
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                borderTop: '1.5px solid rgba(255,255,255,0.2)', paddingTop: '8px', marginTop: '2px',
+                borderTop: '1.5px solid rgba(255,255,255,0.2)', paddingTop: '8px', marginTop: '8px',
               }}>
                 <span className="font-brinnan" style={{ color: 'rgba(255,241,210,0.9)', fontWeight: 800, fontSize: '0.9rem' }}>Total</span>
                 <span className="font-chreed" style={{ color: 'var(--secundario)', fontSize: '1.7rem' }}>{formatCOP(total)}</span>

@@ -1,4 +1,5 @@
 import { useSearchParams, useNavigate } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import useCartStore from '../store/useCartStore'
 import { formatCOP } from '../utils/formatCOP'
@@ -8,10 +9,41 @@ export default function MenuPage() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const searchQuery = searchParams.get('search') || ''
+  const [showSwipeHint, setShowSwipeHint] = useState(true)
+  const hintShown = useRef(false)
 
   const { items } = useCartStore()
   const totalItems = items.reduce((a, i) => a + i.qty, 0)
   const totalPrice = items.reduce((a, i) => a + i.precio * i.qty, 0)
+
+  // Auto-dismiss swipe hint after 3s
+  useEffect(() => {
+    if (!showSwipeHint) return
+    const t = setTimeout(() => setShowSwipeHint(false), 3000)
+    return () => clearTimeout(t)
+  }, [showSwipeHint])
+
+  // Dismiss on first horizontal scroll inside CartaMenu
+  useEffect(() => {
+    if (!showSwipeHint) return
+    const handleScroll = () => {
+      if (!hintShown.current) {
+        hintShown.current = true
+        setShowSwipeHint(false)
+      }
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    // Also listen on touch move
+    const handleTouch = () => {
+      hintShown.current = true
+      setShowSwipeHint(false)
+    }
+    window.addEventListener('touchmove', handleTouch, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('touchmove', handleTouch)
+    }
+  }, [showSwipeHint])
 
   return (
     <>
@@ -21,7 +53,7 @@ export default function MenuPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.2 }}
-          style={{ width: '100%', lineHeight: 0, flexShrink: 0 }}
+          style={{ width: '100%', lineHeight: 0, flexShrink: 0, position: 'relative' }}
         >
           <img
             src="/images/hero-banner.jpeg"
@@ -34,6 +66,40 @@ export default function MenuPage() {
               display: 'block',
             }}
           />
+          {/* Swipe hint overlay */}
+          <AnimatePresence>
+            {showSwipeHint && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4 }}
+                style={{
+                  position: 'absolute', inset: 0,
+                  background: 'rgba(0,0,0,0.45)',
+                  display: 'flex', flexDirection: 'column',
+                  alignItems: 'center', justifyContent: 'center',
+                  gap: '8px', pointerEvents: 'none',
+                }}
+              >
+                {/* Animated arrow */}
+                <motion.span
+                  animate={{ x: [0, 14, 0] }}
+                  transition={{ duration: 1.1, repeat: Infinity, ease: 'easeInOut' }}
+                  style={{ fontSize: '2rem', lineHeight: 1 }}
+                >
+                  👉
+                </motion.span>
+                <p className="font-brinnan" style={{
+                  color: '#ffffff', fontSize: '0.88rem', fontWeight: 700,
+                  margin: 0, letterSpacing: '0.03em',
+                  textShadow: '0 1px 6px rgba(0,0,0,0.5)',
+                }}>
+                  Desliza para ver más
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
       )}
 

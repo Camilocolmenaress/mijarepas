@@ -153,14 +153,11 @@ export default function SuccessScreen({ pedido, onReset }) {
               </span>
             </div>
             {/* Domicilio row */}
-            {pedido.costoDomicilio != null && (
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                <span className="font-brinnan" style={{ fontSize: '0.8rem', color: 'var(--cafe-medio)' }}>🛵 Domicilio</span>
-                <span className="font-brinnan" style={{ fontSize: '0.8rem', color: 'var(--cafe-oscuro)', fontWeight: 700 }}>
-                  {formatCOP(pedido.costoDomicilio)}
-                </span>
-              </div>
-            )}
+            <div style={{ marginBottom: '6px' }}>
+              <span className="font-brinnan" style={{ fontSize: '0.78rem', color: 'var(--cafe-medio)', opacity: 0.85, lineHeight: 1.4 }}>
+                🛵 + Valor del domicilio cobrado por la empresa encargada
+              </span>
+            </div>
             {/* Total row */}
             <div style={{
               borderTop: '2px solid var(--crema-oscuro)',
@@ -212,7 +209,7 @@ export default function SuccessScreen({ pedido, onReset }) {
               lineHeight: 1.4,
             }}
           >
-            ⏱️ Tu domicilio llegará en aproximadamente <strong>40 minutos</strong>
+            🚀 ¡Tu pedido saldrá lo más pronto posible!
           </p>
         </motion.div>
 

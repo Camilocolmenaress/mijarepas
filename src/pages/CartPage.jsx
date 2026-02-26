@@ -1,12 +1,91 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import useCartStore from '../store/useCartStore'
 import { formatCOP } from '../utils/formatCOP'
 
+/* ─── Datos de métodos de pago ──────────────────────────────────────── */
+const PAYMENT_METHODS = [
+  {
+    id: 'nequi',
+    label: 'Nequi',
+    emoji: '📱',
+    color: '#9B59B6',
+    bg: '#f3eafa',
+    detail: (
+      <div style={{ padding: '12px 14px' }}>
+        <p className="font-brinnan" style={{ fontSize: '0.82rem', color: '#42261a', fontWeight: 700, marginBottom: '4px' }}>
+          Número Nequi:
+        </p>
+        <p className="font-chreed" style={{ fontSize: '1.2rem', color: '#9B59B6', letterSpacing: '0.05em' }}>
+          315 064 2289
+        </p>
+        <p className="font-brinnan" style={{ fontSize: '0.76rem', color: '#7a4d35', marginTop: '4px' }}>
+          Envía el comprobante por WhatsApp al confirmar tu pedido.
+        </p>
+      </div>
+    ),
+  },
+  {
+    id: 'bancolombia',
+    label: 'Bancolombia',
+    emoji: '🏦',
+    color: '#F5A623',
+    bg: '#fffaf0',
+    detail: (
+      <div style={{ padding: '12px 14px' }}>
+        <p className="font-brinnan" style={{ fontSize: '0.82rem', color: '#42261a', fontWeight: 700, marginBottom: '4px' }}>
+          Número de cuenta:
+        </p>
+        <p className="font-chreed" style={{ fontSize: '1.1rem', color: '#F5A623', letterSpacing: '0.05em' }}>
+          000-000000-00
+        </p>
+        <p className="font-brinnan" style={{ fontSize: '0.82rem', color: '#42261a', fontWeight: 700, marginBottom: '4px', marginTop: '8px' }}>
+          Titular:
+        </p>
+        <p className="font-brinnan" style={{ fontSize: '0.82rem', color: '#7a4d35' }}>
+          Mijarepas S.A.S
+        </p>
+        <p className="font-brinnan" style={{ fontSize: '0.76rem', color: '#7a4d35', marginTop: '4px' }}>
+          Envía el comprobante por WhatsApp al confirmar tu pedido.
+        </p>
+      </div>
+    ),
+  },
+  {
+    id: 'efectivo',
+    label: 'Efectivo',
+    emoji: '💵',
+    color: '#007d3e',
+    bg: '#f0faf4',
+    detail: (
+      <div style={{ padding: '12px 14px' }}>
+        <p className="font-brinnan" style={{ fontSize: '0.82rem', color: '#42261a', lineHeight: 1.5 }}>
+          Paga en efectivo al momento de recibir tu pedido. Si necesitas cambio, indícalo en las notas al confirmar por WhatsApp.
+        </p>
+      </div>
+    ),
+  },
+]
+
 export default function CartPage() {
   const navigate = useNavigate()
-  const { items, updateQty } = useCartStore()
-  const total = items.reduce((a, i) => a + i.precio * i.qty, 0)
+  const { items, updateQty, extras, setExtras, paymentMethod, setPaymentMethod } = useCartStore()
+  const subtotal = items.reduce((a, i) => a + i.precio * i.qty, 0)
+
+  // Salsas max: 1 unidad por producto en el carrito
+  const maxSalsas = items.reduce((a, i) => a + i.qty, 0)
+
+  const handleServilletas = (v) => setExtras({ ...extras, servilletas: v })
+  const handleSalsas = (v) => {
+    if (!v) setExtras({ ...extras, salsas: false, tartara: 0, pina: 0 })
+    else setExtras({ ...extras, salsas: true })
+  }
+  const changeSalsa = (tipo, delta) => {
+    const curr = extras[tipo]
+    const newVal = Math.max(0, Math.min(maxSalsas, curr + delta))
+    setExtras({ ...extras, [tipo]: newVal })
+  }
 
   return (
     <motion.div
@@ -16,7 +95,7 @@ export default function CartPage() {
       transition={{ duration: 0.2 }}
       style={{
         maxWidth: '640px', margin: '0 auto',
-        paddingBottom: 'max(24px, env(safe-area-inset-bottom))',
+        paddingBottom: 'max(40px, env(safe-area-inset-bottom))',
         minHeight: 'calc(100dvh - 68px)',
       }}
     >
@@ -95,7 +174,6 @@ export default function CartPage() {
                           {item.nota}
                         </p>
                       )}
-                      {/* Precio — Brinnan bold */}
                       <p className="font-brinnan" style={{ color: 'var(--primario)', fontSize: '0.9rem', fontWeight: 800 }}>
                         {formatCOP(item.precio * item.qty)}
                       </p>
@@ -134,19 +212,208 @@ export default function CartPage() {
               </AnimatePresence>
             </div>
 
-            {/* Total */}
+            {/* Total parcial */}
             <div style={{
               borderTop: '2px solid var(--crema-oscuro)',
               paddingTop: '14px', marginTop: '4px',
               display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-              marginBottom: '20px',
+              marginBottom: '24px',
             }}>
               <span className="font-brinnan" style={{ color: 'var(--cafe-medio)', fontWeight: 700, fontSize: '0.9rem' }}>
-                Total
+                Subtotal
               </span>
               <span className="font-chreed" style={{ color: 'var(--cafe)', fontSize: '1.6rem' }}>
-                {formatCOP(total)}
+                {formatCOP(subtotal)}
               </span>
+            </div>
+
+            {/* ── SECCIÓN A: ¿Deseas agregar? ── */}
+            <div style={{
+              background: '#fff',
+              border: '1.5px solid var(--crema-oscuro)',
+              borderRadius: '16px', padding: '16px',
+              marginBottom: '16px',
+            }}>
+              <h3 className="font-chreed" style={{ fontSize: '1rem', color: 'var(--cafe)', marginBottom: '14px' }}>
+                🍟 ¿Deseas agregar?
+              </h3>
+
+              {/* Servilletas */}
+              <label style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                cursor: 'pointer', marginBottom: '12px',
+              }}>
+                <span className="font-brinnan" style={{ fontSize: '0.9rem', color: 'var(--cafe)', fontWeight: 700 }}>
+                  🧻 Servilletas
+                </span>
+                <div
+                  onClick={() => handleServilletas(!extras.servilletas)}
+                  style={{
+                    width: '44px', height: '24px', borderRadius: '12px',
+                    background: extras.servilletas ? 'var(--verde)' : 'var(--crema-oscuro)',
+                    position: 'relative', cursor: 'pointer', flexShrink: 0,
+                    transition: 'background 0.25s ease',
+                  }}
+                >
+                  <motion.div
+                    animate={{ x: extras.servilletas ? 20 : 0 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 22 }}
+                    style={{
+                      position: 'absolute', top: '2px', left: '2px',
+                      width: '20px', height: '20px', borderRadius: '50%',
+                      background: '#fff', boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
+                    }}
+                  />
+                </div>
+              </label>
+
+              {/* Salsas */}
+              <label style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                cursor: 'pointer',
+              }}>
+                <span className="font-brinnan" style={{ fontSize: '0.9rem', color: 'var(--cafe)', fontWeight: 700 }}>
+                  🥫 Salsas
+                </span>
+                <div
+                  onClick={() => handleSalsas(!extras.salsas)}
+                  style={{
+                    width: '44px', height: '24px', borderRadius: '12px',
+                    background: extras.salsas ? 'var(--verde)' : 'var(--crema-oscuro)',
+                    position: 'relative', cursor: 'pointer', flexShrink: 0,
+                    transition: 'background 0.25s ease',
+                  }}
+                >
+                  <motion.div
+                    animate={{ x: extras.salsas ? 20 : 0 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 22 }}
+                    style={{
+                      position: 'absolute', top: '2px', left: '2px',
+                      width: '20px', height: '20px', borderRadius: '50%',
+                      background: '#fff', boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
+                    }}
+                  />
+                </div>
+              </label>
+
+              {/* Contadores de salsas — visible solo si salsas=true */}
+              <AnimatePresence>
+                {extras.salsas && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.22 }}
+                    style={{ overflow: 'hidden' }}
+                  >
+                    <div style={{ marginTop: '14px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                      <p className="font-brinnan" style={{ fontSize: '0.75rem', color: 'var(--cafe-medio)', margin: 0 }}>
+                        Máx. 1 salsa por producto pedido ({maxSalsas} en total)
+                      </p>
+                      {/* Tártara */}
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <span className="font-brinnan" style={{ fontSize: '0.88rem', color: 'var(--cafe)', fontWeight: 700 }}>
+                          🥣 Tártara
+                        </span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <button onClick={() => changeSalsa('tartara', -1)} style={counterBtnStyle('#42261a')}>−</button>
+                          <span className="font-chreed" style={{ minWidth: '18px', textAlign: 'center', color: 'var(--cafe)', fontSize: '1rem' }}>
+                            {extras.tartara}
+                          </span>
+                          <button
+                            onClick={() => changeSalsa('tartara', 1)}
+                            disabled={extras.tartara + extras.pina >= maxSalsas}
+                            style={counterBtnStyle('var(--primario)', extras.tartara + extras.pina >= maxSalsas)}
+                          >+</button>
+                        </div>
+                      </div>
+                      {/* Piña */}
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <span className="font-brinnan" style={{ fontSize: '0.88rem', color: 'var(--cafe)', fontWeight: 700 }}>
+                          🍍 Piña
+                        </span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <button onClick={() => changeSalsa('pina', -1)} style={counterBtnStyle('#42261a')}>−</button>
+                          <span className="font-chreed" style={{ minWidth: '18px', textAlign: 'center', color: 'var(--cafe)', fontSize: '1rem' }}>
+                            {extras.pina}
+                          </span>
+                          <button
+                            onClick={() => changeSalsa('pina', 1)}
+                            disabled={extras.tartara + extras.pina >= maxSalsas}
+                            style={counterBtnStyle('var(--primario)', extras.tartara + extras.pina >= maxSalsas)}
+                          >+</button>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* ── SECCIÓN B: ¿Cómo vas a pagar? ── */}
+            <div style={{
+              background: '#fff',
+              border: '1.5px solid var(--crema-oscuro)',
+              borderRadius: '16px', padding: '16px',
+              marginBottom: '20px',
+            }}>
+              <h3 className="font-chreed" style={{ fontSize: '1rem', color: 'var(--cafe)', marginBottom: '14px' }}>
+                💳 ¿Cómo vas a pagar?
+              </h3>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {PAYMENT_METHODS.map(pm => (
+                  <div key={pm.id}>
+                    <button
+                      onClick={() => setPaymentMethod(paymentMethod === pm.id ? null : pm.id)}
+                      style={{
+                        width: '100%', border: `2px solid ${paymentMethod === pm.id ? pm.color : 'var(--crema-oscuro)'}`,
+                        borderRadius: '12px', padding: '12px 14px',
+                        background: paymentMethod === pm.id ? pm.bg : '#fff',
+                        cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px',
+                        transition: 'all 0.2s ease',
+                      }}
+                    >
+                      <span style={{ fontSize: '1.4rem', flexShrink: 0 }}>{pm.emoji}</span>
+                      <span className="font-brinnan" style={{
+                        fontWeight: 800, fontSize: '0.9rem',
+                        color: paymentMethod === pm.id ? pm.color : 'var(--cafe)',
+                        flex: 1, textAlign: 'left',
+                      }}>
+                        {pm.label}
+                      </span>
+                      <motion.span
+                        animate={{ rotate: paymentMethod === pm.id ? 90 : 0 }}
+                        transition={{ duration: 0.2 }}
+                        style={{ fontSize: '0.8rem', color: 'var(--cafe-medio)', flexShrink: 0 }}
+                      >
+                        ▶
+                      </motion.span>
+                    </button>
+
+                    {/* Panel de detalle */}
+                    <AnimatePresence>
+                      {paymentMethod === pm.id && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.22 }}
+                          style={{
+                            overflow: 'hidden',
+                            background: pm.bg,
+                            border: `1.5px solid ${pm.color}`,
+                            borderTop: 'none',
+                            borderRadius: '0 0 12px 12px',
+                          }}
+                        >
+                          {pm.detail}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* CTA ir a checkout */}
@@ -167,11 +434,24 @@ export default function CartPage() {
             </motion.button>
 
             <p className="font-brinnan" style={{ textAlign: 'center', color: 'var(--cafe-medio)', fontSize: '0.75rem', marginTop: '6px' }}>
-              💰 Pago al recibir
+              {paymentMethod
+                ? `💳 Pagarás con ${PAYMENT_METHODS.find(p => p.id === paymentMethod)?.label}`
+                : '💰 Pago al recibir'}
             </p>
           </>
         )}
       </div>
     </motion.div>
   )
+}
+
+/* ─── Estilos de botones contador ───────────────────────────────────── */
+function counterBtnStyle(bg, disabled = false) {
+  return {
+    width: '28px', height: '28px', borderRadius: '50%',
+    border: 'none', background: disabled ? 'var(--crema-oscuro)' : bg,
+    color: 'white', cursor: disabled ? 'default' : 'pointer',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    fontSize: '1rem', opacity: disabled ? 0.45 : 1, flexShrink: 0,
+  }
 }

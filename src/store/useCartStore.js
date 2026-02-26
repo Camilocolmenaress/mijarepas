@@ -4,6 +4,8 @@ const useCartStore = create((set, get) => ({
   items: [],
   isCartOpen: false,
   lastOrder: null,
+  paymentMethod: null,   // 'nequi' | 'bancolombia' | 'efectivo'
+  extras: { servilletas: false, salsas: false, tartara: 0, pina: 0 },
 
   addItem: (producto, qty = 1, nota = '') => {
     const { items } = get()
@@ -37,9 +39,13 @@ const useCartStore = create((set, get) => ({
     set({ items: updated })
   },
 
-  clearCart: () => set({ items: [] }),
+  clearCart: () => set({ items: [], paymentMethod: null, extras: { servilletas: false, salsas: false, tartara: 0, pina: 0 } }),
 
   setLastOrder: (pedido) => set({ lastOrder: pedido }),
+
+  setPaymentMethod: (method) => set({ paymentMethod: method }),
+
+  setExtras: (extras) => set({ extras }),
 
   openCart: () => set({ isCartOpen: true }),
   closeCart: () => set({ isCartOpen: false }),

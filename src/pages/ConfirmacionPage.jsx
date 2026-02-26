@@ -49,16 +49,27 @@ export default function ConfirmacionPage() {
     .map(i => `• ${i.qty}× ${i.nombre}${i.nota ? ` (${i.nota})` : ''} — ${formatCOP(i.subtotal)}`)
     .join('\n')
 
+  const extrasLinea = pedido.extras
+    ? [
+        pedido.extras.servilletas && '🧻 Servilletas',
+        pedido.extras.tartara > 0 && `🥣 Tártara ×${pedido.extras.tartara}`,
+        pedido.extras.pina > 0 && `🍍 Salsa piña ×${pedido.extras.pina}`,
+      ].filter(Boolean).join(', ')
+    : ''
+
+  const PAYMENT_LABELS = { nequi: 'Nequi 📱', bancolombia: 'Bancolombia 🏦', efectivo: 'Efectivo 💵' }
+
   const waTexto = encodeURIComponent(
     `¡Hola! Acabo de hacer un pedido en Mijarepas 🫓\n\n` +
     `👤 Nombre: ${pedido.nombre}\n` +
     `📞 Teléfono: ${pedido.telefono}\n` +
     `📍 Dirección: ${pedido.direccion || 'No especificada'}\n\n` +
     `🛒 Pedido:\n${lineas}\n\n` +
-    `Subtotal: ${formatCOP(pedido.subtotal)}\n` +
-    `🛵 Domicilio: ${formatCOP(pedido.costoDomicilio)}\n` +
-    `💰 Total: ${formatCOP(pedido.total)}\n\n` +
-    `¡Por favor confirmen mi pedido! 🙏`
+    (extrasLinea ? `➕ Extras: ${extrasLinea}\n\n` : '') +
+    `💰 Total: ${formatCOP(pedido.total)}\n` +
+    `🛵 + Valor del domicilio cobrado por la empresa encargada\n` +
+    (pedido.paymentMethod ? `💳 Método de pago: ${PAYMENT_LABELS[pedido.paymentMethod] || pedido.paymentMethod}\n` : '') +
+    `\n¡Por favor confirmen mi pedido! 🙏`
   )
   const waURL = `https://wa.me/${WHATSAPP_NUMBER}?text=${waTexto}`
 
@@ -201,9 +212,10 @@ export default function ConfirmacionPage() {
                 <span className="font-brinnan" style={{ fontSize: '0.82rem', color: 'var(--cafe-medio)' }}>Subtotal</span>
                 <span className="font-brinnan" style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--cafe)' }}>{formatCOP(pedido.subtotal)}</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span className="font-brinnan" style={{ fontSize: '0.82rem', color: 'var(--cafe-medio)' }}>🛵 Domicilio</span>
-                <span className="font-brinnan" style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--cafe)' }}>{formatCOP(pedido.costoDomicilio)}</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                <span className="font-brinnan" style={{ fontSize: '0.79rem', color: 'var(--cafe-medio)', lineHeight: 1.4, opacity: 0.9 }}>
+                  🛵 + Valor del domicilio cobrado por la empresa encargada
+                </span>
               </div>
               <div style={{
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
@@ -214,11 +226,28 @@ export default function ConfirmacionPage() {
               </div>
             </div>
 
-            {/* Pago al recibir */}
+            {/* Método de pago */}
             <div style={{ background: 'var(--crema)', borderRadius: '10px', padding: '9px 13px', marginTop: '12px', display: 'flex', alignItems: 'center', gap: '7px' }}>
-              <span>💰</span>
-              <span className="font-brinnan" style={{ fontSize: '0.83rem', fontWeight: 700, color: 'var(--cafe-medio)' }}>Pago al recibir</span>
+              <span>💳</span>
+              <span className="font-brinnan" style={{ fontSize: '0.83rem', fontWeight: 700, color: 'var(--cafe-medio)' }}>
+                {pedido.paymentMethod
+                  ? ({ nequi: 'Nequi 📱', bancolombia: 'Bancolombia 🏦', efectivo: 'Efectivo 💵' }[pedido.paymentMethod] || 'Pago al recibir')
+                  : 'Pago al recibir'}
+              </span>
             </div>
+            {/* Extras */}
+            {pedido.extras && (pedido.extras.servilletas || pedido.extras.tartara > 0 || pedido.extras.pina > 0) && (
+              <div style={{ background: 'var(--crema)', borderRadius: '10px', padding: '9px 13px', marginTop: '8px' }}>
+                <span className="font-brinnan" style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--cafe-medio)' }}>
+                  ➕ Extras:{' '}
+                  {[
+                    pedido.extras.servilletas && '🧻 Servilletas',
+                    pedido.extras.tartara > 0 && `🥣 Tártara ×${pedido.extras.tartara}`,
+                    pedido.extras.pina > 0 && `🍍 Piña ×${pedido.extras.pina}`,
+                  ].filter(Boolean).join(' · ')}
+                </span>
+              </div>
+            )}
           </motion.div>
 
           {/* Tiempo estimado */}
@@ -233,7 +262,7 @@ export default function ConfirmacionPage() {
             }}
           >
             <p className="font-brinnan" style={{ margin: 0, color: '#fff', fontSize: '0.92rem', fontWeight: 700, lineHeight: 1.45 }}>
-              ⏱️ Tu domicilio llegará en aproximadamente <strong>40 minutos</strong>
+              🚀 ¡Tu pedido saldrá lo más pronto posible!
             </p>
           </motion.div>
 
