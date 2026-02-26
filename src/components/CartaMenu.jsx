@@ -333,30 +333,45 @@ function SeccionClasicos() {
 
 /* ─── Modal selector de variante ─────────────────────────────────────── */
 function ModalVariante({ producto, onClose, onAgregar }) {
-  const [varSel, setVarSel] = useState(null)
+  const [varSel, setVarSel]       = useState(null)
+  const [saborSel, setSaborSel]   = useState(null)
+
+  const tieneSabores = !!(producto.sabores && producto.sabores.length > 0)
+  const puedeAgregar = varSel && (!tieneSabores || saborSel)
 
   const handleAgregar = () => {
-    if (!varSel) return
-    onAgregar(varSel)
+    if (!puedeAgregar) return
+    onAgregar(varSel, saborSel)
+  }
+
+  // Texto del botón
+  const textoBoton = () => {
+    if (!tieneSabores) {
+      return varSel ? `Agregar — ${formatCOP(varSel.precio)}` : 'Selecciona un tamaño'
+    }
+    if (!saborSel) return 'Selecciona un sabor'
+    if (!varSel)   return 'Selecciona un tamaño'
+    return `Agregar — ${formatCOP(varSel.precio)}`
   }
 
   return (
-    /* Overlay */
+    /* Overlay — z-index: 40 */
     <div
       onClick={onClose}
       style={{
-        position: 'fixed', inset: 0, zIndex: 900,
+        position: 'fixed', inset: 0, zIndex: 40,
         background: 'rgba(0,0,0,0.45)',
         display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
       }}
     >
-      {/* Sheet */}
+      {/* Sheet — z-index: 50 */}
       <div
         onClick={e => e.stopPropagation()}
         style={{
           background: '#fff', borderRadius: '20px 20px 0 0',
           padding: '24px 20px 36px', width: '100%', maxWidth: '480px',
           boxShadow: '0 -4px 32px rgba(0,0,0,0.18)',
+          zIndex: 50, position: 'relative',
         }}
       >
         {/* Manija */}
@@ -367,46 +382,84 @@ function ModalVariante({ producto, onClose, onAgregar }) {
           {producto.emoji} {producto.nombre}
         </p>
 
-        {/* Cards de variante */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '24px' }}>
-          {producto.variantes.map(v => {
-            const sel = varSel?.label === v.label
-            return (
-              <div
-                key={v.label}
-                onClick={() => setVarSel(v)}
-                style={{
-                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  padding: '14px 16px', borderRadius: '12px', cursor: 'pointer',
-                  border: `2px solid ${sel ? '#eb1e55' : '#ccc'}`,
-                  background: sel ? '#fff1d2' : '#fff',
-                  transition: 'all 0.15s ease',
-                }}
-              >
-                <span className="font-healing" style={{ color: '#42261a', fontSize: '18px' }}>{v.label}</span>
-                <span className="font-chreed" style={{ color: sel ? '#eb1e55' : '#666', fontSize: '16px' }}>
-                  {formatCOP(v.precio)}
-                </span>
-              </div>
-            )
-          })}
+        {/* ── Sabores (solo si el producto los tiene) ── */}
+        {tieneSabores && (
+          <div style={{ marginBottom: '20px' }}>
+            <p className="font-brinnan" style={{ color: '#42261a', fontSize: '13px', fontWeight: 700, marginBottom: '10px' }}>
+              SABOR
+            </p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {producto.sabores.map(s => {
+                const sel = saborSel === s
+                return (
+                  <button
+                    key={s}
+                    onClick={() => setSaborSel(s)}
+                    className="font-brinnan"
+                    style={{
+                      padding: '7px 14px', borderRadius: '20px', cursor: 'pointer',
+                      border: '2px solid #eb1e55',
+                      background: sel ? '#eb1e55' : 'transparent',
+                      color: sel ? '#fff' : '#eb1e55',
+                      fontSize: '14px', fontWeight: 700,
+                      transition: 'all 0.15s ease',
+                    }}
+                  >
+                    {s}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* ── Tamaños ── */}
+        <div style={{ marginBottom: '20px' }}>
+          {tieneSabores && (
+            <p className="font-brinnan" style={{ color: '#42261a', fontSize: '13px', fontWeight: 700, marginBottom: '10px' }}>
+              TAMAÑO
+            </p>
+          )}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {producto.variantes.map(v => {
+              const sel = varSel?.label === v.label
+              return (
+                <div
+                  key={v.label}
+                  onClick={() => setVarSel(v)}
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    padding: '14px 16px', borderRadius: '12px', cursor: 'pointer',
+                    border: `2px solid ${sel ? '#eb1e55' : '#ccc'}`,
+                    background: sel ? '#fff1d2' : '#fff',
+                    transition: 'all 0.15s ease',
+                  }}
+                >
+                  <span className="font-healing" style={{ color: '#42261a', fontSize: '18px' }}>{v.label}</span>
+                  <span className="font-chreed" style={{ color: sel ? '#eb1e55' : '#666', fontSize: '16px' }}>
+                    {formatCOP(v.precio)}
+                  </span>
+                </div>
+              )
+            })}
+          </div>
         </div>
 
         {/* Botón Agregar */}
         <button
           onClick={handleAgregar}
-          disabled={!varSel}
+          disabled={!puedeAgregar}
           className="font-brinnan"
           style={{
             width: '100%', padding: '15px', borderRadius: '14px', border: 'none',
-            background: varSel ? '#eb1e55' : '#ccc',
+            background: puedeAgregar ? '#eb1e55' : '#ccc',
             color: '#fff', fontSize: '1rem', fontWeight: 700,
-            cursor: varSel ? 'pointer' : 'default',
+            cursor: puedeAgregar ? 'pointer' : 'default',
             transition: 'background 0.2s ease',
             marginBottom: '10px',
           }}
         >
-          {varSel ? `Agregar — ${formatCOP(varSel.precio)}` : 'Selecciona un tamaño'}
+          {textoBoton()}
         </button>
 
         {/* Cancelar */}
@@ -446,17 +499,23 @@ function FilaProductoBebida({ producto }) {
     }
   }
 
-  const handleAgregarVariante = (variante) => {
+  const handleAgregarVariante = (variante, sabor) => {
+    const nombreFinal = sabor
+      ? `${producto.nombre} de ${sabor} — ${variante.label}`
+      : `${producto.nombre} — ${variante.label}`
+    const idFinal = sabor
+      ? `${producto.id}-${sabor.toLowerCase().replace(/ /g, '-')}-${variante.label.toLowerCase().replace(/ /g, '-')}`
+      : `${producto.id}-${variante.label.toLowerCase().replace(/ /g, '-')}`
     const productoVariante = {
       ...producto,
-      id: `${producto.id}-${variante.label.toLowerCase().replace(/ /g, '-')}`,
-      nombre: `${producto.nombre} — ${variante.label}`,
+      id: idFinal,
+      nombre: nombreFinal,
       precio: variante.precio,
     }
     addItem(productoVariante, 1, '')
     setPopped(true)
     setTimeout(() => setPopped(false), 350)
-    toast(`${producto.emoji} ${producto.nombre} (${variante.label}) agregada`, {
+    toast(`${producto.emoji} ${nombreFinal} agregada`, {
       style: { background: '#42261a', color: '#fff1d2', borderRadius: '12px', fontSize: '0.85rem' },
       duration: 1800,
     })
@@ -714,26 +773,31 @@ export default function CartaMenu({ searchQuery }) {
       <div
         style={{
           position: 'fixed', bottom: '88px', left: 0, right: 0,
-          display: 'flex', justifyContent: 'center', gap: '8px',
-          zIndex: 150, pointerEvents: 'none',
+          display: 'flex', justifyContent: 'center',
+          zIndex: 10, pointerEvents: 'none',
         }}
       >
-        {DOT_COLORS.map((color, i) => (
-          <button
-            key={i}
-            onClick={() => goTo(i)}
-            aria-label={`Ir a sección ${i + 1}`}
-            style={{
-              width: '8px', height: '8px', borderRadius: '50%',
-              border: 'none', padding: 0, cursor: 'pointer',
-              pointerEvents: 'all',
-              background: i === activeIdx ? color : 'rgba(255,255,255,0.9)',
-              opacity: i === activeIdx ? 1 : 0.45,
-              transition: 'all 0.25s ease',
-              transform: i === activeIdx ? 'scale(1.25)' : 'scale(1)',
-            }}
-          />
-        ))}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: '8px',
+          background: 'rgba(0,0,0,0.35)', borderRadius: '20px', padding: '6px 12px',
+        }}>
+          {DOT_COLORS.map((color, i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i)}
+              aria-label={`Ir a sección ${i + 1}`}
+              style={{
+                width: '8px', height: '8px', borderRadius: '50%',
+                border: 'none', padding: 0, cursor: 'pointer',
+                pointerEvents: 'all',
+                background: i === activeIdx ? color : 'rgba(255,255,255,0.9)',
+                opacity: i === activeIdx ? 1 : 0.45,
+                transition: 'all 0.25s ease',
+                transform: i === activeIdx ? 'scale(1.25)' : 'scale(1)',
+              }}
+            />
+          ))}
+        </div>
       </div>
     </div>
   )
