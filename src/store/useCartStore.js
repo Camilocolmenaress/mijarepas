@@ -4,11 +4,13 @@ const useCartStore = create((set, get) => ({
   items: [],
   isCartOpen: false,
   lastOrder: null,
+  pedidoId: null,        // UUID del pedido guardado en Supabase
   paymentMethod: null,   // 'nequi' | 'bancolombia' | 'efectivo'
   extras: { servilletas: false, salsas: false, tartara: 0, pina: 0 },
   sede: null,            // 'Aurora' | 'Lagos' | 'Mutis' | 'Piedecuesta'
 
   setSede: (sede) => set({ sede }),
+  setPedidoId: (id) => set({ pedidoId: id }),
 
   addItem: (producto, qty = 1, nota = '') => {
     const { items } = get()

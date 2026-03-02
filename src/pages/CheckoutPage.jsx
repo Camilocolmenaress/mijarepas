@@ -10,7 +10,7 @@ const PAYMENT_LABELS = { nequi: 'Nequi 📱', bancolombia: 'Bancolombia 🏦', e
 
 export default function CheckoutPage() {
   const navigate = useNavigate()
-  const { items, setLastOrder, paymentMethod, extras, sede } = useCartStore()
+  const { items, setLastOrder, paymentMethod, extras, sede, setPedidoId } = useCartStore()
   const [submitting, setSubmitting] = useState(false)
   const subtotal = items.reduce((a, i) => a + i.precio * i.qty, 0)
   const total = subtotal
@@ -75,8 +75,9 @@ export default function CheckoutPage() {
       estado: 'recibido',
     }
 
-    const { error } = await supabase.from('pedidos').insert([row])
+    const { data, error } = await supabase.from('pedidos').insert([row]).select('id').single()
     if (error) throw error
+    return data?.id || null
   }
 
   const handleSubmit = async () => {
@@ -131,7 +132,8 @@ export default function CheckoutPage() {
 
     setSubmitting(true)
     try {
-      await guardarEnSupabase(pedido)
+      const id = await guardarEnSupabase(pedido)
+      if (id) setPedidoId(id)
     } catch (err) {
       // Supabase falla → igual continuamos con WhatsApp
       console.error('Supabase error (non-blocking):', err)

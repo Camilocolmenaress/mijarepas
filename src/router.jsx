@@ -6,6 +6,7 @@ import ProductPage from './pages/ProductPage'
 import CartPage from './pages/CartPage'
 import CheckoutPage from './pages/CheckoutPage'
 import ConfirmacionPage from './pages/ConfirmacionPage'
+import SeguimientoPage from './pages/SeguimientoPage'
 
 export const router = createBrowserRouter([
   {
@@ -26,5 +27,10 @@ export const router = createBrowserRouter([
     // Full-screen success — outside MenuLayout (no Header)
     path: '/confirmacion',
     element: <ConfirmacionPage />,
+  },
+  {
+    // Seguimiento en tiempo real — fuera del layout (sin Header)
+    path: '/seguimiento/:pedidoId',
+    element: <SeguimientoPage />,
   },
 ])

@@ -24,7 +24,7 @@ const CAT_ORDER = ['clasicas','especiales','desgranadas','chicharronas','hamburg
 
 export default function ConfirmacionPage() {
   const navigate  = useNavigate()
-  const { lastOrder, clearCart, sede } = useCartStore()
+  const { lastOrder, clearCart, sede, pedidoId } = useCartStore()
   const fired = useRef(false)
 
   useEffect(() => {
@@ -315,6 +315,32 @@ export default function ConfirmacionPage() {
               🚀 ¡Tu pedido saldrá lo más pronto posible!
             </p>
           </div>
+
+          {/* Botón Seguir mi pedido */}
+          {pedidoId && (
+            <button
+              onClick={() => navigate(`/seguimiento/${pedidoId}`)}
+              className="font-chreed anim-fadeInUp-d4"
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
+                width: '100%', background: 'rgba(255,255,255,0.97)',
+                color: '#42261a', border: 'none', borderRadius: '50px',
+                padding: '16px 24px', fontSize: '1.05rem', minHeight: '54px',
+                cursor: 'pointer',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+              }}
+            >
+              📍 Seguir mi pedido
+            </button>
+          )}
+          {pedidoId && (
+            <p className="font-brinnan" style={{
+              textAlign: 'center', fontSize: '0.73rem',
+              color: 'rgba(255,241,210,0.65)', marginTop: '-12px', lineHeight: 1.45,
+            }}>
+              Sigue el estado de tu pedido en tiempo real
+            </p>
+          )}
 
           {/* Botón WhatsApp */}
           <a
