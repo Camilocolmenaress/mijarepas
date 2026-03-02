@@ -16,9 +16,9 @@ export default function CheckoutPage() {
   const total = subtotal
 
   const [nombre, setNombre] = useState(() => localStorage.getItem('mijarepas_nombre') || '')
-  const [telefono, setTelefono] = useState('')
-  const [direccion, setDireccion] = useState('')
-  const [especificaciones, setEspecificaciones] = useState('')
+  const [telefono, setTelefono] = useState(() => localStorage.getItem('mijarepas_telefono') || '')
+  const [direccion, setDireccion] = useState(() => localStorage.getItem('mijarepas_direccion') || '')
+  const [especificaciones, setEspecificaciones] = useState(() => localStorage.getItem('mijarepas_especificaciones') || '')
   const [loadingGeo, setLoadingGeo] = useState(false)
   const [nombreError, setNombreError] = useState(false)
   const [telefonoError, setTelefonoError] = useState(false)
@@ -110,6 +110,13 @@ export default function CheckoutPage() {
     }
 
     localStorage.setItem('mijarepas_nombre', nombre.trim())
+    localStorage.setItem('mijarepas_telefono', telefono.trim())
+    localStorage.setItem('mijarepas_direccion', direccion.trim())
+    if (especificaciones.trim()) {
+      localStorage.setItem('mijarepas_especificaciones', especificaciones.trim())
+    } else {
+      localStorage.removeItem('mijarepas_especificaciones')
+    }
 
     const pedido = {
       nombre: nombre.trim(),
