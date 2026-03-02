@@ -4,12 +4,14 @@ import toast from 'react-hot-toast'
 import useCartStore from '../store/useCartStore'
 import { formatCOP } from '../utils/formatCOP'
 import { detectarUbicacion } from '../utils/geolocation'
+import { supabase } from '../lib/supabase'
 
 const PAYMENT_LABELS = { nequi: 'Nequi 📱', bancolombia: 'Bancolombia 🏦', efectivo: 'Efectivo 💵' }
 
 export default function CheckoutPage() {
   const navigate = useNavigate()
-  const { items, setLastOrder, paymentMethod, extras } = useCartStore()
+  const { items, setLastOrder, paymentMethod, extras, sede } = useCartStore()
+  const [submitting, setSubmitting] = useState(false)
   const subtotal = items.reduce((a, i) => a + i.precio * i.qty, 0)
   const total = subtotal
 
@@ -52,7 +54,32 @@ export default function CheckoutPage() {
     setTimeout(() => ref.current?.classList.remove('shake'), 500)
   }
 
-  const handleSubmit = () => {
+  const guardarEnSupabase = async (pedido) => {
+    const row = {
+      sede: sede || null,
+      cliente_nombre: pedido.nombre,
+      cliente_telefono: pedido.telefono,
+      direccion: pedido.direccion,
+      especificaciones: pedido.especificaciones || null,
+      productos: pedido.items.map(i => ({
+        nombre: i.nombre,
+        cantidad: i.qty,
+        precio_unitario: i.precio,
+        subtotal: i.subtotal,
+        notas: i.nota || null,
+      })),
+      salsas: pedido.extras?.salsas || null,
+      servilletas: pedido.extras?.servilletas ?? null,
+      metodo_pago: pedido.paymentMethod,
+      total: pedido.total,
+      estado: 'recibido',
+    }
+
+    const { error } = await supabase.from('pedidos').insert([row])
+    if (error) throw error
+  }
+
+  const handleSubmit = async () => {
     if (!nombre.trim()) {
       setNombreError(true)
       nombreRef.current?.focus()
@@ -100,6 +127,16 @@ export default function CheckoutPage() {
       total,
       paymentMethod: paymentMethod || 'efectivo',
       extras,
+    }
+
+    setSubmitting(true)
+    try {
+      await guardarEnSupabase(pedido)
+    } catch (err) {
+      // Supabase falla → igual continuamos con WhatsApp
+      console.error('Supabase error (non-blocking):', err)
+    } finally {
+      setSubmitting(false)
     }
 
     setLastOrder(pedido)
@@ -301,17 +338,20 @@ export default function CheckoutPage() {
             {/* CTA */}
             <button
               onClick={handleSubmit}
+              disabled={submitting}
               className="font-chreed"
               style={{
                 width: '100%', background: 'var(--primario)',
                 color: 'white', border: 'none', borderRadius: '12px',
-                padding: '16px', fontSize: '1.15rem', cursor: 'pointer',
+                padding: '16px', fontSize: '1.15rem',
+                cursor: submitting ? 'default' : 'pointer',
                 boxShadow: '0 4px 20px rgba(235,30,85,0.5)',
                 minHeight: '54px',
+                opacity: submitting ? 0.75 : 1,
                 transition: 'opacity 0.15s ease',
               }}
             >
-              ¡Hacer Pedido! 🎉
+              {submitting ? '⏳ Enviando pedido...' : '¡Hacer Pedido! 🎉'}
             </button>
 
             <p className="font-brinnan" style={{ textAlign: 'center', color: 'rgba(255,241,210,0.65)', fontSize: '0.75rem', marginTop: '10px' }}>
