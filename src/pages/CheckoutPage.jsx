@@ -29,8 +29,8 @@ export default function CheckoutPage() {
   const direccionRef = useRef(null)
 
   useEffect(() => {
-    if (items.length === 0) navigate('/menu', { replace: true })
-  }, [items, navigate])
+    if (items.length === 0 && !submitting) navigate('/menu', { replace: true })
+  }, [items, submitting, navigate])
 
   const handleGeolocate = async () => {
     setLoadingGeo(true)

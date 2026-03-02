@@ -50,7 +50,7 @@ const useCartStore = create((set, get) => ({
     set({ items: items.map(i => i.key === key ? { ...i, nota } : i) })
   },
 
-  clearCart: () => set({ items: [], paymentMethod: null, extras: { servilletas: false, salsas: false, tartara: 0, pina: 0 } }),
+  clearCart: () => set({ items: [], paymentMethod: null, extras: { servilletas: false, salsas: false, tartara: 0, pina: 0 }, lastOrder: null, pedidoId: null }),
 
   setLastOrder: (pedido) => set({ lastOrder: pedido }),
 
