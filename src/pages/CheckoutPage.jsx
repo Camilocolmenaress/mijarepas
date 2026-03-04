@@ -8,6 +8,13 @@ import { supabase } from '../lib/supabase'
 
 const PAYMENT_LABELS = { nequi: 'Nequi 📱', bancolombia: 'Bancolombia 🏦', efectivo: 'Efectivo 💵' }
 
+function estaAbierto() {
+  const ahora = new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' })
+  const hora = new Date(ahora)
+  const tiempoEnMinutos = hora.getHours() * 60 + hora.getMinutes()
+  return tiempoEnMinutos >= 990 && tiempoEnMinutos <= 1320 // 16:30 a 22:00
+}
+
 export default function CheckoutPage() {
   const navigate = useNavigate()
   const { items, setLastOrder, paymentMethod, extras, sede, setPedidoId } = useCartStore()
@@ -25,6 +32,7 @@ export default function CheckoutPage() {
   const [direccionError, setDireccionError] = useState('')
   const [pagoError, setPagoError] = useState('')
   const [isOnline, setIsOnline] = useState(navigator.onLine)
+  const [abierto, setAbierto] = useState(estaAbierto)
 
   const nombreRef = useRef(null)
   const telefonoRef = useRef(null)
@@ -44,6 +52,12 @@ export default function CheckoutPage() {
       window.removeEventListener('online', goOnline)
       window.removeEventListener('offline', goOffline)
     }
+  }, [])
+
+  // Update business hours check every 60s
+  useEffect(() => {
+    const interval = setInterval(() => setAbierto(estaAbierto()), 60000)
+    return () => clearInterval(interval)
   }, [])
 
   const handleGeolocate = async () => {
@@ -137,6 +151,16 @@ export default function CheckoutPage() {
   }
 
   const handleSubmit = async () => {
+    // Check business hours before anything else
+    if (!estaAbierto()) {
+      setAbierto(false)
+      toast.error(
+        '🕐 Estamos cerrados. Nuestro horario es de 4:30 PM a 10:00 PM',
+        { duration: 5000, style: { fontWeight: 700, borderRadius: '12px' } }
+      )
+      return
+    }
+
     // Sanitize
     const nombreClean = nombre.trim()
     const telefonoClean = telefono.replace(/\D/g, '')
@@ -448,25 +472,32 @@ export default function CheckoutPage() {
             {/* CTA */}
             <button
               onClick={handleSubmit}
-              disabled={submitting || !isOnline}
+              disabled={submitting || !isOnline || !abierto}
               className="font-chreed"
               style={{
-                width: '100%', background: !isOnline ? '#999' : 'var(--primario)',
+                width: '100%',
+                background: (!isOnline || !abierto) ? '#999' : 'var(--primario)',
                 color: 'white', border: 'none', borderRadius: '12px',
                 padding: '16px', fontSize: '1.15rem',
-                cursor: (submitting || !isOnline) ? 'default' : 'pointer',
-                boxShadow: !isOnline ? 'none' : '0 4px 20px rgba(235,30,85,0.5)',
+                cursor: (submitting || !isOnline || !abierto) ? 'default' : 'pointer',
+                boxShadow: (!isOnline || !abierto) ? 'none' : '0 4px 20px rgba(235,30,85,0.5)',
                 minHeight: '54px',
-                opacity: (submitting || !isOnline) ? 0.75 : 1,
+                opacity: (submitting || !isOnline || !abierto) ? 0.75 : 1,
                 transition: 'all 0.15s ease',
               }}
             >
-              {!isOnline ? '📡 Sin conexión' : submitting ? '⏳ Enviando pedido...' : '¡Hacer Pedido! 🎉'}
+              {!isOnline ? '📡 Sin conexión' : !abierto ? '🕐 Abrimos a las 4:30 PM' : submitting ? '⏳ Enviando pedido...' : '¡Hacer Pedido! 🎉'}
             </button>
 
             {!isOnline && (
               <p className="font-brinnan" style={{ textAlign: 'center', color: '#eb1e55', fontSize: '0.75rem', marginTop: '8px' }}>
                 Conéctate a internet para enviar tu pedido
+              </p>
+            )}
+
+            {!abierto && isOnline && (
+              <p className="font-brinnan" style={{ textAlign: 'center', color: '#f9ac31', fontSize: '0.75rem', marginTop: '8px' }}>
+                🕐 Nuestro horario es de 4:30 PM a 10:00 PM
               </p>
             )}
 
