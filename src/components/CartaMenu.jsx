@@ -29,7 +29,7 @@ function FilaProducto({ producto, nombreColor, descColor, precioColor, btnBg, bt
         style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '11px 0', cursor: 'pointer' }}
       >
         <div style={{ flex: 1, minWidth: 0 }}>
-          <p className="font-healing" style={{ color: nombreColor, fontSize: '18px', lineHeight: 1.2, marginBottom: '2px' }}>
+          <p className="font-chreed-extrabold" style={{ color: nombreColor, fontSize: '16px', lineHeight: 1.2, marginBottom: '2px' }}>
             {producto.nombre}
           </p>
           {producto.desc ? (
@@ -65,7 +65,7 @@ function FilaProducto({ producto, nombreColor, descColor, precioColor, btnBg, bt
 /* ─── Subtítulo de subsección ────────────────────────────────────────── */
 function SubTitulo({ texto, color, size = '24px' }) {
   return (
-    <h3 className="font-chreed" style={{ color, fontSize: size, lineHeight: 1.1, margin: '20px 0 4px' }}>
+    <h3 className="font-chreed-extrabold" style={{ color, fontSize: size, lineHeight: 1.1, margin: '12px 0 4px' }}>
       {texto}
     </h3>
   )
@@ -78,9 +78,9 @@ function SeccionArepas() {
   const hamburguesas = productos.filter(p => p.cat === 'hamburguesas')
   return (
     <div style={{ background: '#fff1d2', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
-      <img src="/images/titulo-arepas.png" alt="Arepas" style={{ width: '100%', display: 'block' }} />
-      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px' }}>
-        <img src="/images/foto-clasicas.png" alt="Arepas Clásicas" style={{ width: '85%', height: 'auto', display: 'block', transform: 'scale(1.0)', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
+      <img src="/images/titulo-arepas.png" alt="Arepas" style={{ width: '100%', display: 'block', margin: 0, padding: 0, borderRadius: '12px', border: '3px solid #42261a' }} />
+      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px', margin: 0 }}>
+        <img src="/images/foto-clasicas.png" alt="Arepas Clásicas" style={{ width: '85%', height: 'auto', display: 'block', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
       </div>
       <div style={{ padding: '0 20px' }}>
       <SubTitulo texto="Chicharrona" color="#00afec" size="32px" />
@@ -99,9 +99,9 @@ function SeccionEspeciales() {
   const especiales = productos.filter(p => p.cat === 'especiales')
   return (
     <div style={{ background: '#f9ac31', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
-      <img src="/images/titulo-especiales.png" alt="Especiales" style={{ width: '100%', display: 'block' }} />
-      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px' }}>
-        <img src="/images/foto-especiales.png" alt="Arepas Especiales" style={{ width: '90%', height: 'auto', display: 'block', transform: 'scale(1.0)', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
+      <img src="/images/titulo-especiales.png" alt="Especiales" style={{ width: '100%', display: 'block', margin: 0, padding: 0, borderRadius: '12px', border: '3px solid #eda73c' }} />
+      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px', margin: 0 }}>
+        <img src="/images/foto-especiales.png" alt="Arepas Especiales" style={{ width: '90%', height: 'auto', display: 'block', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
       </div>
       <div style={{ padding: '0 20px' }}>
       {especiales.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#42261a" descColor="#42261a" precioColor="#eb1e55" btnBg="#42261a" btnColor="#fff" sepColor="#42261a" />)}
@@ -143,7 +143,7 @@ function CheckboxIngrediente({ nombre, precio, checked, disabled, onToggle, colo
           </svg>
         )}
       </div>
-      <span className="font-healing" style={{ color: colorText, fontSize: '16px', lineHeight: 1.2, flex: 1 }}>
+      <span className="font-chreed-extrabold" style={{ color: colorText, fontSize: '14px', lineHeight: 1.2, flex: 1 }}>
         {nombre}
       </span>
     </div>
@@ -208,7 +208,7 @@ function SeccionQuesudita() {
 
   return (
     <div style={{ background: '#eb1e55', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
-      <img src="/images/titulo-quesudita.png" alt="Arma tu Quesudita" style={{ width: '100%', display: 'block' }} />
+      <img src="/images/titulo-quesudita.png" alt="Arma tu Quesudita" style={{ width: '100%', display: 'block', margin: 0, padding: 0, borderRadius: '12px', border: '3px solid #E12B4E' }} />
       <div style={{ padding: '0 20px' }}>
       <div style={{ display: 'inline-block', background: '#42261a', borderRadius: '8px', padding: '8px 16px', marginBottom: '16px', marginTop: '8px' }}>
         <span className="font-chreed" style={{ color: '#f9ac31', fontSize: '22px' }}>
@@ -292,10 +292,8 @@ function SeccionDesgranados() {
   const desgranadas = productos.filter(p => p.cat === 'desgranadas')
   return (
     <div style={{ background: '#eb1e55', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
-      <div style={{ padding: '0 12px' }}>
-        <img src="/images/titulo-desgranados.png" alt="Los Desgranados más Amados" style={{ width: '100%', display: 'block', borderRadius: '12px', border: '3px solid #f9ac31' }} />
-      </div>
-      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px' }}>
+      <img src="/images/titulo-desgranados.png" alt="Los Desgranados más Amados" style={{ width: '100%', display: 'block', margin: 0, padding: 0, borderRadius: '12px', border: '3px solid #E12B4E' }} />
+      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px', margin: 0 }}>
         <img src="/images/foto-desgranados.png" alt="Arepas Desgranadas" style={{ width: '80%', height: 'auto', display: 'block', margin: '0 auto', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
       </div>
       <div style={{ padding: '0 20px' }}>
@@ -310,10 +308,8 @@ function SeccionParrilla() {
   const parrilla = productos.filter(p => p.cat === 'parrilla')
   return (
     <div style={{ background: '#fff1d2', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
-      <div style={{ padding: '0 12px' }}>
-        <img src="/images/titulo-parrilladas.png" alt="Las Parrilladas más Esperadas" style={{ width: '100%', display: 'block', borderRadius: '12px', border: '3px solid #eb1e55' }} />
-      </div>
-      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px' }}>
+      <img src="/images/titulo-parrilladas.png" alt="Las Parrilladas más Esperadas" style={{ width: '100%', display: 'block', margin: 0, padding: 0, borderRadius: '12px', border: '3px solid #E12B4E' }} />
+      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px', margin: 0 }}>
         <img src="/images/foto-parrilladas.png" alt="Parrilladas" style={{ width: '80%', height: 'auto', display: 'block', margin: '0 auto', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
       </div>
       <div style={{ padding: '0 20px' }}>
@@ -328,8 +324,8 @@ function SeccionClasicos() {
   const delicias = productos.filter(p => p.cat === 'delicias')
   return (
     <div style={{ background: '#007d3e', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
-      <img src="/images/titulo-clasicos.png" alt="Clásicos Ocañeros" style={{ width: '100%', display: 'block' }} />
-      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px' }}>
+      <img src="/images/titulo-clasicos.png" alt="Clásicos Ocañeros" style={{ width: '100%', display: 'block', margin: 0, padding: 0, borderRadius: '12px', border: '3px solid #007d3e' }} />
+      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px', margin: 0 }}>
         <img src="/images/foto-clasicos-ocaneros.png" alt="Clásicos Ocañeros" style={{ width: '80%', height: 'auto', display: 'block', margin: '0 auto', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
       </div>
       <div style={{ padding: '0 20px' }}>
@@ -508,7 +504,7 @@ function FilaProductoBebida({ producto, onOpenModal }) {
         onClick={handleAdd}
       >
         <div style={{ flex: 1, minWidth: 0 }}>
-          <p className="font-healing" style={{ color: '#42261a', fontSize: '18px', lineHeight: 1.2, marginBottom: '2px' }}>
+          <p className="font-chreed-extrabold" style={{ color: '#42261a', fontSize: '16px', lineHeight: 1.2, marginBottom: '2px' }}>
             {producto.nombre}
           </p>
           {producto.desc ? (
@@ -548,7 +544,7 @@ function SeccionBebidas({ onOpenModal }) {
   const otras     = productos.filter(p => ['bf12','bf13','bf14','bf15'].includes(p.id))
   return (
     <div style={{ background: '#00afec', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
-      <img src="/images/titulo-bebidas.png" alt="Pa' que se Refresque" style={{ width: '100%', display: 'block' }} />
+      <img src="/images/titulo-bebidas.png" alt="Pa' que se Refresque" style={{ width: '100%', display: 'block', margin: 0, padding: 0, borderRadius: '12px', border: '3px solid #4BA5E9' }} />
       <div style={{ padding: '0 20px' }}>
       <SubTitulo texto="LIMONADAS" color="#f9ac31" size="24px" />
       {limonadas.map(p => <FilaProductoBebida key={p.id} producto={p} onOpenModal={onOpenModal} />)}
@@ -586,7 +582,7 @@ function FilaProductoAdicional({ producto }) {
         onClick={handleAdd}
         style={{ display: 'flex', flexDirection: 'column', padding: '10px 0', cursor: 'pointer', gap: '4px' }}
       >
-        <p className="font-healing" style={{ color: '#42261a', fontSize: '15px', lineHeight: 1.2 }}>
+        <p className="font-chreed-extrabold" style={{ color: '#42261a', fontSize: '14px', lineHeight: 1.2 }}>
           {producto.nombre}
         </p>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '6px' }}>
