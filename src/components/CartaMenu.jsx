@@ -5,6 +5,9 @@ import useCartStore from '../store/useCartStore'
 import { productos } from '../data/menu'
 import { formatCOP } from '../utils/formatCOP'
 
+/* ─── Contorno sutil para nombres y subtítulos ─────────────────────── */
+const contorno = (c) => `0.5px 0.5px 0 rgba(66,38,26,${c === '#42261a' ? '0.15' : '0.3'})`
+
 /* ─── Fila de producto ───────────────────────────────────────────────── */
 function FilaProducto({ producto, nombreColor, descColor, precioColor, btnBg, btnColor, sepColor, sinBoton = false, precioFont = 'font-chreed-extrabold', nombreSize = '16px' }) {
   const navigate = useNavigate()
@@ -29,7 +32,7 @@ function FilaProducto({ producto, nombreColor, descColor, precioColor, btnBg, bt
         style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '7px 0', marginBottom: '4px', cursor: 'pointer' }}
       >
         <div style={{ flex: 1, minWidth: 0 }}>
-          <p className="font-chreed-extrabold" style={{ color: nombreColor, fontSize: nombreSize, lineHeight: 1.2, marginBottom: '2px', textShadow: '1px 1px 0 #42261a, -1px -1px 0 #42261a, 1px -1px 0 #42261a, -1px 1px 0 #42261a' }}>
+          <p className="font-chreed-extrabold" style={{ color: nombreColor, fontSize: nombreSize, lineHeight: 1.2, marginBottom: '2px', textShadow: contorno(nombreColor) }}>
             {producto.nombre}
           </p>
           {producto.desc ? (
@@ -65,7 +68,7 @@ function FilaProducto({ producto, nombreColor, descColor, precioColor, btnBg, bt
 /* ─── Subtítulo de subsección ────────────────────────────────────────── */
 function SubTitulo({ texto, color, size = '24px', fontClass = 'font-chreed-extrabold' }) {
   return (
-    <h3 className={fontClass} style={{ color, fontSize: size, lineHeight: 1.1, margin: '12px 0 4px', textShadow: '1px 1px 0 #42261a, -1px -1px 0 #42261a, 1px -1px 0 #42261a, -1px 1px 0 #42261a' }}>
+    <h3 className={fontClass} style={{ color, fontSize: size, lineHeight: 1.1, margin: '12px 0 4px', textShadow: contorno(color) }}>
       {texto}
     </h3>
   )
@@ -79,16 +82,16 @@ function SeccionArepas() {
   return (
     <div style={{ background: '#F7F1D6', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
       <img src="/images/titulo-arepas.png" alt="Arepas" style={{ width: '100%', display: 'block', margin: 0, padding: 0, borderRadius: '12px', border: '3px solid #42261a' }} />
-      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px', margin: 0, marginTop: '-20px' }}>
+      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px', margin: 0, marginTop: '-35px' }}>
         <img src="/images/foto-clasicas.png" alt="Arepas Clásicas" style={{ width: '85%', height: 'auto', display: 'block', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
       </div>
-      <div style={{ padding: '0 20px', marginTop: '-15px' }}>
+      <div style={{ padding: '0 20px', marginTop: '-25px' }}>
       <SubTitulo texto="Chicharrona" color="#E12B4E" size="32px" fontClass="font-healing" />
-      {chicharronas.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#42261a" descColor="#42261a" precioColor="#E12B4E" btnBg="#eb1e55" btnColor="#fff" sepColor="#42261a" nombreSize="1.1rem" />)}
-      <SubTitulo texto="Areburger" color="#E12B4E" size="32px" fontClass="font-healing" />
-      {hamburguesas.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#42261a" descColor="#42261a" precioColor="#E12B4E" btnBg="#eb1e55" btnColor="#fff" sepColor="#42261a" nombreSize="1.1rem" />)}
-      <SubTitulo texto="Clásiqueras" color="#E12B4E" size="32px" fontClass="font-healing" />
-      {clasicas.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#42261a" descColor="#42261a" precioColor="#E12B4E" btnBg="#eb1e55" btnColor="#fff" sepColor="#42261a" nombreSize="1.1rem" />)}
+      {chicharronas.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#E12B4E" descColor="#42261a" precioColor="#E12B4E" btnBg="#eb1e55" btnColor="#fff" sepColor="#42261a" nombreSize="1.1rem" />)}
+      <SubTitulo texto="Areburger" color="#007d3e" size="32px" fontClass="font-healing" />
+      {hamburguesas.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#007d3e" descColor="#42261a" precioColor="#E12B4E" btnBg="#eb1e55" btnColor="#fff" sepColor="#42261a" nombreSize="1.1rem" />)}
+      <SubTitulo texto="Clásiqueras" color="#f9ac31" size="32px" fontClass="font-healing" />
+      {clasicas.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#f9ac31" descColor="#42261a" precioColor="#E12B4E" btnBg="#eb1e55" btnColor="#fff" sepColor="#42261a" nombreSize="1.1rem" />)}
       </div>
     </div>
   )
@@ -100,11 +103,11 @@ function SeccionEspeciales() {
   return (
     <div style={{ background: '#f9ac31', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
       <img src="/images/titulo-especiales.png" alt="Especiales" style={{ width: '100%', display: 'block', margin: 0, padding: 0, borderRadius: '12px', border: '3px solid #42261a' }} />
-      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px', margin: 0, marginTop: '-20px' }}>
+      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px', margin: 0, marginTop: '-35px' }}>
         <img src="/images/foto-especiales.png" alt="Arepas Especiales" style={{ width: '90%', height: 'auto', display: 'block', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
       </div>
-      <div style={{ padding: '0 20px', marginTop: '-15px' }}>
-      {especiales.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#42261a" descColor="#42261a" precioColor="#42261a" btnBg="#42261a" btnColor="#fff" sepColor="#42261a" />)}
+      <div style={{ padding: '0 20px', marginTop: '-25px' }}>
+      {especiales.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#E12B4E" descColor="#42261a" precioColor="#42261a" btnBg="#42261a" btnColor="#fff" sepColor="#42261a" />)}
       </div>
     </div>
   )
@@ -143,7 +146,7 @@ function CheckboxIngrediente({ nombre, precio, checked, disabled, onToggle, colo
           </svg>
         )}
       </div>
-      <span className="font-chreed-extrabold" style={{ color: colorText, fontSize: '14px', lineHeight: 1.2, flex: 1, textShadow: '1px 1px 0 #42261a, -1px -1px 0 #42261a, 1px -1px 0 #42261a, -1px 1px 0 #42261a' }}>
+      <span className="font-chreed-extrabold" style={{ color: colorText, fontSize: '14px', lineHeight: 1.2, flex: 1, textShadow: contorno(colorText) }}>
         {nombre}
       </span>
     </div>
@@ -504,7 +507,7 @@ function FilaProductoBebida({ producto, onOpenModal, nombreColor = '#FFFFFF', pr
         onClick={handleAdd}
       >
         <div style={{ flex: 1, minWidth: 0 }}>
-          <p className="font-chreed-extrabold" style={{ color: nombreColor, fontSize: '16px', lineHeight: 1.2, marginBottom: '2px', textShadow: '1px 1px 0 #42261a, -1px -1px 0 #42261a, 1px -1px 0 #42261a, -1px 1px 0 #42261a' }}>
+          <p className="font-chreed-extrabold" style={{ color: nombreColor, fontSize: '16px', lineHeight: 1.2, marginBottom: '2px', textShadow: contorno(nombreColor) }}>
             {producto.nombre}
           </p>
           {producto.desc ? (
@@ -582,7 +585,7 @@ function FilaProductoAdicional({ producto }) {
         onClick={handleAdd}
         style={{ display: 'flex', flexDirection: 'column', padding: '10px 0', cursor: 'pointer', gap: '4px' }}
       >
-        <p className="font-chreed-extrabold" style={{ color: '#f9ac31', fontSize: '14px', lineHeight: 1.2, textShadow: '1px 1px 0 #42261a, -1px -1px 0 #42261a, 1px -1px 0 #42261a, -1px 1px 0 #42261a' }}>
+        <p className="font-chreed-extrabold" style={{ color: '#f9ac31', fontSize: '14px', lineHeight: 1.2, textShadow: contorno('#f9ac31') }}>
           {producto.nombre}
         </p>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '6px' }}>
