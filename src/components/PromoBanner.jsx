@@ -59,6 +59,8 @@ export default function PromoBanner({ promos }) {
 
   // Touch handlers for swipe
   const onTouchStart = (e) => {
+    // 1. Pause auto-rotation while user is touching
+    if (timerRef.current) clearInterval(timerRef.current)
     isDragging.current = true
     touchStartX.current = e.touches[0].clientX
     touchDeltaX.current = 0
@@ -78,14 +80,25 @@ export default function PromoBanner({ promos }) {
   const onTouchEnd = () => {
     isDragging.current = false
     const threshold = 50
-    if (touchDeltaX.current < -threshold && current < totalSlides - 1) {
-      goTo(current + 1)
-    } else if (touchDeltaX.current > threshold && current > 0) {
-      goTo(current - 1)
-    } else {
-      goTo(current) // snap back
+    // 2. Calculate new index with clamp
+    let newIdx = current
+    if (touchDeltaX.current < -threshold) {
+      newIdx = current + 1
+    } else if (touchDeltaX.current > threshold) {
+      newIdx = current - 1
     }
+    newIdx = Math.max(0, Math.min(newIdx, totalSlides - 1))
+    goTo(newIdx)
+    // 3. Restart auto-rotation from scratch
     resetTimer()
+  }
+
+  // 4. On transition end, verify position matches current index
+  const onTransitionEnd = () => {
+    if (isDragging.current) return
+    if (trackRef.current) {
+      trackRef.current.style.transform = `translateX(-${current * slidePercent}%)`
+    }
   }
 
   const handleLoQuiero = (promo) => {
@@ -120,6 +133,7 @@ export default function PromoBanner({ promos }) {
       >
         <div
           ref={trackRef}
+          onTransitionEnd={onTransitionEnd}
           style={{
             display: 'flex',
             width: `${totalSlides * 100}%`,
