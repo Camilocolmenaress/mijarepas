@@ -54,7 +54,31 @@ export default function CheckoutPage() {
     setTimeout(() => ref.current?.classList.remove('shake'), 500)
   }
 
+  const delay = (ms) => new Promise(r => setTimeout(r, ms))
+
+  // Health check — verify Supabase connection is alive
+  const healthCheck = async () => {
+    try {
+      const { error } = await supabase
+        .from('pedidos')
+        .select('id', { count: 'exact', head: true })
+        .limit(1)
+      return !error
+    } catch {
+      return false
+    }
+  }
+
   const guardarEnSupabase = async (pedido) => {
+    // Build descriptive salsas value with tartara/pina counts
+    let salsasInfo = null
+    if (pedido.extras?.salsas) {
+      const parts = []
+      if (pedido.extras.tartara > 0) parts.push(`Tártara ×${pedido.extras.tartara}`)
+      if (pedido.extras.pina > 0) parts.push(`Piña ×${pedido.extras.pina}`)
+      salsasInfo = parts.length > 0 ? parts.join(', ') : true
+    }
+
     const row = {
       sede: sede || null,
       cliente_nombre: pedido.nombre,
@@ -68,16 +92,34 @@ export default function CheckoutPage() {
         subtotal: i.subtotal,
         notas: i.nota || null,
       })),
-      salsas: pedido.extras?.salsas || null,
+      salsas: salsasInfo,
       servilletas: pedido.extras?.servilletas ?? null,
       metodo_pago: pedido.paymentMethod,
       total: pedido.total,
       estado: 'recibido',
     }
 
-    const { data, error } = await supabase.from('pedidos').insert([row]).select('id').single()
-    if (error) throw error
-    return data?.id || null
+    // Health check before INSERT — reconnect if stale
+    const alive = await healthCheck()
+    if (!alive) {
+      supabase.removeAllChannels()
+      await delay(1000)
+    }
+
+    // Retry up to 3 times with 1s delay between attempts
+    let lastError = null
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        const { data, error } = await supabase.from('pedidos').insert([row]).select('id').single()
+        if (!error) return data?.id || null
+        lastError = error
+      } catch (err) {
+        lastError = err
+      }
+      console.error(`Supabase intento ${attempt}/3 falló:`, lastError)
+      if (attempt < 3) await delay(1000)
+    }
+    throw lastError
   }
 
   const handleSubmit = async () => {
@@ -142,8 +184,11 @@ export default function CheckoutPage() {
       const id = await guardarEnSupabase(pedido)
       if (id) setPedidoId(id)
     } catch (err) {
-      // Supabase falla → igual continuamos con WhatsApp
-      console.error('Supabase error (non-blocking):', err)
+      console.error('Supabase error tras 3 intentos:', err)
+      toast.error(
+        '⚠️ No pudimos registrar tu pedido en el sistema. Contacta al restaurante por WhatsApp para confirmar.',
+        { duration: 8000, style: { fontWeight: 700, borderRadius: '12px' } }
+      )
     } finally {
       setSubmitting(false)
     }
