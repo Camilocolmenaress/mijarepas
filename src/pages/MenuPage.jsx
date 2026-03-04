@@ -1,7 +1,11 @@
+import { useState, useEffect } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import useCartStore from '../store/useCartStore'
 import { formatCOP } from '../utils/formatCOP'
 import CartaMenu from '../components/CartaMenu'
+import PromoBanner from '../components/PromoBanner'
+import PromoPopup from '../components/PromoPopup'
+import usePromos from '../hooks/usePromos'
 
 export default function MenuPage() {
   const navigate = useNavigate()
@@ -12,26 +16,44 @@ export default function MenuPage() {
   const totalItems = items.reduce((a, i) => a + i.qty, 0)
   const totalPrice = items.reduce((a, i) => a + i.precio * i.qty, 0)
 
+  const { promos, loading } = usePromos()
+  const [showPromoPopup, setShowPromoPopup] = useState(false)
+
+  // Mostrar popup de promo una vez por sesion
+  useEffect(() => {
+    if (loading) return
+    if (promos.length === 0) return
+    const seen = sessionStorage.getItem('mijarepas_promo_popup_seen')
+    if (!seen) {
+      sessionStorage.setItem('mijarepas_promo_popup_seen', '1')
+      setShowPromoPopup(true)
+    }
+  }, [loading, promos])
+
   return (
     <>
-      {/* Hero banner — solo sin búsqueda */}
+      {/* Hero banner / Carrusel de promos — solo sin busqueda */}
       {!searchQuery && (
-        <div style={{ width: '100%', lineHeight: 0, flexShrink: 0 }}>
-          <img
-            src="/images/LOGOSYRECURSOS-12.jpg"
-            alt="Mijarepas — El sabor de Ocaña"
-            style={{
-              width: '100%',
-              height: 'clamp(140px, 28vw, 200px)',
-              objectFit: 'cover',
-              objectPosition: 'center',
-              display: 'block',
-            }}
-          />
-        </div>
+        !loading && promos.length > 0
+          ? <PromoBanner promos={promos} />
+          : (
+            <div style={{ width: '100%', lineHeight: 0, flexShrink: 0 }}>
+              <img
+                src="/images/LOGOSYRECURSOS-12.jpg"
+                alt="Mijarepas — El sabor de Ocana"
+                style={{
+                  width: '100%',
+                  height: 'clamp(140px, 28vw, 200px)',
+                  objectFit: 'cover',
+                  objectPosition: 'center',
+                  display: 'block',
+                }}
+              />
+            </div>
+          )
       )}
 
-      {/* Carta menú con scroll horizontal */}
+      {/* Carta menu con scroll horizontal */}
       <CartaMenu searchQuery={searchQuery} />
 
       {/* ── Barra inferior sticky ── */}
@@ -73,6 +95,14 @@ export default function MenuPage() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Pop-up de promo */}
+      {showPromoPopup && promos.length > 0 && (
+        <PromoPopup
+          promo={promos[0]}
+          onClose={() => setShowPromoPopup(false)}
+        />
       )}
     </>
   )

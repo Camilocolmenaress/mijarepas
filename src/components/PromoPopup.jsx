@@ -1,103 +1,223 @@
 import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import useCartStore from '../store/useCartStore'
+import { formatCOP } from '../utils/formatCOP'
 
-export default function PromoPopup({ onClose }) {
+export default function PromoPopup({ promo, onClose }) {
+  const navigate = useNavigate()
+  const { addItem } = useCartStore()
+
   useEffect(() => {
     const handler = (e) => { if (e.key === 'Escape') onClose() }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
   }, [onClose])
 
+  if (!promo) return null
+
+  const handleLoQuiero = () => {
+    addItem(
+      {
+        id: `promo-${promo.id}`,
+        nombre: promo.titulo,
+        precio: promo.precio,
+        cat: 'promocion',
+        emoji: '🎉',
+      },
+      1,
+      'PROMOCION'
+    )
+    onClose()
+    navigate('/checkout')
+  }
+
   return (
     <div
-      className="anim-fadeIn"
       style={{
-        position: 'fixed', inset: 0, zIndex: 999,
-        background: 'rgba(66,38,26,0.65)',
-        backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        position: 'fixed',
+        inset: 0,
+        zIndex: 1000,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         padding: '24px',
+        animation: 'promoOverlayIn 0.3s ease forwards',
       }}
-      onClick={onClose}
     >
+      {/* Fondo oscuro */}
       <div
-        className="anim-scaleIn"
+        onClick={onClose}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'rgba(0,0,0,0.65)',
+        }}
+      />
+
+      {/* Modal */}
+      <div
         onClick={e => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
-        aria-label="Promoción del día"
+        aria-label="Promocion especial"
         style={{
-          background: '#ffffff', borderRadius: '24px', padding: '0',
-          maxWidth: '360px', width: '100%', overflow: 'hidden',
-          boxShadow: '0 20px 60px rgba(66,38,26,0.35)', position: 'relative',
+          position: 'relative',
+          background: '#E12B4E',
+          borderRadius: '20px',
+          maxWidth: '380px',
+          width: '100%',
+          overflow: 'hidden',
+          boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
+          animation: 'promoModalIn 0.35s ease forwards',
         }}
       >
-        {/* Header fucsia */}
-        <div style={{
-          background: 'linear-gradient(135deg, var(--primario) 0%, #a01040 100%)',
-          padding: '32px 24px 24px', textAlign: 'center', position: 'relative',
-        }}>
-          <button
-            onClick={onClose}
-            aria-label="Cerrar promoción"
+        {/* Boton cerrar */}
+        <button
+          onClick={onClose}
+          aria-label="Cerrar"
+          style={{
+            position: 'absolute',
+            top: '10px',
+            right: '10px',
+            zIndex: 2,
+            background: 'rgba(0,0,0,0.35)',
+            border: 'none',
+            borderRadius: '50%',
+            width: '32px',
+            height: '32px',
+            color: '#FFFFFF',
+            fontSize: '1rem',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            lineHeight: 1,
+          }}
+        >
+          ✕
+        </button>
+
+        {/* Imagen de la promo */}
+        {promo.imagen_url && (
+          <img
+            src={promo.imagen_url}
+            alt={promo.titulo}
             style={{
-              position: 'absolute', top: '12px', right: '12px',
-              background: 'rgba(255,255,255,0.2)', border: 'none',
-              borderRadius: '50%', width: '32px', height: '32px',
-              color: 'white', fontSize: '1.1rem', cursor: 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', lineHeight: 1,
+              width: '100%',
+              height: '180px',
+              objectFit: 'cover',
+              display: 'block',
             }}
-          >✕</button>
+          />
+        )}
 
-          <div style={{ fontSize: '3.5rem', marginBottom: '8px' }}>🫓🔥</div>
-
+        {/* Contenido */}
+        <div style={{ padding: '20px 20px 24px' }}>
+          {/* Etiqueta */}
           <div
             className="font-brinnan"
             style={{
-              display: 'inline-block', background: 'var(--secundario)', color: 'var(--cafe)',
-              borderRadius: '50px', padding: '4px 14px',
-              fontSize: '0.75rem', fontWeight: 800, marginBottom: '12px',
+              display: 'inline-block',
+              background: 'rgba(0,0,0,0.2)',
+              color: '#FFFFFF',
+              fontSize: '0.68rem',
+              padding: '3px 10px',
+              borderRadius: '50px',
+              marginBottom: '10px',
+              letterSpacing: '0.05em',
             }}
           >
-            ¡PROMO DEL DÍA!
+            PROMO ESPECIAL
           </div>
 
-          <h2 className="font-chreed" style={{ color: 'white', fontSize: '1.6rem', lineHeight: 1.2, margin: 0 }}>
-            Arepa Ocañerisima
-          </h2>
-          <p className="font-chreed" style={{ color: 'var(--secundario)', fontSize: '1.1rem', marginTop: '4px' }}>
-            + Granizada Gratis
-          </p>
-        </div>
-
-        {/* Cuerpo */}
-        <div style={{ padding: '20px 24px 24px', textAlign: 'center' }}>
-          <p className="font-brinnan" style={{ color: 'var(--cafe-medio)', fontSize: '0.9rem', lineHeight: 1.5, marginBottom: '20px' }}>
-            Pide la Ocañerisima hoy y te llevamos una granizada de naranja gratis.
-            ¡Solo por tiempo limitado! 🎉
-          </p>
-
-          <button
-            onClick={onClose}
-            className="font-chreed"
+          {/* Titulo */}
+          <h2
+            className="font-chreed-extrabold"
             style={{
-              width: '100%', background: 'var(--primario)',
-              color: 'white', border: 'none', borderRadius: '12px',
-              padding: '16px', fontSize: '1.1rem', cursor: 'pointer',
-              boxShadow: '0 4px 16px rgba(235,30,85,0.4)', minHeight: '52px',
+              color: '#f9ac31',
+              fontSize: '1.5rem',
+              lineHeight: 1.15,
+              margin: '0 0 8px',
             }}
           >
-            ¡Lo quiero! 🛒
+            {promo.titulo}
+          </h2>
+
+          {/* Descripcion */}
+          <p
+            className="font-brinnan"
+            style={{
+              color: '#FFFFFF',
+              fontSize: '0.85rem',
+              lineHeight: 1.45,
+              margin: '0 0 14px',
+              opacity: 0.92,
+            }}
+          >
+            {promo.descripcion}
+          </p>
+
+          {/* Precios */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '18px' }}>
+            {promo.precio_original && (
+              <span
+                className="font-brinnan"
+                style={{
+                  color: 'rgba(255,255,255,0.55)',
+                  fontSize: '1rem',
+                  textDecoration: 'line-through',
+                }}
+              >
+                {formatCOP(promo.precio_original)}
+              </span>
+            )}
+            <span
+              className="font-chreed-extrabold"
+              style={{
+                color: '#FFFFFF',
+                fontSize: '1.7rem',
+              }}
+            >
+              {formatCOP(promo.precio)}
+            </span>
+          </div>
+
+          {/* Boton LO QUIERO */}
+          <button
+            onClick={handleLoQuiero}
+            className="font-chreed-extrabold"
+            style={{
+              width: '100%',
+              background: '#f9ac31',
+              color: '#42261a',
+              border: 'none',
+              borderRadius: '14px',
+              padding: '14px 20px',
+              fontSize: '1.15rem',
+              cursor: 'pointer',
+              boxShadow: '0 4px 16px rgba(0,0,0,0.25)',
+              letterSpacing: '0.03em',
+            }}
+          >
+            LO QUIERO!
           </button>
 
+          {/* Ahora no */}
           <button
             onClick={onClose}
             className="font-brinnan"
             style={{
-              background: 'none', border: 'none', color: 'var(--cafe-medio)',
-              fontSize: '0.85rem', marginTop: '12px', cursor: 'pointer', textDecoration: 'underline',
+              width: '100%',
+              background: 'none',
+              border: 'none',
+              color: 'rgba(255,255,255,0.65)',
+              fontSize: '0.82rem',
+              cursor: 'pointer',
+              marginTop: '10px',
+              padding: '8px',
             }}
           >
-            Ver el menú completo
+            Ahora no
           </button>
         </div>
       </div>
