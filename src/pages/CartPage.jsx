@@ -189,10 +189,11 @@ const CAT_LABELS = {
   calientes:    { label: 'Bebidas Calientes',     emoji: '☕' },
   adicionales:  { label: 'Adicionales',           emoji: '➕' },
   quesudita:    { label: 'Tu Quesudita',          emoji: '🧀' },
+  promocion:    { label: 'Promoción',             emoji: '🎉' },
 }
 
 /* Orden deseado de categorías en el carrito */
-const CAT_ORDER = ['clasicas','especiales','desgranadas','chicharronas','hamburguesas','parrilla','delicias','frias','calientes','quesudita','adicionales']
+const CAT_ORDER = ['promocion','clasicas','especiales','desgranadas','chicharronas','hamburguesas','parrilla','delicias','frias','calientes','quesudita','adicionales']
 
 export default function CartPage() {
   const navigate = useNavigate()

@@ -97,7 +97,7 @@ export default function PromoBanner({ promos }) {
       1,
       `PROMOCIÓN - ${promo.descripcion}`
     )
-    navigate('/checkout')
+    navigate('/carrito')
   }
 
   const bannerHeight = 'clamp(140px, 28vw, 200px)'

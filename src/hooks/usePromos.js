@@ -16,11 +16,17 @@ export default function usePromos() {
           .select('*')
           .eq('activa', true)
           .or(`fecha_inicio.is.null,fecha_inicio.lte.${today}`)
-          .or(`fecha_fin.is.null,fecha_fin.gte.${today}`)
           .order('created_at', { ascending: false })
 
+        // Filter fecha_fin in JS because PostgREST overwrites
+        // the first .or() when chaining a second one
+        const filtered = (data || []).filter(p => {
+          if (!p.fecha_fin) return true
+          return p.fecha_fin >= today
+        })
+
         if (!cancelled && !error) {
-          setPromos(data || [])
+          setPromos(filtered)
         }
       } catch (err) {
         console.error('Error fetching promos:', err)

@@ -28,7 +28,7 @@ export default function PromoPopup({ promo, onClose }) {
       `PROMOCIÓN - ${promo.descripcion}`
     )
     onClose()
-    navigate('/checkout')
+    navigate('/carrito')
   }
 
   return (
