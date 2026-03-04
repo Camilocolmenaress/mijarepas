@@ -17,7 +17,7 @@ function estaAbierto() {
 
 export default function CheckoutPage() {
   const navigate = useNavigate()
-  const { items, setLastOrder, paymentMethod, extras, sede, setPedidoId } = useCartStore()
+  const { items, setLastOrder, paymentMethod, extras, sede, setPedidoId, isPedidoEnviando, setIsPedidoEnviando } = useCartStore()
   const [submitting, setSubmitting] = useState(false)
   const subtotal = items.reduce((a, i) => a + i.precio * i.qty, 0)
   const total = subtotal
@@ -151,6 +151,9 @@ export default function CheckoutPage() {
   }
 
   const handleSubmit = async () => {
+    // Ignore if already sending (prevent double click)
+    if (isPedidoEnviando) return
+
     // Check business hours before anything else
     if (!estaAbierto()) {
       setAbierto(false)
@@ -245,6 +248,7 @@ export default function CheckoutPage() {
     }
 
     setSubmitting(true)
+    setIsPedidoEnviando(true)
     try {
       const id = await guardarEnSupabase(pedido)
       if (id) setPedidoId(id)
@@ -255,10 +259,12 @@ export default function CheckoutPage() {
         { duration: 6000, style: { fontWeight: 700, borderRadius: '12px' } }
       )
       setSubmitting(false)
+      setIsPedidoEnviando(false)
       return
     }
 
     setSubmitting(false)
+    setIsPedidoEnviando(false)
     setLastOrder(pedido)
     navigate('/confirmacion', { replace: true })
   }
@@ -472,21 +478,21 @@ export default function CheckoutPage() {
             {/* CTA */}
             <button
               onClick={handleSubmit}
-              disabled={submitting || !isOnline || !abierto}
+              disabled={submitting || isPedidoEnviando || !isOnline || !abierto}
               className="font-chreed"
               style={{
                 width: '100%',
-                background: (!isOnline || !abierto) ? '#999' : 'var(--primario)',
+                background: (!isOnline || !abierto || submitting || isPedidoEnviando) ? '#999' : 'var(--primario)',
                 color: 'white', border: 'none', borderRadius: '12px',
                 padding: '16px', fontSize: '1.15rem',
-                cursor: (submitting || !isOnline || !abierto) ? 'default' : 'pointer',
-                boxShadow: (!isOnline || !abierto) ? 'none' : '0 4px 20px rgba(235,30,85,0.5)',
+                cursor: (submitting || isPedidoEnviando || !isOnline || !abierto) ? 'not-allowed' : 'pointer',
+                boxShadow: (!isOnline || !abierto || submitting || isPedidoEnviando) ? 'none' : '0 4px 20px rgba(235,30,85,0.5)',
                 minHeight: '54px',
-                opacity: (submitting || !isOnline || !abierto) ? 0.75 : 1,
+                opacity: (submitting || isPedidoEnviando || !isOnline || !abierto) ? 0.6 : 1,
                 transition: 'all 0.15s ease',
               }}
             >
-              {!isOnline ? '📡 Sin conexión' : !abierto ? '🕐 Abrimos a las 4:30 PM' : submitting ? '⏳ Enviando pedido...' : '¡Hacer Pedido! 🎉'}
+              {!isOnline ? '📡 Sin conexión' : !abierto ? '🕐 Abrimos a las 4:30 PM' : (submitting || isPedidoEnviando) ? '⏳ Enviando pedido...' : '¡Hacer Pedido! 🎉'}
             </button>
 
             {!isOnline && (

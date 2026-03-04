@@ -8,8 +8,10 @@ const useCartStore = create((set, get) => ({
   paymentMethod: null,   // 'nequi' | 'bancolombia' | 'efectivo'
   extras: { servilletas: false, salsas: false, tartara: 0, pina: 0 },
   sede: null,            // 'Aurora' | 'Lagos' | 'Mutis' | 'Piedecuesta'
+  isPedidoEnviando: false,
 
   setSede: (sede) => set({ sede }),
+  setIsPedidoEnviando: (val) => set({ isPedidoEnviando: val }),
   setPedidoId: (id) => set({ pedidoId: id }),
 
   addItem: (producto, qty = 1, nota = '') => {
@@ -50,7 +52,7 @@ const useCartStore = create((set, get) => ({
     set({ items: items.map(i => i.key === key ? { ...i, nota } : i) })
   },
 
-  clearCart: () => set({ items: [], paymentMethod: null, extras: { servilletas: false, salsas: false, tartara: 0, pina: 0 }, lastOrder: null, pedidoId: null }),
+  clearCart: () => set({ items: [], paymentMethod: null, extras: { servilletas: false, salsas: false, tartara: 0, pina: 0 }, lastOrder: null, pedidoId: null, isPedidoEnviando: false }),
 
   setLastOrder: (pedido) => set({ lastOrder: pedido }),
 
