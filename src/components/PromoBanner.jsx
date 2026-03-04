@@ -95,7 +95,7 @@ export default function PromoBanner({ promos }) {
         emoji: '🎉',
       },
       1,
-      'PROMOCION'
+      `PROMOCIÓN - ${promo.descripcion}`
     )
     navigate('/checkout')
   }

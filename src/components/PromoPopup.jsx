@@ -25,7 +25,7 @@ export default function PromoPopup({ promo, onClose }) {
         emoji: '🎉',
       },
       1,
-      'PROMOCION'
+      `PROMOCIÓN - ${promo.descripcion}`
     )
     onClose()
     navigate('/checkout')
