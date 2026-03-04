@@ -213,12 +213,12 @@ function SeccionQuesudita() {
     <div style={{ background: '#E12B4E', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
       <img src="/images/titulo-quesudita.png" alt="Arma tu Quesudita" style={{ width: '100%', display: 'block', margin: 0, padding: 0, borderRadius: '12px', border: '3px solid #f9ac31' }} />
       <div style={{ padding: '0 20px', marginTop: '-20px' }}>
-      <div style={{ display: 'inline-block', background: '#42261a', borderRadius: '8px', padding: '8px 16px', marginBottom: '16px', marginTop: '8px' }}>
+      <div style={{ display: 'inline-block', background: '#42261a', borderRadius: '8px', padding: '8px 16px', marginBottom: '16px', marginTop: '18px' }}>
         <span className="font-chreed" style={{ color: '#f9ac31', fontSize: '22px' }}>
           SELECCIONA 7 INGREDIENTES $33.500
         </span>
       </div>
-      <div style={{ width: '100%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ width: '100%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '-25px' }}>
         <img src="/images/foto-quesudita.png" alt="Arma Tu Quesudita" style={{ width: '75%', height: 'auto', display: 'block', transform: 'scale(1.0)', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
       </div>
 
@@ -328,10 +328,10 @@ function SeccionClasicos() {
   return (
     <div style={{ background: '#007d3e', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
       <img src="/images/titulo-clasicos.png" alt="Clásicos Ocañeros" style={{ width: '100%', display: 'block', margin: 0, padding: 0, borderRadius: '12px', border: '3px solid #f9ac31' }} />
-      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px', margin: 0, marginTop: '-20px' }}>
+      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px', margin: 0, marginTop: '-30px' }}>
         <img src="/images/foto-clasicos-ocaneros.png" alt="Clásicos Ocañeros" style={{ width: '80%', height: 'auto', display: 'block', margin: '0 auto', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
       </div>
-      <div style={{ padding: '0 20px', marginTop: '-15px' }}>
+      <div style={{ padding: '15px 20px 0', marginTop: '-15px' }}>
       {delicias.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#f9ac31" descColor="#FFFFFF" precioColor="#FFFFFF" btnBg="#f9ac31" btnColor="#42261a" sepColor="rgba(255,255,255,0.3)" />)}
       </div>
     </div>
@@ -548,7 +548,7 @@ function SeccionBebidas({ onOpenModal }) {
   return (
     <div style={{ background: '#4BA5E9', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
       <img src="/images/titulo-bebidas.png" alt="Pa' que se Refresque" style={{ width: '100%', display: 'block', margin: 0, padding: 0, borderRadius: '12px', border: '3px solid #E12B4E' }} />
-      <div style={{ padding: '0 20px', marginTop: '-20px' }}>
+      <div style={{ padding: '15px 20px 0', marginTop: '-20px' }}>
       <SubTitulo texto="LIMONADAS" color="#f9ac31" size="24px" />
       {limonadas.map(p => <FilaProductoBebida key={p.id} producto={p} onOpenModal={onOpenModal} />)}
       <SubTitulo texto="JUGOS Y GRANIZADAS" color="#f9ac31" size="24px" />
