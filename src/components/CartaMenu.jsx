@@ -6,7 +6,7 @@ import { productos } from '../data/menu'
 import { formatCOP } from '../utils/formatCOP'
 
 /* ─── Contorno sutil para nombres y subtítulos ─────────────────────── */
-const contorno = (c) => `0.5px 0.5px 0 rgba(66,38,26,${c === '#42261a' ? '0.15' : '0.3'})`
+const contorno = () => '1px 1px 0 rgba(66,38,26,0.7), 0px 2px 0 rgba(66,38,26,0.5)'
 
 /* ─── Fila de producto ───────────────────────────────────────────────── */
 function FilaProducto({ producto, nombreColor, descColor, precioColor, btnBg, btnColor, sepColor, sinBoton = false, precioFont = 'font-chreed-extrabold', nombreSize = '16px' }) {
