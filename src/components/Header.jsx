@@ -47,16 +47,16 @@ export default function Header() {
             </span>
           </div>
         )}
-        {/* Logo */}
-        <div onClick={() => navigate('/menu')} style={{ cursor: 'pointer', lineHeight: 0, marginBottom: '8px' }}>
-          <img
-            src="/images/logo.jpg"
-            alt="Mijarepas"
-            style={{ width: '100%', maxWidth: '100%', objectFit: 'contain', display: 'block' }}
-          />
-        </div>
-
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+
+          {/* Logo */}
+          <div onClick={() => navigate('/menu')} style={{ flexShrink: 0, cursor: 'pointer', lineHeight: 0 }}>
+            <img
+              src="/images/logo-transparente.png"
+              alt="Mijarepas"
+              style={{ height: '44px', width: 'auto', objectFit: 'contain', display: 'block' }}
+            />
+          </div>
 
           {/* Buscador */}
           <div style={{
