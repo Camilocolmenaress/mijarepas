@@ -65,7 +65,7 @@ function FilaProducto({ producto, nombreColor, descColor, precioColor, btnBg, bt
 /* ─── Subtítulo de subsección ────────────────────────────────────────── */
 function SubTitulo({ texto, color, size = '24px' }) {
   return (
-    <h3 className="font-chreed" style={{ color, fontSize: size, lineHeight: 1.1, margin: '20px 0 4px' }}>
+    <h3 className="font-healing" style={{ color, fontSize: size, lineHeight: 1.1, margin: '12px 0 4px' }}>
       {texto}
     </h3>
   )
@@ -77,10 +77,10 @@ function SeccionArepas() {
   const chicharronas = productos.filter(p => p.cat === 'chicharronas')
   const hamburguesas = productos.filter(p => p.cat === 'hamburguesas')
   return (
-    <div style={{ background: '#fff1d2', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
-      <img src="/images/titulo-arepas.png" alt="Arepas" style={{ width: '100%', display: 'block' }} />
-      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px' }}>
-        <img src="/images/foto-clasicas.png" alt="Arepas Clásicas" style={{ width: '85%', height: 'auto', display: 'block', transform: 'scale(1.0)', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
+    <div style={{ background: '#F7F1D6', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
+      <img src="/images/titulo-arepas.png" alt="Arepas" style={{ width: '100%', display: 'block', margin: 0, padding: 0 }} />
+      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px', margin: 0 }}>
+        <img src="/images/foto-clasicas.png" alt="Arepas Clásicas" style={{ width: '85%', height: 'auto', display: 'block', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
       </div>
       <div style={{ padding: '0 20px' }}>
       <SubTitulo texto="Chicharrona" color="#00afec" size="32px" />
@@ -98,10 +98,10 @@ function SeccionArepas() {
 function SeccionEspeciales() {
   const especiales = productos.filter(p => p.cat === 'especiales')
   return (
-    <div style={{ background: '#f9ac31', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
-      <img src="/images/titulo-especiales.png" alt="Especiales" style={{ width: '100%', display: 'block' }} />
-      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px' }}>
-        <img src="/images/foto-especiales.png" alt="Arepas Especiales" style={{ width: '90%', height: 'auto', display: 'block', transform: 'scale(1.0)', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
+    <div style={{ background: '#eda73c', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
+      <img src="/images/titulo-especiales.png" alt="Especiales" style={{ width: '100%', display: 'block', margin: 0, padding: 0 }} />
+      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px', margin: 0 }}>
+        <img src="/images/foto-especiales.png" alt="Arepas Especiales" style={{ width: '90%', height: 'auto', display: 'block', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
       </div>
       <div style={{ padding: '0 20px' }}>
       {especiales.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#42261a" descColor="#42261a" precioColor="#eb1e55" btnBg="#42261a" btnColor="#fff" sepColor="#42261a" />)}
@@ -207,8 +207,8 @@ function SeccionQuesudita() {
   }
 
   return (
-    <div style={{ background: '#eb1e55', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
-      <img src="/images/titulo-quesudita.png" alt="Arma tu Quesudita" style={{ width: '100%', display: 'block' }} />
+    <div style={{ background: '#E12B4E', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
+      <img src="/images/titulo-quesudita.png" alt="Arma tu Quesudita" style={{ width: '100%', display: 'block', margin: 0, padding: 0 }} />
       <div style={{ padding: '0 20px' }}>
       <div style={{ display: 'inline-block', background: '#42261a', borderRadius: '8px', padding: '8px 16px', marginBottom: '16px', marginTop: '8px' }}>
         <span className="font-chreed" style={{ color: '#f9ac31', fontSize: '22px' }}>
@@ -291,12 +291,10 @@ function SeccionQuesudita() {
 function SeccionDesgranados() {
   const desgranadas = productos.filter(p => p.cat === 'desgranadas')
   return (
-    <div style={{ background: '#eb1e55', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
-      <div style={{ padding: '0 12px' }}>
-        <img src="/images/titulo-desgranados.png" alt="Los Desgranados más Amados" style={{ width: '100%', display: 'block', borderRadius: '12px', border: '3px solid #f9ac31' }} />
-      </div>
-      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px' }}>
-        <img src="/images/foto-desgranados.png" alt="Arepas Desgranadas" style={{ width: '80%', height: 'auto', display: 'block', margin: '0 auto', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
+    <div style={{ background: '#E12B4E', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
+      <img src="/images/titulo-desgranados.png" alt="Los Desgranados más Amados" style={{ width: '100%', display: 'block', margin: 0, padding: 0 }} />
+      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px', margin: 0 }}>
+        <img src="/images/foto-desgranados.png" alt="Arepas Desgranadas" style={{ width: '80%', height: 'auto', display: 'block', margin: '0 auto', borderRadius: '12px', border: '3px solid #f9ac31', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
       </div>
       <div style={{ padding: '0 20px' }}>
       {desgranadas.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#fff1d2" descColor="#fff1d2" precioColor="#f9ac31" btnBg="#f9ac31" btnColor="#42261a" sepColor="#fff1d2" />)}
@@ -309,15 +307,13 @@ function SeccionDesgranados() {
 function SeccionParrilla() {
   const parrilla = productos.filter(p => p.cat === 'parrilla')
   return (
-    <div style={{ background: '#fff1d2', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
-      <div style={{ padding: '0 12px' }}>
-        <img src="/images/titulo-parrilladas.png" alt="Las Parrilladas más Esperadas" style={{ width: '100%', display: 'block', borderRadius: '12px', border: '3px solid #eb1e55' }} />
-      </div>
-      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px' }}>
-        <img src="/images/foto-parrilladas.png" alt="Parrilladas" style={{ width: '80%', height: 'auto', display: 'block', margin: '0 auto', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
+    <div style={{ background: '#E12B4E', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
+      <img src="/images/titulo-parrilladas.png" alt="Las Parrilladas más Esperadas" style={{ width: '100%', display: 'block', margin: 0, padding: 0 }} />
+      <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px', margin: 0 }}>
+        <img src="/images/foto-parrilladas.png" alt="Parrilladas" style={{ width: '80%', height: 'auto', display: 'block', margin: '0 auto', borderRadius: '12px', border: '3px solid #f9ac31', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
       </div>
       <div style={{ padding: '0 20px' }}>
-      {parrilla.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#42261a" descColor="#42261a" precioColor="#eb1e55" btnBg="#eb1e55" btnColor="#fff" sepColor="#42261a" />)}
+      {parrilla.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#fff1d2" descColor="#fff1d2" precioColor="#f9ac31" btnBg="#f9ac31" btnColor="#42261a" sepColor="#fff1d2" />)}
       </div>
     </div>
   )
@@ -547,8 +543,8 @@ function SeccionBebidas({ onOpenModal }) {
   const calientes = productos.filter(p => p.cat === 'calientes')
   const otras     = productos.filter(p => ['bf12','bf13','bf14','bf15'].includes(p.id))
   return (
-    <div style={{ background: '#00afec', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
-      <img src="/images/titulo-bebidas.png" alt="Pa' que se Refresque" style={{ width: '100%', display: 'block' }} />
+    <div style={{ background: '#4BA5E9', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', paddingBottom: '220px' }}>
+      <img src="/images/titulo-bebidas.png" alt="Pa' que se Refresque" style={{ width: '100%', display: 'block', margin: 0, padding: 0 }} />
       <div style={{ padding: '0 20px' }}>
       <SubTitulo texto="LIMONADAS" color="#f9ac31" size="24px" />
       {limonadas.map(p => <FilaProductoBebida key={p.id} producto={p} onOpenModal={onOpenModal} />)}
@@ -615,11 +611,8 @@ function FilaProductoAdicional({ producto }) {
 function SeccionAdicionales() {
   const adicionales = productos.filter(p => p.cat === 'adicionales')
   return (
-    <div style={{ background: '#fff1d2', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
-      {/* Título estilo carta física */}
-      <div style={{ background: '#eb1e55', borderRadius: '16px', padding: '14px 20px 10px', marginBottom: '16px', textAlign: 'center' }}>
-        <h2 className="font-healing" style={{ color: '#f9ac31', fontSize: '42px', lineHeight: 1, margin: 0 }}>Adicionales</h2>
-      </div>
+    <div style={{ background: '#E12B4E', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '20px 20px 220px' }}>
+      <h2 className="font-healing" style={{ color: '#f9ac31', fontSize: '42px', lineHeight: 1, margin: '0 0 12px', textAlign: 'center' }}>Adicionales</h2>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 12px' }}>
         {adicionales.map(p => <FilaProductoAdicional key={p.id} producto={p} />)}
       </div>
