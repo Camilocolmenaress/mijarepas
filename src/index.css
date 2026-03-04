@@ -16,6 +16,16 @@
   src: url('/fonts/Brinnan Regular.otf') format('opentype');
   font-display: swap;
 }
+@font-face {
+  font-family: 'ChreedExtraBold';
+  src: url('/fonts/Chreed-ExtraBold.otf') format('opentype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Chibold';
+  src: url('/fonts/CHIBOLD.ttf') format('truetype');
+  font-display: swap;
+}
 
 /* ─── Paleta oficial Mijarepas ─────────────────────────────────────── */
 :root {
@@ -107,6 +117,8 @@ input, textarea, select, button {
 /* Healing  → Nombres de productos, subtítulos, etiquetas                */
 /* Brinnan  → Todo lo demás: descripciones, precios, botones, inputs     */
 .font-chreed  { font-family: 'Chreed'; }
+.font-chreed-extrabold { font-family: 'ChreedExtraBold'; }
+.font-chibold { font-family: 'Chibold'; }
 .font-healing { font-family: 'Healing'; }
 .font-brinnan { font-family: 'Brinnan'; }
 

@@ -78,7 +78,12 @@ function SeccionArepas() {
   const hamburguesas = productos.filter(p => p.cat === 'hamburguesas')
   return (
     <div style={{ background: '#fff1d2', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
-      <h2 className="font-chreed" style={{ color: '#f9ac31', fontSize: '52px', lineHeight: 1 }}>AREPAS</h2>
+      {/* Título estilo carta física */}
+      <div style={{ background: '#007d3e', borderRadius: '16px', padding: '18px 20px 14px', marginBottom: '16px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+        <span style={{ position: 'absolute', top: '8px', left: '14px', fontFamily: 'ChreedExtraBold', color: 'rgba(255,241,210,0.15)', fontSize: '22px' }}>✕</span>
+        <span style={{ position: 'absolute', top: '8px', right: '14px', fontFamily: 'ChreedExtraBold', color: 'rgba(255,241,210,0.15)', fontSize: '22px' }}>✕</span>
+        <h2 style={{ fontFamily: 'ChreedExtraBold', color: '#f9ac31', fontSize: '56px', lineHeight: 1, margin: 0 }}>AREPAS</h2>
+      </div>
       <div style={{ width: '100%', height: '300px', overflow: 'hidden', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <img src="/images/foto-clasicas.png" alt="Arepas Clásicas" style={{ width: '85%', height: 'auto', display: 'block', transform: 'scale(1.0)', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
       </div>
@@ -97,8 +102,13 @@ function SeccionEspeciales() {
   const especiales = productos.filter(p => p.cat === 'especiales')
   return (
     <div style={{ background: '#f9ac31', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
-      <p className="font-healing" style={{ color: '#eb1e55', fontSize: '28px', lineHeight: 1.1 }}>Vea pues las</p>
-      <h2 className="font-chreed" style={{ color: '#42261a', fontSize: '52px', lineHeight: 1, marginBottom: '16px' }}>ESPECIALES</h2>
+      {/* Título estilo carta física */}
+      <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+        <p className="font-healing" style={{ color: '#42261a', fontSize: '22px', lineHeight: 1, marginBottom: '-4px', letterSpacing: '0.05em' }}>
+          ✕ Vea pues las ✕
+        </p>
+        <h2 style={{ fontFamily: 'ChreedExtraBold', color: '#42261a', fontSize: '58px', lineHeight: 0.95, margin: 0 }}>ESPECIALES</h2>
+      </div>
       <div style={{ width: '100%', height: '300px', overflow: 'hidden', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <img src="/images/foto-especiales.png" alt="Arepas Especiales" style={{ width: '90%', height: 'auto', display: 'block', transform: 'scale(1.0)', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
       </div>
@@ -205,8 +215,13 @@ function SeccionQuesudita() {
 
   return (
     <div style={{ background: '#eb1e55', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
-      <h2 className="font-chreed" style={{ color: '#fff1d2', fontSize: '52px', lineHeight: 1 }}>ARMA</h2>
-      <p className="font-healing" style={{ color: '#f9ac31', fontSize: '36px', lineHeight: 1.1, marginBottom: '6px' }}>Tu quesudita</p>
+      {/* Título estilo carta física */}
+      <div style={{ position: 'relative', marginBottom: '6px' }}>
+        <span style={{ position: 'absolute', top: '0', left: '0', fontFamily: 'ChreedExtraBold', color: 'rgba(255,241,210,0.2)', fontSize: '26px' }}>✕</span>
+        <span style={{ position: 'absolute', top: '0', right: '0', fontFamily: 'ChreedExtraBold', color: 'rgba(255,241,210,0.2)', fontSize: '26px' }}>✕</span>
+        <h2 style={{ fontFamily: 'ChreedExtraBold', color: '#fff1d2', fontSize: '58px', lineHeight: 1, margin: 0, textAlign: 'center' }}>ARMA</h2>
+        <p className="font-healing" style={{ color: '#f9ac31', fontSize: '38px', lineHeight: 1, marginTop: '-8px', textAlign: 'center' }}>Tu quesudita</p>
+      </div>
       <p className="font-brinnan" style={{ color: '#fff1d2', fontSize: '14px', marginBottom: '12px' }}>
         Incluye queso mozzarella y queso costeño
       </p>
@@ -291,8 +306,12 @@ function SeccionDesgranados() {
   const desgranadas = productos.filter(p => p.cat === 'desgranadas')
   return (
     <div style={{ background: '#42261a', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
-      <p className="font-healing" style={{ color: '#eb1e55', fontSize: '28px', lineHeight: 1.1 }}>Los</p>
-      <h2 className="font-chreed" style={{ color: '#f9ac31', fontSize: '42px', lineHeight: 1.05, marginBottom: '16px' }}>DESGRANADOS MÁS AMADOS</h2>
+      {/* Título estilo carta física */}
+      <div style={{ marginBottom: '16px' }}>
+        <p className="font-healing" style={{ color: '#eb1e55', fontSize: '28px', lineHeight: 1, marginBottom: '-4px' }}>Los</p>
+        <h2 style={{ fontFamily: 'ChreedExtraBold', color: '#eb1e55', fontSize: '44px', lineHeight: 0.95, margin: 0 }}>DESGRANADOS</h2>
+        <p className="font-chreed" style={{ color: '#f9ac31', fontSize: '28px', lineHeight: 1.1, marginTop: '-2px' }}>MÁS AMADOS</p>
+      </div>
       <div style={{ width: '100%', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
         <img src="/images/foto-desgranados.png" alt="Arepas Desgranadas" style={{ width: '80%', height: 'auto', display: 'block', margin: '0 auto', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
       </div>
@@ -306,8 +325,12 @@ function SeccionParrilla() {
   const parrilla = productos.filter(p => p.cat === 'parrilla')
   return (
     <div style={{ background: '#eb1e55', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
-      <p className="font-healing" style={{ color: '#f9ac31', fontSize: '28px', lineHeight: 1.1 }}>Las</p>
-      <h2 className="font-chreed" style={{ color: '#f9ac31', fontSize: '42px', lineHeight: 1.05, marginBottom: '16px' }}>PARRILLADAS MÁS ESPERADAS</h2>
+      {/* Título estilo carta física */}
+      <div style={{ marginBottom: '16px' }}>
+        <p className="font-healing" style={{ color: '#f9ac31', fontSize: '28px', lineHeight: 1, marginBottom: '-4px' }}>Las</p>
+        <h2 style={{ fontFamily: 'ChreedExtraBold', color: '#f9ac31', fontSize: '46px', lineHeight: 0.95, margin: 0 }}>PARRILLADAS</h2>
+        <p className="font-chreed" style={{ color: '#fff1d2', fontSize: '26px', lineHeight: 1.1, marginTop: '-2px' }}>MÁS ESPERADAS</p>
+      </div>
       <div style={{ width: '100%', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
         <img src="/images/foto-parrilladas.png" alt="Parrilladas" style={{ width: '80%', height: 'auto', display: 'block', margin: '0 auto', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
       </div>
@@ -321,8 +344,13 @@ function SeccionClasicos() {
   const delicias = productos.filter(p => p.cat === 'delicias')
   return (
     <div style={{ background: '#007d3e', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
-      <h2 className="font-chreed" style={{ color: '#f9ac31', fontSize: '52px', lineHeight: 1 }}>CLÁSICOS</h2>
-      <p className="font-healing" style={{ color: '#fff1d2', fontSize: '32px', lineHeight: 1.1, marginBottom: '16px' }}>Ocañeros</p>
+      {/* Título estilo carta física */}
+      <div style={{ position: 'relative', marginBottom: '16px' }}>
+        <span style={{ position: 'absolute', top: '4px', left: '0', fontFamily: 'ChreedExtraBold', color: 'rgba(255,241,210,0.18)', fontSize: '24px' }}>✕</span>
+        <span style={{ position: 'absolute', top: '4px', right: '0', fontFamily: 'ChreedExtraBold', color: 'rgba(255,241,210,0.18)', fontSize: '24px' }}>✕</span>
+        <h2 style={{ fontFamily: 'ChreedExtraBold', color: '#f9ac31', fontSize: '54px', lineHeight: 1, margin: 0, textAlign: 'center' }}>CLÁSICOS</h2>
+        <p className="font-healing" style={{ color: '#fff1d2', fontSize: '34px', lineHeight: 1, marginTop: '-6px', textAlign: 'center' }}>Ocañeros</p>
+      </div>
       <div style={{ width: '100%', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
         <img src="/images/foto-clasicos-ocaneros.png" alt="Clásicos Ocañeros" style={{ width: '80%', height: 'auto', display: 'block', margin: '0 auto', filter: 'drop-shadow(0px 8px 24px rgba(0,0,0,0.25))' }} />
       </div>
@@ -540,8 +568,11 @@ function SeccionBebidas({ onOpenModal }) {
   const otras     = productos.filter(p => ['bf12','bf13','bf14','bf15'].includes(p.id))
   return (
     <div style={{ background: '#00afec', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
-      <h2 className="font-chreed" style={{ color: '#fff1d2', fontSize: '42px', lineHeight: 1 }}>PA' QUE SE</h2>
-      <h2 className="font-chreed" style={{ color: '#fff1d2', fontSize: '42px', lineHeight: 1, marginBottom: '16px' }}>REFRESQUE</h2>
+      {/* Título estilo carta física */}
+      <div style={{ marginBottom: '16px', textAlign: 'center' }}>
+        <p className="font-healing" style={{ color: '#fff1d2', fontSize: '26px', lineHeight: 1, marginBottom: '-6px' }}>Pa' que se</p>
+        <h2 style={{ fontFamily: 'ChreedExtraBold', color: '#fff1d2', fontSize: '54px', lineHeight: 0.95, margin: 0 }}>REFRESQUE</h2>
+      </div>
       <SubTitulo texto="LIMONADAS" color="#f9ac31" size="24px" />
       {limonadas.map(p => <FilaProductoBebida key={p.id} producto={p} onOpenModal={onOpenModal} />)}
       <SubTitulo texto="JUGOS Y GRANIZADAS" color="#f9ac31" size="24px" />
@@ -607,7 +638,10 @@ function SeccionAdicionales() {
   const adicionales = productos.filter(p => p.cat === 'adicionales')
   return (
     <div style={{ background: '#fff1d2', minWidth: '100vw', overflowY: 'auto', scrollSnapAlign: 'start', padding: '24px 20px 220px' }}>
-      <h2 className="font-healing" style={{ color: '#eb1e55', fontSize: '42px', lineHeight: 1, marginBottom: '16px' }}>Adicionales</h2>
+      {/* Título estilo carta física */}
+      <div style={{ background: '#eb1e55', borderRadius: '16px', padding: '14px 20px 10px', marginBottom: '16px', textAlign: 'center' }}>
+        <h2 className="font-healing" style={{ color: '#f9ac31', fontSize: '42px', lineHeight: 1, margin: 0 }}>Adicionales</h2>
+      </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 12px' }}>
         {adicionales.map(p => <FilaProductoAdicional key={p.id} producto={p} />)}
       </div>
