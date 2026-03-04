@@ -9,7 +9,7 @@ import { formatCOP } from '../utils/formatCOP'
 const contorno = () => '1px 1px 0 rgba(66,38,26,0.7), 0px 2px 0 rgba(66,38,26,0.5)'
 
 /* ─── Fila de producto ───────────────────────────────────────────────── */
-function FilaProducto({ producto, nombreColor, descColor, precioColor, btnBg, btnColor, sepColor, sinBoton = false, precioFont = 'font-chreed-extrabold', nombreSize = '16px' }) {
+function FilaProducto({ producto, nombreColor, descColor, precioColor, btnBg, btnColor, sepColor, sinBoton = false, precioFont = 'font-chreed-extrabold', nombreSize = '1.3rem' }) {
   const navigate = useNavigate()
   const { addItem } = useCartStore()
   const [popped, setPopped] = useState(false)
@@ -32,7 +32,7 @@ function FilaProducto({ producto, nombreColor, descColor, precioColor, btnBg, bt
         style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '7px 0', marginBottom: '4px', cursor: 'pointer' }}
       >
         <div style={{ flex: 1, minWidth: 0 }}>
-          <p className="font-chreed-extrabold" style={{ color: nombreColor, fontSize: nombreSize, lineHeight: 1.2, marginBottom: '2px', textShadow: contorno(nombreColor) }}>
+          <p className="font-chreed-extrabold" style={{ color: nombreColor, fontSize: nombreSize, lineHeight: 1.2, marginBottom: '2px', textShadow: contorno(nombreColor), textTransform: 'uppercase' }}>
             {producto.nombre}
           </p>
           {producto.desc ? (
@@ -87,11 +87,11 @@ function SeccionArepas() {
       </div>
       <div style={{ padding: '0 20px', marginTop: '-25px' }}>
       <SubTitulo texto="Chicharrona" color="#E12B4E" size="32px" fontClass="font-healing" />
-      {chicharronas.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#E12B4E" descColor="#42261a" precioColor="#E12B4E" btnBg="#eb1e55" btnColor="#fff" sepColor="#42261a" nombreSize="1.1rem" />)}
+      {chicharronas.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#E12B4E" descColor="#42261a" precioColor="#E12B4E" btnBg="#eb1e55" btnColor="#fff" sepColor="#42261a" />)}
       <SubTitulo texto="Areburger" color="#007d3e" size="32px" fontClass="font-healing" />
-      {hamburguesas.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#007d3e" descColor="#42261a" precioColor="#E12B4E" btnBg="#eb1e55" btnColor="#fff" sepColor="#42261a" nombreSize="1.1rem" />)}
+      {hamburguesas.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#007d3e" descColor="#42261a" precioColor="#E12B4E" btnBg="#eb1e55" btnColor="#fff" sepColor="#42261a" />)}
       <SubTitulo texto="Clásiqueras" color="#f9ac31" size="32px" fontClass="font-healing" />
-      {clasicas.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#f9ac31" descColor="#42261a" precioColor="#E12B4E" btnBg="#eb1e55" btnColor="#fff" sepColor="#42261a" nombreSize="1.1rem" />)}
+      {clasicas.map(p => <FilaProducto key={p.id} producto={p} nombreColor="#f9ac31" descColor="#42261a" precioColor="#E12B4E" btnBg="#eb1e55" btnColor="#fff" sepColor="#42261a" />)}
       </div>
     </div>
   )
@@ -146,7 +146,7 @@ function CheckboxIngrediente({ nombre, precio, checked, disabled, onToggle, colo
           </svg>
         )}
       </div>
-      <span className="font-chreed-extrabold" style={{ color: colorText, fontSize: '14px', lineHeight: 1.2, flex: 1, textShadow: contorno(colorText) }}>
+      <span className="font-chreed-extrabold" style={{ color: colorText, fontSize: '1.3rem', lineHeight: 1.2, flex: 1, textShadow: contorno(colorText), textTransform: 'uppercase' }}>
         {nombre}
       </span>
     </div>
@@ -507,7 +507,7 @@ function FilaProductoBebida({ producto, onOpenModal, nombreColor = '#FFFFFF', pr
         onClick={handleAdd}
       >
         <div style={{ flex: 1, minWidth: 0 }}>
-          <p className="font-chreed-extrabold" style={{ color: nombreColor, fontSize: '16px', lineHeight: 1.2, marginBottom: '2px', textShadow: contorno(nombreColor) }}>
+          <p className="font-chreed-extrabold" style={{ color: nombreColor, fontSize: '1.3rem', lineHeight: 1.2, marginBottom: '2px', textShadow: contorno(nombreColor), textTransform: 'uppercase' }}>
             {producto.nombre}
           </p>
           {producto.desc ? (
@@ -585,7 +585,7 @@ function FilaProductoAdicional({ producto }) {
         onClick={handleAdd}
         style={{ display: 'flex', flexDirection: 'column', padding: '10px 0', cursor: 'pointer', gap: '4px' }}
       >
-        <p className="font-chreed-extrabold" style={{ color: '#f9ac31', fontSize: '14px', lineHeight: 1.2, textShadow: contorno('#f9ac31') }}>
+        <p className="font-chreed-extrabold" style={{ color: '#f9ac31', fontSize: '1.3rem', lineHeight: 1.2, textShadow: contorno('#f9ac31'), textTransform: 'uppercase' }}>
           {producto.nombre}
         </p>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '6px' }}>
