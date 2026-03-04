@@ -180,19 +180,27 @@ export default function CheckoutPage() {
     }
 
     setSubmitting(true)
-    try {
-      const id = await guardarEnSupabase(pedido)
-      if (id) setPedidoId(id)
-    } catch (err) {
-      console.error('Supabase error tras 3 intentos:', err)
+
+    // Check internet connectivity before attempting Supabase
+    if (!navigator.onLine) {
       toast.error(
-        '⚠️ No pudimos registrar tu pedido en el sistema. Contacta al restaurante por WhatsApp para confirmar.',
+        '⚠️ No tienes conexión a internet. Tu pedido será enviado por WhatsApp pero no quedará registrado en el sistema. Contacta al restaurante para confirmar.',
         { duration: 8000, style: { fontWeight: 700, borderRadius: '12px' } }
       )
-    } finally {
-      setSubmitting(false)
+    } else {
+      try {
+        const id = await guardarEnSupabase(pedido)
+        if (id) setPedidoId(id)
+      } catch (err) {
+        console.error('Supabase error tras 3 intentos:', err)
+        toast.error(
+          '⚠️ No pudimos registrar tu pedido automáticamente. Tu WhatsApp fue enviado. Por favor confirma directamente con el restaurante.',
+          { duration: 8000, style: { fontWeight: 700, borderRadius: '12px' } }
+        )
+      }
     }
 
+    setSubmitting(false)
     setLastOrder(pedido)
     navigate('/confirmacion', { replace: true })
   }
