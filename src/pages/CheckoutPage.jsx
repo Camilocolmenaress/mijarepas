@@ -20,9 +20,10 @@ export default function CheckoutPage() {
   const [direccion, setDireccion] = useState(() => localStorage.getItem('mijarepas_direccion') || '')
   const [especificaciones, setEspecificaciones] = useState(() => localStorage.getItem('mijarepas_especificaciones') || '')
   const [loadingGeo, setLoadingGeo] = useState(false)
-  const [nombreError, setNombreError] = useState(false)
-  const [telefonoError, setTelefonoError] = useState(false)
-  const [direccionError, setDireccionError] = useState(false)
+  const [nombreError, setNombreError] = useState('')
+  const [telefonoError, setTelefonoError] = useState('')
+  const [direccionError, setDireccionError] = useState('')
+  const [pagoError, setPagoError] = useState('')
   const [isOnline, setIsOnline] = useState(navigator.onLine)
 
   const nombreRef = useRef(null)
@@ -136,37 +137,55 @@ export default function CheckoutPage() {
   }
 
   const handleSubmit = async () => {
-    if (!nombre.trim()) {
-      setNombreError(true)
-      nombreRef.current?.focus()
-      shake(nombreRef)
-      toast.error('¡Escribe tu nombre para continuar!', {
-        style: { fontWeight: 700, borderRadius: '12px' },
-      })
-      return
+    // Sanitize
+    const nombreClean = nombre.trim()
+    const telefonoClean = telefono.replace(/\D/g, '')
+    const direccionClean = direccion.trim()
+
+    // Validate all fields at once — show all errors, focus first invalid
+    let firstErrorRef = null
+
+    if (!nombreClean || nombreClean.length < 2) {
+      setNombreError('Ingresa tu nombre')
+      if (!firstErrorRef) firstErrorRef = nombreRef
+    } else if (/^[\d\W]+$/.test(nombreClean)) {
+      setNombreError('Ingresa un nombre válido')
+      if (!firstErrorRef) firstErrorRef = nombreRef
+    } else {
+      setNombreError('')
     }
-    if (!telefono.trim()) {
-      setTelefonoError(true)
-      telefonoRef.current?.focus()
-      shake(telefonoRef)
-      toast.error('El teléfono es obligatorio para coordinar tu domicilio', {
-        style: { fontWeight: 700, borderRadius: '12px' },
-      })
-      return
+
+    if (!telefonoClean || telefonoClean.length < 7 || telefonoClean.length > 10) {
+      setTelefonoError('Ingresa un teléfono válido')
+      if (!firstErrorRef) firstErrorRef = telefonoRef
+    } else {
+      setTelefonoError('')
     }
-    if (!direccion.trim()) {
-      setDireccionError(true)
-      direccionRef.current?.focus()
-      shake(direccionRef)
-      toast.error('Por favor ingresa tu dirección de entrega', {
-        style: { fontWeight: 700, borderRadius: '12px' },
-      })
+
+    if (!direccionClean || direccionClean.length < 5) {
+      setDireccionError('Ingresa tu dirección')
+      if (!firstErrorRef) firstErrorRef = direccionRef
+    } else {
+      setDireccionError('')
+    }
+
+    if (!paymentMethod) {
+      setPagoError('Selecciona un método de pago')
+    } else {
+      setPagoError('')
+    }
+
+    if (firstErrorRef || !paymentMethod || total <= 0) {
+      if (firstErrorRef) {
+        firstErrorRef.current?.focus()
+        shake(firstErrorRef)
+      }
       return
     }
 
-    localStorage.setItem('mijarepas_nombre', nombre.trim())
-    localStorage.setItem('mijarepas_telefono', telefono.trim())
-    localStorage.setItem('mijarepas_direccion', direccion.trim())
+    localStorage.setItem('mijarepas_nombre', nombreClean)
+    localStorage.setItem('mijarepas_telefono', telefonoClean)
+    localStorage.setItem('mijarepas_direccion', direccionClean)
     if (especificaciones.trim()) {
       localStorage.setItem('mijarepas_especificaciones', especificaciones.trim())
     } else {
@@ -174,11 +193,11 @@ export default function CheckoutPage() {
     }
 
     const pedido = {
-      nombre: nombre.trim(),
-      telefono: telefono.trim(),
+      nombre: nombreClean,
+      telefono: telefonoClean,
       tipo: 'domicilio',
       mesa: '',
-      direccion: direccion.trim(),
+      direccion: direccionClean,
       especificaciones: especificaciones.trim(),
       items: items.map(i => ({
         nombre: i.nombre, qty: i.qty, precio: i.precio,
@@ -188,7 +207,7 @@ export default function CheckoutPage() {
       subtotal,
       costoDomicilio: 0,
       total,
-      paymentMethod: paymentMethod || 'efectivo',
+      paymentMethod,
       extras,
     }
 
@@ -290,11 +309,16 @@ export default function CheckoutPage() {
               ref={nombreRef}
               type="text"
               value={nombre}
-              onChange={e => { setNombre(e.target.value); setNombreError(false) }}
+              onChange={e => { setNombre(e.target.value); setNombreError('') }}
               placeholder="¿Cómo te llamas?"
               className="font-brinnan checkout-input"
-              style={inputStyle(nombreError)}
+              style={inputStyle(!!nombreError)}
             />
+            {nombreError && (
+              <p className="font-brinnan" style={{ fontSize: '0.8rem', color: '#E12B4E', margin: '5px 2px 0', lineHeight: 1.4 }}>
+                {nombreError}
+              </p>
+            )}
           </div>
 
           {/* Teléfono */}
@@ -306,11 +330,16 @@ export default function CheckoutPage() {
               ref={telefonoRef}
               type="tel"
               value={telefono}
-              onChange={e => { setTelefono(e.target.value); setTelefonoError(false) }}
+              onChange={e => { setTelefono(e.target.value.replace(/\D/g, '')); setTelefonoError('') }}
               placeholder="Tu número de celular"
               className="font-brinnan checkout-input"
-              style={inputStyle(telefonoError)}
+              style={inputStyle(!!telefonoError)}
             />
+            {telefonoError && (
+              <p className="font-brinnan" style={{ fontSize: '0.8rem', color: '#E12B4E', margin: '5px 2px 0', lineHeight: 1.4 }}>
+                {telefonoError}
+              </p>
+            )}
           </div>
 
           {/* Dirección */}
@@ -323,11 +352,11 @@ export default function CheckoutPage() {
                 ref={direccionRef}
                 type="text"
                 value={loadingGeo ? '' : direccion}
-                onChange={e => { setDireccion(e.target.value); setDireccionError(false) }}
+                onChange={e => { setDireccion(e.target.value); setDireccionError('') }}
                 placeholder="Calle, barrio, ciudad..."
                 className="font-brinnan checkout-input"
                 style={{
-                  ...inputStyle(direccionError),
+                  ...inputStyle(!!direccionError),
                   padding: '12px 48px 12px 14px',
                   background: loadingGeo ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.15)',
                 }}
@@ -349,8 +378,8 @@ export default function CheckoutPage() {
               </button>
             </div>
             {direccionError && (
-              <p className="font-brinnan" style={{ fontSize: '0.72rem', color: '#eb1e55', margin: '5px 2px 0', lineHeight: 1.4 }}>
-                Por favor ingresa tu dirección de entrega
+              <p className="font-brinnan" style={{ fontSize: '0.8rem', color: '#E12B4E', margin: '5px 2px 0', lineHeight: 1.4 }}>
+                {direccionError}
               </p>
             )}
             {!direccionError && direccion === '' && !loadingGeo && (
@@ -395,14 +424,18 @@ export default function CheckoutPage() {
                   🛵 + Valor del domicilio cobrado por la empresa encargada
                 </p>
               </div>
-              {paymentMethod && (
+              {paymentMethod ? (
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '4px' }}>
                   <span className="font-brinnan" style={{ color: 'rgba(255,241,210,0.75)', fontSize: '0.85rem' }}>💳 Pago</span>
                   <span className="font-brinnan" style={{ color: 'var(--crema)', fontSize: '0.85rem', fontWeight: 700 }}>
                     {PAYMENT_LABELS[paymentMethod]}
                   </span>
                 </div>
-              )}
+              ) : pagoError ? (
+                <p className="font-brinnan" style={{ fontSize: '0.8rem', color: '#E12B4E', marginTop: '4px' }}>
+                  {pagoError}
+                </p>
+              ) : null}
               <div style={{
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                 borderTop: '1.5px solid rgba(255,255,255,0.2)', paddingTop: '8px', marginTop: '8px',
