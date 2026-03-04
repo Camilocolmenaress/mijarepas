@@ -1,31 +1,13 @@
 @import "tailwindcss";
 
 /* ─── Fuentes oficiales Mijarepas ───────────────────────────────────── */
-@font-face {
-  font-family: 'Chreed';
-  src: url('/fonts/Chreed-Black.otf') format('opentype');
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Healing';
-  src: url('/fonts/Healing.otf') format('opentype');
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Brinnan';
-  src: url('/fonts/Brinnan Regular.otf') format('opentype');
-  font-display: swap;
-}
-@font-face {
-  font-family: 'ChreedExtraBold';
-  src: url('/fonts/Chreed-ExtraBold.otf') format('opentype');
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Chibold';
-  src: url('/fonts/CHIBOLD.ttf') format('truetype');
-  font-display: swap;
-}
+@font-face { font-family: 'Chreed'; src: url('/fonts/Chreed-Black.otf') format('opentype'); font-weight: normal; font-style: normal; }
+@font-face { font-family: 'ChreedExtraBold'; src: url('/fonts/Chreed-ExtraBold.otf') format('opentype'); font-weight: normal; font-style: normal; }
+@font-face { font-family: 'Chibold'; src: url('/fonts/CHIBOLD.ttf') format('truetype'); font-weight: normal; font-style: normal; }
+@font-face { font-family: 'Healing'; src: url('/fonts/Healing.otf') format('opentype'); font-weight: normal; font-style: normal; }
+@font-face { font-family: 'Brinnan'; src: url('/fonts/Brinnan-Regular.otf') format('opentype'); font-weight: normal; font-style: normal; }
+@font-face { font-family: 'BrinnanBlack'; src: url('/fonts/Brinnan-Black.otf') format('opentype'); font-weight: normal; font-style: normal; }
+@font-face { font-family: 'AkzidenzGrotesk'; src: url('/fonts/AkzidenzGrotesk-MediumCond.otf') format('opentype'); font-weight: normal; font-style: normal; }
 
 /* ─── Paleta oficial Mijarepas ─────────────────────────────────────── */
 :root {
