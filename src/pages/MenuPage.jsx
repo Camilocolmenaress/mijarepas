@@ -18,7 +18,7 @@ export default function MenuPage() {
       {!searchQuery && (
         <div style={{ width: '100%', lineHeight: 0, flexShrink: 0 }}>
           <img
-            src="/images/logo.jpg"
+            src="/images/LOGOSYRECURSOS-12.jpg"
             alt="Mijarepas — El sabor de Ocaña"
             style={{
               width: '100%',
