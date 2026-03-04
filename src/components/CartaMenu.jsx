@@ -32,7 +32,7 @@ function FilaProducto({ producto, nombreColor, descColor, precioColor, btnBg, bt
         style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '7px 0', marginBottom: '4px', cursor: 'pointer' }}
       >
         <div style={{ flex: 1, minWidth: 0 }}>
-          <p className="font-chreed-extrabold" style={{ color: nombreColor, fontSize: nombreSize, lineHeight: 1.2, marginBottom: '2px', textShadow: contorno(nombreColor), textTransform: 'uppercase' }}>
+          <p className="font-chreed-extrabold" style={{ color: nombreColor, fontSize: nombreSize, lineHeight: 1.2, marginBottom: '2px', textShadow: contorno(nombreColor), textTransform: 'uppercase', letterSpacing: '1.5px' }}>
             {producto.nombre}
           </p>
           {producto.desc ? (
@@ -146,7 +146,7 @@ function CheckboxIngrediente({ nombre, precio, checked, disabled, onToggle, colo
           </svg>
         )}
       </div>
-      <span className="font-chreed-extrabold" style={{ color: colorText, fontSize: '1.3rem', lineHeight: 1.2, flex: 1, textShadow: contorno(colorText), textTransform: 'uppercase' }}>
+      <span className="font-chreed-extrabold" style={{ color: colorText, fontSize: '1.3rem', lineHeight: 1.2, flex: 1, textShadow: contorno(colorText), textTransform: 'uppercase', letterSpacing: '1.5px' }}>
         {nombre}
       </span>
     </div>
@@ -507,7 +507,7 @@ function FilaProductoBebida({ producto, onOpenModal, nombreColor = '#FFFFFF', pr
         onClick={handleAdd}
       >
         <div style={{ flex: 1, minWidth: 0 }}>
-          <p className="font-chreed-extrabold" style={{ color: nombreColor, fontSize: '1.3rem', lineHeight: 1.2, marginBottom: '2px', textShadow: contorno(nombreColor), textTransform: 'uppercase' }}>
+          <p className="font-chreed-extrabold" style={{ color: nombreColor, fontSize: '1.3rem', lineHeight: 1.2, marginBottom: '2px', textShadow: contorno(nombreColor), textTransform: 'uppercase', letterSpacing: '1.5px' }}>
             {producto.nombre}
           </p>
           {producto.desc ? (
@@ -585,7 +585,7 @@ function FilaProductoAdicional({ producto }) {
         onClick={handleAdd}
         style={{ display: 'flex', flexDirection: 'column', padding: '10px 0', cursor: 'pointer', gap: '4px' }}
       >
-        <p className="font-chreed-extrabold" style={{ color: '#f9ac31', fontSize: '1.3rem', lineHeight: 1.2, textShadow: contorno('#f9ac31'), textTransform: 'uppercase' }}>
+        <p className="font-chreed-extrabold" style={{ color: '#f9ac31', fontSize: '1.3rem', lineHeight: 1.2, textShadow: contorno('#f9ac31'), textTransform: 'uppercase', letterSpacing: '1.5px' }}>
           {producto.nombre}
         </p>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '6px' }}>
