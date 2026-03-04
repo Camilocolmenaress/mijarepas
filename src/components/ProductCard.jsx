@@ -99,7 +99,7 @@ export default function ProductCard({ producto }) {
       {/* Contenido */}
       <div style={{ padding: '10px 10px 12px', flex: 1, display: 'flex', flexDirection: 'column' }}>
         <h3
-          className="font-chreed"
+          className="font-brinnan-black"
           style={{
             fontSize: '0.95rem', color: 'var(--cafe)',
             lineHeight: 1.2, marginBottom: '3px',

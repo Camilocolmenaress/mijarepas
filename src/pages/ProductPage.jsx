@@ -92,7 +92,7 @@ export default function ProductPage() {
 
       {/* Contenido */}
       <div style={{ padding: '20px 20px 0', maxWidth: '640px', margin: '0 auto' }}>
-        <h2 className="font-chreed" style={{ fontSize: '1.6rem', color: 'var(--cafe)', marginBottom: '6px', lineHeight: 1.1 }}>
+        <h2 className="font-brinnan-black" style={{ fontSize: '1.6rem', color: 'var(--cafe)', marginBottom: '6px', lineHeight: 1.1 }}>
           {producto.nombre}
         </h2>
 

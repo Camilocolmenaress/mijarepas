@@ -103,6 +103,7 @@ input, textarea, select, button {
 .font-chibold { font-family: 'Chibold'; }
 .font-healing { font-family: 'Healing'; }
 .font-brinnan { font-family: 'Brinnan'; }
+.font-brinnan-black { font-family: 'BrinnanBlack'; }
 
 /* Alias legacy */
 .font-fredoka { font-family: 'Chreed'; }
