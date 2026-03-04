@@ -23,6 +23,7 @@ export default function CheckoutPage() {
   const [nombreError, setNombreError] = useState(false)
   const [telefonoError, setTelefonoError] = useState(false)
   const [direccionError, setDireccionError] = useState(false)
+  const [isOnline, setIsOnline] = useState(navigator.onLine)
 
   const nombreRef = useRef(null)
   const telefonoRef = useRef(null)
@@ -31,6 +32,18 @@ export default function CheckoutPage() {
   useEffect(() => {
     if (items.length === 0 && !submitting) navigate('/menu', { replace: true })
   }, [items, submitting, navigate])
+
+  // Detect connectivity changes in real time
+  useEffect(() => {
+    const goOnline = () => setIsOnline(true)
+    const goOffline = () => setIsOnline(false)
+    window.addEventListener('online', goOnline)
+    window.addEventListener('offline', goOffline)
+    return () => {
+      window.removeEventListener('online', goOnline)
+      window.removeEventListener('offline', goOffline)
+    }
+  }, [])
 
   const handleGeolocate = async () => {
     setLoadingGeo(true)
@@ -179,25 +192,27 @@ export default function CheckoutPage() {
       extras,
     }
 
-    setSubmitting(true)
-
-    // Check internet connectivity before attempting Supabase
-    if (!navigator.onLine) {
+    // Block completely if no internet
+    if (!isOnline) {
       toast.error(
-        '⚠️ No tienes conexión a internet. Tu pedido será enviado por WhatsApp pero no quedará registrado en el sistema. Contacta al restaurante para confirmar.',
-        { duration: 8000, style: { fontWeight: 700, borderRadius: '12px' } }
+        '⚠️ No tienes conexión a internet. Conéctate y vuelve a intentarlo.',
+        { duration: 5000, style: { fontWeight: 700, borderRadius: '12px' } }
       )
-    } else {
-      try {
-        const id = await guardarEnSupabase(pedido)
-        if (id) setPedidoId(id)
-      } catch (err) {
-        console.error('Supabase error tras 3 intentos:', err)
-        toast.error(
-          '⚠️ No pudimos registrar tu pedido automáticamente. Tu WhatsApp fue enviado. Por favor confirma directamente con el restaurante.',
-          { duration: 8000, style: { fontWeight: 700, borderRadius: '12px' } }
-        )
-      }
+      return
+    }
+
+    setSubmitting(true)
+    try {
+      const id = await guardarEnSupabase(pedido)
+      if (id) setPedidoId(id)
+    } catch (err) {
+      console.error('Supabase error tras 3 intentos:', err)
+      toast.error(
+        '⚠️ Hubo un error al enviar tu pedido. Por favor intenta de nuevo.',
+        { duration: 6000, style: { fontWeight: 700, borderRadius: '12px' } }
+      )
+      setSubmitting(false)
+      return
     }
 
     setSubmitting(false)
@@ -400,21 +415,27 @@ export default function CheckoutPage() {
             {/* CTA */}
             <button
               onClick={handleSubmit}
-              disabled={submitting}
+              disabled={submitting || !isOnline}
               className="font-chreed"
               style={{
-                width: '100%', background: 'var(--primario)',
+                width: '100%', background: !isOnline ? '#999' : 'var(--primario)',
                 color: 'white', border: 'none', borderRadius: '12px',
                 padding: '16px', fontSize: '1.15rem',
-                cursor: submitting ? 'default' : 'pointer',
-                boxShadow: '0 4px 20px rgba(235,30,85,0.5)',
+                cursor: (submitting || !isOnline) ? 'default' : 'pointer',
+                boxShadow: !isOnline ? 'none' : '0 4px 20px rgba(235,30,85,0.5)',
                 minHeight: '54px',
-                opacity: submitting ? 0.75 : 1,
-                transition: 'opacity 0.15s ease',
+                opacity: (submitting || !isOnline) ? 0.75 : 1,
+                transition: 'all 0.15s ease',
               }}
             >
-              {submitting ? '⏳ Enviando pedido...' : '¡Hacer Pedido! 🎉'}
+              {!isOnline ? '📡 Sin conexión' : submitting ? '⏳ Enviando pedido...' : '¡Hacer Pedido! 🎉'}
             </button>
+
+            {!isOnline && (
+              <p className="font-brinnan" style={{ textAlign: 'center', color: '#eb1e55', fontSize: '0.75rem', marginTop: '8px' }}>
+                Conéctate a internet para enviar tu pedido
+              </p>
+            )}
 
             <p className="font-brinnan" style={{ textAlign: 'center', color: 'rgba(255,241,210,0.65)', fontSize: '0.75rem', marginTop: '10px' }}>
               💰 Pago al recibir
