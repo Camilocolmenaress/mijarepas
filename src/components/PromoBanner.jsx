@@ -15,14 +15,16 @@ export default function PromoBanner({ promos }) {
   const touchDeltaX = useRef(0)
   const isDragging = useRef(false)
 
+  const slidePercent = 100 / totalSlides
+
   const goTo = useCallback((idx) => {
     const clamped = Math.max(0, Math.min(idx, totalSlides - 1))
     setCurrent(clamped)
     if (trackRef.current) {
       trackRef.current.style.transition = 'transform 0.4s ease'
-      trackRef.current.style.transform = `translateX(-${clamped * 100}%)`
+      trackRef.current.style.transform = `translateX(-${clamped * slidePercent}%)`
     }
-  }, [totalSlides])
+  }, [totalSlides, slidePercent])
 
   // Auto-rotate every 5s
   useEffect(() => {
@@ -32,13 +34,13 @@ export default function PromoBanner({ promos }) {
         const next = (prev + 1) % totalSlides
         if (trackRef.current) {
           trackRef.current.style.transition = 'transform 0.4s ease'
-          trackRef.current.style.transform = `translateX(-${next * 100}%)`
+          trackRef.current.style.transform = `translateX(-${next * slidePercent}%)`
         }
         return next
       })
     }, 5000)
     return () => clearInterval(timerRef.current)
-  }, [totalSlides])
+  }, [totalSlides, slidePercent])
 
   const resetTimer = () => {
     if (timerRef.current) clearInterval(timerRef.current)
@@ -48,7 +50,7 @@ export default function PromoBanner({ promos }) {
         const next = (prev + 1) % totalSlides
         if (trackRef.current) {
           trackRef.current.style.transition = 'transform 0.4s ease'
-          trackRef.current.style.transform = `translateX(-${next * 100}%)`
+          trackRef.current.style.transform = `translateX(-${next * slidePercent}%)`
         }
         return next
       })
@@ -67,7 +69,8 @@ export default function PromoBanner({ promos }) {
     if (!isDragging.current) return
     touchDeltaX.current = e.touches[0].clientX - touchStartX.current
     if (trackRef.current) {
-      const offset = -(current * 100) + (touchDeltaX.current / trackRef.current.parentElement.offsetWidth) * 100
+      const dragPercent = (touchDeltaX.current / trackRef.current.parentElement.offsetWidth) * slidePercent
+      const offset = -(current * slidePercent) + dragPercent
       trackRef.current.style.transform = `translateX(${offset}%)`
     }
   }
